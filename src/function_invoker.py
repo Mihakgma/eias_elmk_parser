@@ -8,7 +8,7 @@ class Invoker:
         obj = self.__obj
         try:
             func = getattr(obj, func_name)
-            func(*args, **kwargs)
+            return func(*args, **kwargs)
         except TypeError:
             print(f'{func_name} is not callable')
         except AttributeError:
