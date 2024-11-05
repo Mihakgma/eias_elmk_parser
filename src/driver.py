@@ -17,8 +17,9 @@ class Driver:
 
     def __init__(self,
                  wait_secs: int = 10):
-        self.wait_secs = wait_secs
+        self.__wait_secs = wait_secs
         self.__charged = False
+        self.__driver = None
 
     def charge(self):
         print(f"Driver number: <{self.__DRIVERS_CREATED}> has been initiated.")
@@ -29,16 +30,31 @@ class Driver:
         ###
         options.binary_location = self.__BROWSER_FILE_PATH
         try:
-            driver = webdriver.Chrome(executable_path=self.__WEBDRIVER_PATH,
-                                      options=options)
-            driver.implicitly_wait(self.wait_secs)
+            self.__driver = webdriver.Chrome(executable_path=self.__WEBDRIVER_PATH,
+                                             options=options)
+            self.__driver.implicitly_wait(self.__wait_secs)
             self.__charged = True
         except TypeError as e:
             print(e)
             print("Selenium driver error: probably versions conflict...")
 
+    def discharge(self):
+        if self.__charged:
+            input('Press to exit!')
+            try:
+                self.__driver.close()
+                print('Selenium driver has been successfully closed.')
+            except BaseException as e:
+                print('An exception occurred while Selenium driver discharging.')
+                print(e)
+        else:
+            print("Cannot discharge driver: Driver has not been charged yet.")
+
     def is_charged(self):
         return self.__charged
+
+    def get_driver(self):
+        return self.__driver
 
 
 if __name__ == '__main__':
@@ -47,3 +63,4 @@ if __name__ == '__main__':
     print(*[(k, v) for (k, v) in Driver.__dict__.items()], sep='\n')
     dr.charge()
     print(*[(k, v) for (k, v) in dr.__dict__.items()], sep='\n')
+    dr.discharge()
