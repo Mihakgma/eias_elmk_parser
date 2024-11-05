@@ -67,7 +67,7 @@ COLNAMES_DICT = (
 LOGIN_XPATH = "/html/body/main/div/form/div[1]/input"
 PASSWORD_XPATH = "/html/body/main/div/form/div[2]/input"
 SUBMIT_PASS_XPATH = "/html/body/main/div/form/button"
-#---!!! personal data !!! ---# beginning
+# ---!!! personal data !!! ---# beginning
 WAIT_XPATH = ""
 # REGISTR_ADRESS_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/app-address/div/div/div[1]/nz-form-item/nz-form-control/div/div/nz-input-group/input"
 REGISTR_ADRESS_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[7]/div/nz-form-item/nz-form-control/div/div/input"
@@ -87,22 +87,22 @@ PASSPRT_DEPT_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-
 PASSPRT_CODE_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[4]/div[4]/nz-form-item/nz-form-control/div/div/input"
 
 PERS_DATA_XPATH = {
-    WAIT_XPATH:[0,0],
-    REGISTR_ADRESS_XPATH:[0,0],
+    WAIT_XPATH: [0, 0],
+    REGISTR_ADRESS_XPATH: [0, 0],
     # REGISTR_ADRESS_BUILDING_XPATH:[1,0],
     # REGISTR_ADRESS_FLAT_XPATH:[0,0],
-    FACT_ADRESS_XPATH:[0,1],
-    GENDER_XPATH:[1,0],
-    TEL_NUMB_XPATH:[0,0],
-    LAST_NAME_XPATH:[0,0],
-    FIRST_NAME_XPATH:[0,0],
-    MIDDLE_NAME_XPATH:[0,0],
-    EMAIL_XPATH:[0,0],
-    PASSPRT_NUMB_XPATH:[0,0],
-    PASSPRT_DATE_XPATH:[0,0],
-    PASSPRT_DEPT_XPATH:[0,0],
-    PASSPRT_CODE_XPATH:[0,0]}
+    FACT_ADRESS_XPATH: [0, 1],
+    GENDER_XPATH: [1, 0],
+    TEL_NUMB_XPATH: [0, 0],
+    LAST_NAME_XPATH: [0, 0],
+    FIRST_NAME_XPATH: [0, 0],
+    MIDDLE_NAME_XPATH: [0, 0],
+    EMAIL_XPATH: [0, 0],
+    PASSPRT_NUMB_XPATH: [0, 0],
+    PASSPRT_DATE_XPATH: [0, 0],
+    PASSPRT_DEPT_XPATH: [0, 0],
+    PASSPRT_CODE_XPATH: [0, 0]}
 
-#---!!! personal data !!! ---# ends
+# ---!!! personal data !!! ---# ends
 DF_ROW_NUMS_XPATH = "//*[contains(text(), 'Количество записей: ')]"
 DF_TABLE_SCROLL_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmks/div/div[3]/app-table/nz-table/nz-spin/div/div/nz-table-inner-scroll/div[2]"
