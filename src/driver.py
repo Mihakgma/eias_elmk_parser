@@ -21,7 +21,9 @@ class Driver:
         self.__charged = False
         self.__driver = None
 
-    def charge(self):
+    def charge(self, test=False):
+        if test:
+            self.__charged = True
         print(f"Driver number: <{self.__DRIVERS_CREATED}> has been initiated.")
         options = webdriver.ChromeOptions()
         ###
@@ -40,8 +42,9 @@ class Driver:
 
     def discharge(self):
         if self.__charged:
-            input('Press to exit!')
+            # input('Press to exit!')
             try:
+                self.__charged = False
                 self.__driver.close()
                 print('Selenium driver has been successfully closed.')
             except BaseException as e:

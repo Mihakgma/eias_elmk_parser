@@ -12,11 +12,10 @@ class DateChecker:
     возвращает словарь (date_results_dict) с набором параметров
     обнаруженной даты
     """
-    def __init__(self, date_to_check: str, date_formatting: str="%d.%m.%Y"):
+
+    def __init__(self, date_to_check: str, date_formatting: str = "%d.%m.%Y"):
         self.__date_to_check = date_to_check.strip()
         self.__date_formatting = date_formatting
-
-
 
     def get_date_to_check(self):
         return self.__date_to_check
@@ -40,7 +39,8 @@ class DateChecker:
             return current_timestamp.strftime(date_formatting + ' %H:%M:%S')
         elif date_format == 'medium':
             return current_timestamp.strftime(date_formatting + ' %H:%M')
-
+        else:
+            return current_timestamp.strftime(date_formatting + ' %H:%M')
 
     def check_date(self, date_format: str = 'short'):
         date_to_check = self.get_date_to_check()
@@ -54,17 +54,17 @@ class DateChecker:
                        'воскресенье']
 
         month_dict = {1: 'январь',
-                     2: 'февраль',
-                     3: 'март',
-                     4: 'апрель',
-                     5: 'май',
-                     6: 'июнь',
-                     7: 'июль',
-                     8: 'август',
-                     9: 'сентябрь',
-                     10: 'октябрь',
-                     11:'ноябрь',
-                     12: 'декабрь'}
+                      2: 'февраль',
+                      3: 'март',
+                      4: 'апрель',
+                      5: 'май',
+                      6: 'июнь',
+                      7: 'июль',
+                      8: 'август',
+                      9: 'сентябрь',
+                      10: 'октябрь',
+                      11: 'ноябрь',
+                      12: 'декабрь'}
 
         date_results_dict = {
             'date_ok': False,
@@ -119,17 +119,17 @@ class DateChecker:
                 date_results_dict['month_num_valid'] = True
             if year_num > 0:
                 date_results_dict['year_num_valid'] = True
-            date_checked =  dt(
+            date_checked = dt(
                 year_num,
                 month_num,
                 day_num,
                 hours_num,
                 minutes_num,
-                seconds_num) # Дата - ОК!!!
+                seconds_num)  # Дата - ОК!!!
             date_results_dict['date_ok'] = True
             # добавляем в словарь день недели
             weekday_num = dt.weekday(date_checked)
-            date_results_dict['weekday_num'] = weekday_num+1 # нумерация дней недели не с 0 !!!
+            date_results_dict['weekday_num'] = weekday_num + 1  # нумерация дней недели не с 0 !!!
             #print(self.weekday_lst[weekday_num])
             date_results_dict['weekday_str'] = weekday_lst[weekday_num]
             # добавляем в словарь месяц
@@ -147,12 +147,11 @@ class DateChecker:
         except TypeError:
             print(f'Ошибка в строковом представлении даты: <{date_to_check}>')
 
-
         date_results_dict['full_date_str'] = date_to_check
 
         return date_results_dict
 
-    def get_dates_difference(self, second_date:str='', units: str='days'):
+    def get_dates_difference(self, second_date: str = '', units: str = 'days'):
         """
         Возвращает разницу между заданными датами.
         По умолчанию вторая дата - текущий таймстемп
@@ -198,3 +197,11 @@ class DateChecker:
             print('Не допустимо использовать дату из будущего времени!!!')
             return
         return diff_dict
+
+    @staticmethod
+    def get_nowTS_messaged(text: str, date_format: str = "long") -> str:
+        output = ''
+        date_checker = DateChecker('')
+        current_TS = date_checker.get_today_date(date_format)
+        output = f'<{text}>: {current_TS} '
+        return output
