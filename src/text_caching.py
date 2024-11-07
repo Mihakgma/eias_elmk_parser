@@ -6,6 +6,7 @@ from os import makedirs as os_makedirs
 from check_dates import DateChecker
 from driver import Driver
 from function_invoker import Invoker
+from injector import Injector
 from navigator import Navigator
 
 
@@ -86,12 +87,14 @@ class TextCaching(Thread):
 
 
 if __name__ == '__main__':
-    driver = Driver()
-    driver.charge(test=True)
-    navigator = Navigator(driver)
-    text_caching = TextCaching(sleep_time=3, obj=navigator)
+    driver_1 = Driver()
+    driver_1.charge(test=True)
+    navigator_1 = Navigator()
+    injector = Injector(driver_1, navigator_1, auto_charging=False)
+    injector.inject()
+    text_caching = TextCaching(sleep_time=3, obj=navigator_1)
     text_caching.start()
     time_sleep(5)
-    driver.discharge()
+    driver_1.discharge()
     time_sleep(15)
     print(DateChecker.get_nowTS_messaged(text="Last message at"))

@@ -1,5 +1,6 @@
 from driver import Driver
-from injector import Injector
+from inject_manager import InjectManager
+# from injector import Injector
 from navigator import Navigator
 from singleton import Singleton
 
@@ -13,10 +14,13 @@ class SessionManager(Singleton):
     def start_new_session(self):
         driver = Driver()
         navigator = Navigator()
-        injector = Injector(driver=driver,
-                            navigator=navigator,
-                            auto_charging=True)
-        injector.inject()
+        # injector = Injector(driver=driver,
+        #                     navigator=navigator,
+        #                     auto_charging=True)
+        # injector.inject()
+        InjectManager.do_inject(driver=driver,
+                                navigator=navigator,
+                                auto_charge=True)
         SessionManager.__SESSIONS_CREATED.append(navigator)
 
     def get_current_driver(self):
