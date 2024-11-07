@@ -1,5 +1,6 @@
 from pandas import DataFrame, read_html
-from selenium.common import ElementNotInteractableException, TimeoutException, StaleElementReferenceException
+from selenium.common import ElementNotInteractableException, TimeoutException, StaleElementReferenceException, \
+    ElementClickInterceptedException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -278,3 +279,193 @@ def clipboard_copy(text: str, paste_value: bool = True):
         pyt_hotkey('enter')
     else:
         print(f'Текст <{text}> - помещен в буфер обмена!!!')
+
+
+def get_filial_name(first_lst_in: list,
+                    second_lst_in: list,
+                    na_value_out: str = 'Н/Д'):
+    if len(first_lst_in) != len(second_lst_in):
+        print('Длина поданных листов не совпадает!')
+        return
+
+    filial_list = []
+    for ind in range(len(first_lst_in)):
+        i = 0
+        for lst in [second_lst_in, first_lst_in]:  # фактический адрес (2-ой лист) - важнее, чем регистрация (первый)!
+            i += 1
+            row = lst[ind]
+            # print(row)
+            text = str(row).lower()
+            text = text.strip()
+            if i == 1 and 'кузбасс' not in text:
+                continue  # факт проживает - в другом регионе
+            if len(filial_list) != ind:
+                continue  # филиал - уже найден на предыдущей итерации для этого адреса!
+            if ('кемерово' in text or
+                    'кемеровский' in text):
+                filial_list.append('Кемерово')
+            elif 'новокузнецк' in text:
+                filial_list.append('Новокузнецк')
+            # elif 'киселевск' in text:
+            #    filial_list.append('Киселевск')
+            elif ('березовский' in text or
+                  'топки' in text) and 'ленинск-' not in text:
+                filial_list.append('Березовский')
+            elif ('белов' in text or
+                  'бачатск' in text or
+                  'краснобродск' in text or
+                  'грамотеин' in text):
+                filial_list.append('Белово')
+            elif ('прокопьевск' in text or
+                  'киселевск' in text):
+                filial_list.append('Прокопьевск')
+            elif ('-кузнецкий' in text or
+                  'ленинск-кузн' in text or
+                  'полысаев' in text):
+                filial_list.append('Л-Кузнецк')
+            elif ('анжеро' in text or
+                  'судженск' in text or
+                  text.startswith('яя') or
+                  'яйский' in text or
+                  'ижморск' in text or
+                  'ижморка' in text):
+                filial_list.append('А-Судженск')
+            elif ('гурьевск' in text or
+                  'салаир' in text):
+                filial_list.append('Гурьевск')
+            elif ('осинник' in text or
+                  'калтан' in text):
+                filial_list.append('Осинники')
+            elif ('таштагол' in text or
+                  'шерегеш' in text):
+                filial_list.append('Таштагол')
+            elif ('междур' in text or
+                  'межд.' in text or
+                  'мыск' in text):
+                filial_list.append('Мыски')
+            elif ('мариинск' in text or
+                  'чебул' in text or
+                  'чебулинск' in text or
+                  'тисуль' in text or
+                  'тяжин' in text):
+                filial_list.append('Мариинск')
+            elif ('юрга' in text or
+                  'юргинский' in text):
+                filial_list.append('Юрга')
+            elif ('крапивин' in text or
+                  'промышленн' in text):
+                filial_list.append('Промышленная')
+            elif ('яшкин' in text or
+                  'тайг' in text):
+                filial_list.append('Яшкино')
+        if i == 2 and len(filial_list) == ind:
+            filial_list.append(na_value_out)
+
+    print(len(filial_list))
+    return filial_list
+
+
+def get_personal_data(driver,
+                      sleep_up_to: float,
+                      in_new_window: bool = False):
+    # открываем в новом окне и закрываем после парсинга содержимого
+    # if in_new_window:
+    #    pass
+    # driver.execute_script('window.open("http://parsinger.ru/blank/2/2.html", "_blank1");')
+    if in_new_window:
+        if len(list(driver.window_handles)) > 1:
+            # Переключаемся на новую (открытую) вкладку
+            driver.switch_to.window(driver.window_handles[1])
+    out_dict = {}
+    global COLNAMES_DICT, PERS_DATA_XPATH
+    for colname, xpath in zip(COLNAMES_DICT, PERS_DATA_XPATH):
+        # print(colname, xpath)
+        curr_value = ''
+        need_get_title = PERS_DATA_XPATH[xpath][0]
+        need_fast_check = PERS_DATA_XPATH[xpath][1]
+
+        if need_fast_check:
+            element_is_available = find_element_xpath(driver=driver,
+                                                      xpath=xpath,
+                                                      timeout=1)
+        else:
+            element_is_available = find_element_xpath(driver=driver,
+                                                      xpath=xpath,
+                                                      timeout=3)
+
+        if element_is_available and not (need_get_title):
+            curr_value = get_element_value(driver=driver,
+                                           xpath=xpath,
+                                           timeout=15)
+        elif need_get_title:
+            curr_value = get_element_title(driver=driver,
+                                           xpath=xpath,
+                                           timeout=15)
+        out_dict[colname] = curr_value
+        random_sleep(upper_bound=sleep_up_to)
+    if in_new_window:
+        if len(list(driver.window_handles)) > 1:
+            driver.close()
+            # Переключаемся на исходную вкладку
+            driver.switch_to.window(driver.window_handles[0])
+        else:
+            driver.back()
+        # driver.close()
+    else:
+        driver.back()
+    return out_dict
+
+
+def find_element_xpath(driver, xpath, timeout=3):
+    try:
+        element_present = EC.presence_of_element_located((By.XPATH, xpath))
+        WebDriverWait(driver, timeout).until(element_present)
+        return True
+    except TimeoutException:
+        print("Timed out waiting for page to load")
+        return False
+
+
+def get_element_value(driver, xpath, timeout = 15):
+    try:
+        element_present = EC.presence_of_element_located((By.XPATH, xpath))
+        WebDriverWait(driver, timeout).until(element_present)
+    except TimeoutException:
+        print("Timed out waiting for page to load")
+        return
+    found_element = driver.find_element(By.XPATH, xpath)
+    return found_element.get_attribute('value')
+
+
+def get_element_title(driver, xpath, timeout = 15):
+    try:
+        element_present = EC.presence_of_element_located((By.XPATH, xpath))
+        WebDriverWait(driver, timeout).until(element_present)
+    except TimeoutException:
+        print("Timed out waiting for page to load")
+        return
+    found_element = driver.find_element(By.XPATH, xpath)
+    return found_element.get_attribute('title')
+
+
+def click_element_by_xpath(driver, xpath, timeout = 15, in_new_window:bool=False):
+    try:
+        element_present = EC.presence_of_element_located((By.XPATH, xpath))
+        WebDriverWait(driver, timeout).until(element_present)
+    except TimeoutException:
+        print("Timed out waiting for page to load")
+        return
+    try:
+        found_element = driver.find_element(By.XPATH, xpath)
+        if in_new_window:
+            found_element.click()
+            # href = driver.execute_script("return arguments[0].outerHTML;", found_element)
+            # print(href)
+            # driver.execute_script(f'window.open({href}, "_blank1");')
+        else:
+            found_element.click()
+        return True
+    except ElementClickInterceptedException:
+        print(f'<{found_element}>\nis not clickable at the moment!')
+        print(f'Element XPath:\n<{xpath}>')
+

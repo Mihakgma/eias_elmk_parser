@@ -1,8 +1,11 @@
+import tqdm
 from pandas import DataFrame
+from selenium.common import StaleElementReferenceException
 
 from df_functions import excel_to_data_frame_parser, printDimensionsOfDF
 from driver import Driver
-from functions import send_keys_by_xpath, parse_total_df
+from functions import send_keys_by_xpath, parse_total_df, need_end_procedure, random_sleep, find_element_xpath, \
+    parse_part_df, move_2web_element, get_personal_data, click_element_by_xpath
 from info import HOME_URL, LOGIN_XPATH, LOGIN, PASSWORD_XPATH, PASSWORD, ELMK_URL, TEMP_XLSX_FILENAME, \
     APPLN_NUMBER_COLNAME, NUM_ROWS_MARK, NO_or_YES
 from singleton import Singleton
@@ -20,7 +23,7 @@ class Navigator(Singleton):
         self.__current_application_number = -1
         self.__appl_df = DataFrame()
         self.__appl_numbers = []
-        self.__appl_total_df = DataFrame()
+        self.__appl_total_df = {}
 
     def get_driver(self) -> Driver:
         return self.__driver
@@ -85,10 +88,93 @@ class Navigator(Singleton):
         self.__appl_numbers = appl_numbers
         # подождать (?) пока контент прогрузится...
 
-    def clear_memory(self):
-        self.__appl_df = None
-        self.__appl_numbers = None
-        self.__appl_total_df = None
+    def parse_pers_data(self,
+                        ask_for_cancel_interval=5000,
+                        sleep_secs_up_to=1.1,
+                        sleep_secs_up_to_pesr_data=0.5):
+
+        # %%time
+        # ask_for_cancel_interval - периодичность по количеству заявлений - запрос на завершение процедуры
+        browser = self.__driver.get_driver()
+        appl_numbers = self.__appl_numbers
+        element_found = False
+        browser.refresh()
+
+        appl_dict = {}
+        counter = 0
+        stop_parsing = False
+        for number in tqdm.tqdm(appl_numbers):
+            # переименовать флаг!!!
+            if stop_parsing:  # завершаем досрочно, если юзер ввел х (русс / англ. раскладка)
+                break
+            need_parse_appl = True
+            tries = 0
+            while need_parse_appl:
+                tries += 1
+                if abs(tries) % 5 == 0:
+                    print(f"Trying to refresh homepage <{ELMK_URL}> on try number <{tries}>")
+                    browser.get(url=ELMK_URL)
+                if counter % ask_for_cancel_interval == 0:
+                    if need_end_procedure(text_in=input('для отмены процесса парсинга введите х')):
+                        print('Процесс - прерван ...')
+                        stop_parsing = True
+                        need_parse_appl = False
+                        break
+                print(number)
+                counter += 1
+                try:
+                    appl_xpath = f"//*[contains(text(), '{number}')]"
+                    random_sleep(upper_bound=sleep_secs_up_to)
+                    element_found = find_element_xpath(driver=browser,
+                                                       xpath=appl_xpath)
+                    try:
+                        if element_found:
+                            pass
+                        else:  # ссылка (по XPath) на заявление не найдена!
+                            # print(f'Пропуск парсинга по номеру: <{number}>')
+                            # весь код после слова "continue" - не будет выполнен на данной итерации!
+                            need_scroll_down = True
+                            while need_scroll_down:
+                                df_temp, rows_df = parse_part_df(driver=browser,
+                                                                 need_delete_nans=False)
+                                locator_xpath = f"//*[contains(text(), '{int(df_temp.iloc[df_temp.shape[0] - 1, 1])}')]"
+                                # скроллим страницу вниз по последнему отображенному номеру заявления в таблице!!!
+                                move_2web_element(driver=browser, xpath=locator_xpath)
+                                element_found = find_element_xpath(driver=browser,
+                                                                   xpath=appl_xpath)
+                                if element_found:
+                                    need_scroll_down = False
+                            # continue
+                    except IndexError:
+                        random_sleep(upper_bound=15, lower_bound=5)
+                    except ValueError:
+                        browser.refresh()
+                        random_sleep(upper_bound=10, lower_bound=3)
+                        browser.get(url=ELMK_URL)
+                        random_sleep(upper_bound=5, lower_bound=3)
+
+                    click_element_by_xpath(driver=browser,
+                                           xpath=appl_xpath,
+                                           timeout=15,
+                                           in_new_window=True)
+                    need_parse_appl = False
+
+                except StaleElementReferenceException:
+                    pass
+            # ПОЛУЧАЕМ ПЕРСОНАЛЬНЫЕ ДАННЫЕ!
+            if not (stop_parsing):
+                appl_dict[number] = get_personal_data(driver=browser,
+                                                      sleep_up_to=sleep_secs_up_to_pesr_data,
+                                                      in_new_window=True)
+
+        print(f'\nКоличество спарсенных строк таблицы заявлений составило: <{len(appl_dict)}>')
+        self.__appl_total_df = appl_dict
+
+
+def clear_memory(self):
+    self.__appl_df = None
+    self.__appl_numbers = None
+    self.__appl_total_df = None
 
 
 if __name__ == '__main__':
