@@ -14,8 +14,8 @@ class Navigator(Singleton):
         ELMK_URL: [input, 'Use previously downloaded DF: да (y) / нет (n)?'],
     }
 
-    def __init__(self, driver: Driver):
-        self.__driver = driver
+    def __init__(self):
+        self.__driver = None
         self.__current_url = "_"
         self.__current_application_number = -1
         self.__appl_df = DataFrame()
@@ -24,6 +24,9 @@ class Navigator(Singleton):
 
     def get_driver(self) -> Driver:
         return self.__driver
+
+    def set_driver(self, driver: Driver):
+        self.__driver = driver
 
     def get_current_url(self):
         return self.__current_url
@@ -82,8 +85,16 @@ class Navigator(Singleton):
         self.__appl_numbers = appl_numbers
         # подождать (?) пока контент прогрузится...
 
+    def clear_memory(self):
+        self.__appl_df = None
+        self.__appl_numbers = None
+        self.__appl_total_df = None
+
 
 if __name__ == '__main__':
-    navigator = Navigator(Driver())
+    driver = Driver()
+    driver.charge()
+    navigator = Navigator()
+    navigator.set_driver(driver)
     print(navigator.get_current_url())
     print(navigator.get_current_application_number())
