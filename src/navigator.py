@@ -88,16 +88,16 @@ class Navigator(Singleton):
         self.__appl_numbers = appl_numbers
         # подождать (?) пока контент прогрузится...
 
-    def parse_pers_data(self,
-                        ask_for_cancel_interval=5000,
-                        sleep_secs_up_to=1.1,
-                        sleep_secs_up_to_pesr_data=0.5):
+    def parse_personal_data(self,
+                            ask_for_cancel_interval=5000,
+                            sleep_secs_up_to=1.1,
+                            sleep_secs_up_to_pesr_data=0.5):
 
         # %%time
         # ask_for_cancel_interval - периодичность по количеству заявлений - запрос на завершение процедуры
         browser = self.__driver.get_driver()
         appl_numbers = self.__appl_numbers
-        element_found = False
+        # element_found = False
         browser.refresh()
 
         appl_dict = {}
@@ -118,7 +118,7 @@ class Navigator(Singleton):
                     if need_end_procedure(text_in=input('для отмены процесса парсинга введите х')):
                         print('Процесс - прерван ...')
                         stop_parsing = True
-                        need_parse_appl = False
+                        # need_parse_appl = False
                         break
                 print(number)
                 counter += 1
@@ -162,7 +162,7 @@ class Navigator(Singleton):
                 except StaleElementReferenceException:
                     pass
             # ПОЛУЧАЕМ ПЕРСОНАЛЬНЫЕ ДАННЫЕ!
-            if not (stop_parsing):
+            if not stop_parsing:
                 appl_dict[number] = get_personal_data(driver=browser,
                                                       sleep_up_to=sleep_secs_up_to_pesr_data,
                                                       in_new_window=True)
@@ -178,9 +178,9 @@ def clear_memory(self):
 
 
 if __name__ == '__main__':
-    driver = Driver()
-    driver.charge()
+    driver_1 = Driver()
+    driver_1.charge()
     navigator = Navigator()
-    navigator.set_driver(driver)
+    navigator.set_driver(driver_1)
     print(navigator.get_current_url())
     print(navigator.get_current_application_number())
