@@ -6,6 +6,10 @@ from singleton import Singleton
 
 
 class SessionManager(Singleton):
+    """
+    need to think if I need to add field
+    navigator = Navigator() ???
+    """
     __SESSIONS_CREATED = []
 
     def __init__(self):
@@ -29,9 +33,10 @@ class SessionManager(Singleton):
     def set_current_driver(self, driver):
         self.__current_driver = driver
 
-    def stop_current_driver(self, start_new_session=False):
+    def stop_current_session(self,
+                             start_session_automatically=False):
         self.__current_driver.discharge()
-        if start_new_session:
+        if start_session_automatically:
             self.start_new_session()
 
 

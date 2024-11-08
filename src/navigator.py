@@ -12,6 +12,17 @@ from singleton import Singleton
 
 
 class Navigator(Singleton):
+    """
+    need to think about this class:
+    1) overriding __str__ method (to save all fields of Navigator instance):
+        a) before calling clear_memory();
+        b) after calling clear_memory();
+        Why?
+        Cause maybe it would be useful to remember the shapes of the DFs
+        or also save min-max dates of the applications from DFs
+        or maybe another data from DFs???
+        which contain in Navigator instance...
+    """
     WARNINGS = {
         HOME_URL: [input, 'Confirm certificate and enter any key to continue.'],
         ELMK_URL: [input, 'Use previously downloaded DF: да (y) / нет (n)?'],

@@ -8,7 +8,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from time import sleep as time_sleep
 from random import uniform as random_uniform
-# from re import findall as re_findall
 from re import search as re_search
 from win32clipboard import OpenClipboard, EmptyClipboard, SetClipboardText, CF_UNICODETEXT, CloseClipboard
 from pyautogui import hotkey as pyt_hotkey
@@ -87,7 +86,6 @@ def parse_total_df(driver,
                 df, rows_df = parse_part_df(driver=driver,
                                             need_delete_nans=False)
                 # ИСПРАВЛЕНИЕ ОТ 06.09.2024!!!
-                # ПРОВЕРКА НА ПУСТОЕ ЗНАЧЕНИЕ № ЗАЯВЛЕНИЯ
                 is_number_empty = True
                 tries = 0
                 while is_number_empty and tries < 15:
@@ -141,8 +139,6 @@ def get_total_df(df, appln_number_colname, ERROR_APPL_NUMBER, driver):
     # удаляем пропущенные значения из общего ДФ !!!
     df, rows_df = parse_part_df(driver=driver,
                                 need_delete_nans=True)
-    # переводим номер заявления в целочисленное представление
-    # df[appln_number_colname] = df[appln_number_colname].apply(lambda x: int(x))
     # ИСПРАВЛЕНИЕ 06.09.2024
     appl_numbers_lst = []
     for number in df[appln_number_colname].to_list():
@@ -179,22 +175,17 @@ def parse_part_df(driver,
 
 
 def delete_nan_rows(df: DataFrame):
-    # НАЧАЛО ФУНКЦИИ ---//---
-    # НЕОБХОДИМО УЗНАТЬ КОЛИЧЕСТВО СТРОК СО ВСЕМИ ПРОПУЩЕННЫМИ ЗНАЧЕНИЯМИ (по всем колонкам)!!!
     idx = list(df.index[df.isnull().all(1)])
     print(idx)
     if idx:
-        # кол-во удаляемых строк, а не одна строка!!!
         print(f'Необходимо удалить <{len(idx)}> строк ДФ!')
     print()
     print(f'Размерность ДФ ДО УДАЛЕНИЯ i строк: <{df.shape}>')
     print()
-    # reset index???
     df.drop(idx, inplace=True)
     df.reset_index(drop=True, inplace=True)
     print(f'Размерность ДФ ПОСЛЕ УДАЛЕНИЯ i строк: <{df.shape}>')
     return df
-    # КОНЕЦ ФУНКЦИИ ---//---
 
 
 def need_end_procedure(text_in):
@@ -206,12 +197,11 @@ def need_end_procedure(text_in):
 
 
 def delete_df_rows_values(df: DataFrame, colname: str, value):
-    # НАЧАЛО ФУНКЦИИ ---//---
-    # НЕОБХОДИМО УЗНАТЬ КОЛИЧЕСТВО СТРОК СО ВСЕМИ ПРОПУЩЕННЫМИ ЗНАЧЕНИЯМИ (по всем колонкам)!!!
+    # need to delete rows with na values
     idx = list(df.index[df[colname] == value])
     print(idx)
     if idx:
-        # кол-во удаляемых строк
+        # number of deleting rows
         del_num_rows = len(idx)
         print(f'Необходимо удалить <{del_num_rows}> строк ДФ!')
         print()
@@ -240,7 +230,7 @@ def move_2web_element(driver,
         return
     found_element = driver.find_element(By.XPATH, xpath)
 
-    # прокручиваем страницу с помощью скрипта
+    # roll down web page with help of a script
     driver.execute_script("return arguments[0].scrollIntoView(true);", found_element)
     random_sleep(upper_bound=1.0, lower_bound=0)
 
@@ -281,6 +271,7 @@ def clipboard_copy(text: str, paste_value: bool = True):
         print(f'Текст <{text}> - помещен в буфер обмена!!!')
 
 
+# VERY BADLY CONSTRUCTED FUNCTION!!!
 def get_filial_name(first_lst_in: list,
                     second_lst_in: list,
                     na_value_out: str = 'Н/Д'):
@@ -368,13 +359,10 @@ def get_filial_name(first_lst_in: list,
 def get_personal_data(driver,
                       sleep_up_to: float,
                       in_new_window: bool = False):
-    # открываем в новом окне и закрываем после парсинга содержимого
-    # if in_new_window:
-    #    pass
-    # driver.execute_script('window.open("http://parsinger.ru/blank/2/2.html", "_blank1");')
+    # in new window and close it after parsing is ended
     if in_new_window:
         if len(list(driver.window_handles)) > 1:
-            # Переключаемся на новую (открытую) вкладку
+            # switch to new (just opened) web page
             driver.switch_to.window(driver.window_handles[1])
     out_dict = {}
     global COLNAMES_DICT, PERS_DATA_XPATH
@@ -406,7 +394,7 @@ def get_personal_data(driver,
     if in_new_window:
         if len(list(driver.window_handles)) > 1:
             driver.close()
-            # Переключаемся на исходную вкладку
+            # switch to previous browser window
             driver.switch_to.window(driver.window_handles[0])
         else:
             driver.back()
@@ -455,17 +443,14 @@ def click_element_by_xpath(driver, xpath, timeout = 15, in_new_window:bool=False
     except TimeoutException:
         print("Timed out waiting for page to load")
         return
+    found_element = None
     try:
         found_element = driver.find_element(By.XPATH, xpath)
         if in_new_window:
             found_element.click()
-            # href = driver.execute_script("return arguments[0].outerHTML;", found_element)
-            # print(href)
-            # driver.execute_script(f'window.open({href}, "_blank1");')
         else:
             found_element.click()
         return True
     except ElementClickInterceptedException:
         print(f'<{found_element}>\nis not clickable at the moment!')
         print(f'Element XPath:\n<{xpath}>')
-
