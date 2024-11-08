@@ -19,3 +19,5 @@ if __name__ == '__main__':
     obj1 = SomeClass()
     obj2 = SomeClass()
     print(obj1 == obj2)
+    singleton = Singleton()
+    print(singleton)
