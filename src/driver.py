@@ -1,4 +1,5 @@
 from selenium import webdriver
+# from threading import Thread
 # from selenium.webdriver.chrome.options import Options
 
 
@@ -19,6 +20,7 @@ class Driver:
 
     def __init__(self,
                  wait_secs: int = 10):
+        # Thread.__init__(self)
         self.__wait_secs = wait_secs
         self.__charged = False
         self.__driver = None

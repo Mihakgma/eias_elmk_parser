@@ -1,7 +1,7 @@
 import tqdm
 from pandas import DataFrame
 from selenium.common.exceptions import StaleElementReferenceException
-from threading import Thread
+# from threading import Thread
 
 from check_dates import DateChecker
 from data_manager import DataManager
@@ -14,7 +14,7 @@ from info import HOME_URL, LOGIN_XPATH, LOGIN, PASSWORD_XPATH, PASSWORD, ELMK_UR
 from singleton import Singleton
 
 
-class Navigator(Singleton, Thread):
+class Navigator(Singleton):
     """
     need to think about this class:
     1) overriding __str__ method (to save all fields of Navigator instance):
@@ -33,7 +33,7 @@ class Navigator(Singleton, Thread):
     __STATUS = NAVIGATOR_STATUS
 
     def __init__(self):
-        Thread.__init__(self)
+        # Thread.__init__(self)
         self.__driver = None
         self.__current_url: str = "_"
         self.__current_application_number: int = -1
@@ -42,8 +42,9 @@ class Navigator(Singleton, Thread):
         self.__right_df: DataFrame = DataFrame()
         self.__status: int = 1
 
-    def run(self, *args, **kwargs):
-        self(*args, **kwargs)
+    # def run(self, *args, **kwargs):
+    #     while True:
+    #         self(*args, **kwargs)
 
     def get_driver(self) -> Driver:
         return self.__driver
