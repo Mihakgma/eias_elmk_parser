@@ -9,7 +9,7 @@ class ELMKParser:
               sleep_secs_up_to_navigator=1.1,
               sleep_secs_up_to_pesr_data_navigator=0.5,
               max_iterations_caching=15,
-              cache_dir_caching="\\text_data"):
+              cache_dir_caching="..\\text_data"):
         session_manager = SessionManager()
         session_manager.start_new_session()
         navigator = session_manager.get_navigator()
