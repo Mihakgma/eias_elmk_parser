@@ -1,5 +1,4 @@
 from session_manager import SessionManager
-from singleton import Singleton
 from text_caching import TextCaching
 
 
