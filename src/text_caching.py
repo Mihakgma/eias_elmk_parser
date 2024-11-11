@@ -1,5 +1,5 @@
 from os import path as os_path
-from threading import Thread, Lock
+from threading import Thread
 from time import sleep as time_sleep
 from os import makedirs as os_makedirs
 
@@ -38,7 +38,7 @@ class TextCaching(Thread):
         self.__text_info = {}
 
     def run(self):
-        lock = Lock()
+        # lock = Lock()
         print(DateChecker.get_nowTS_messaged(text=self.__START_RUN_MESSAGE))
         obj = self.__obj
         obj_class_name = obj.__class__.__name__
@@ -60,8 +60,8 @@ class TextCaching(Thread):
                 counter += 1
                 time_sleep(self.sleep_time)
                 self.save_text()
-                with lock:
-                    time_sleep(self.sleep_time)
+                # with lock:
+                #     time_sleep(self.sleep_time)
         else:
             print("Cannot start text caching...")
             print(f"Probably class of input <{obj_class_name}> IS NOT IN CHECK LIST.")

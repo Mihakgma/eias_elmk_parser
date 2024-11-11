@@ -1,5 +1,6 @@
 from session_manager import SessionManager
 from text_caching import TextCaching
+from threading import Thread
 
 
 class ELMKParser:
@@ -18,6 +19,14 @@ class ELMKParser:
                                    cache_dir=cache_dir_caching,
                                    max_iterations=max_iterations_caching)
         text_caching.start()
-        navigator(ask_for_cancel_interval=ask_for_cancel_interval_navigator,
-                  sleep_secs_up_to=sleep_secs_up_to_navigator,
-                  sleep_secs_up_to_pesr_data=sleep_secs_up_to_pesr_data_navigator)
+        # Создаем поток для navigator
+        navigator_thread = Thread(target=navigator,
+                                  args=(
+                                      ask_for_cancel_interval_navigator,
+                                      sleep_secs_up_to_navigator,
+                                      sleep_secs_up_to_pesr_data_navigator,
+                                  ))
+        navigator_thread.start()
+        # navigator(ask_for_cancel_interval=ask_for_cancel_interval_navigator,
+        #           sleep_secs_up_to=sleep_secs_up_to_navigator,
+        #           sleep_secs_up_to_pesr_data=sleep_secs_up_to_pesr_data_navigator)
