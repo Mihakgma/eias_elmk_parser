@@ -29,14 +29,27 @@ class Navigator(Singleton):
         HOME_URL: [input, 'Confirm certificate and enter any key to continue.'],
         ELMK_URL: [input, 'Use previously downloaded DF: да (y) / нет (n)?'],
     }
+    __STATUS = {
+        0: ["HAS_NOT_BEEN_INITIALIZED"],
+        1: ["HAS_BEEN_INITIALIZED"],
+        2: ["LOGGED_IN"],
+        3: ["ENTERED_ELMK_PAGE"],
+        4: ["LEFT_DF_HAS_BEEN_PARSED"],
+        5: ["PARSING_PERSONAL_DATA"],
+        6: ["STUCK_PARSING_PERSONAL_DATA"],
+        7: ["KICKED_ON_MAIN_MENU"],
+        8: ["KICKED_ON_CERTIFICATE_SUBMITTING_PAGE"],
+        9: ["KICKED_OUT_OF_PORTAL"],
+    }
 
     def __init__(self):
         self.__driver = None
-        self.__current_url = "_"
-        self.__current_application_number = -1
-        self.__left_df = DataFrame()
-        self.__appl_numbers = []
-        self.__right_df = DataFrame()
+        self.__current_url: str = "_"
+        self.__current_application_number: int = -1
+        self.__left_df: DataFrame = DataFrame()
+        self.__appl_numbers: list = []
+        self.__right_df: DataFrame = DataFrame()
+        self.__status: int = 1
 
     def get_driver(self) -> Driver:
         return self.__driver
@@ -49,6 +62,23 @@ class Navigator(Singleton):
 
     def get_current_application_number(self):
         return self.__current_application_number
+
+    @property
+    def status(self):
+        return self.__status
+
+    @status.getter
+    def status(self):
+        return self.__status
+
+    @status.setter
+    def status(self, status: int):
+        if status in self.__STATUS:
+            self.__status = status
+        else:
+            message = "Status must be one of the following:\n" +\
+                            "\n".join([f"{k}: {v}" for (k, v) in self.__STATUS.items()])
+            raise ValueError(message)
 
     def navigate(self, page_path):
         driver = self.__driver.get_driver()
@@ -216,3 +246,5 @@ if __name__ == '__main__':
     print(navigator)
     navigator.clear_memory()
     print(navigator)
+    # navigator.status = 999
+    print(navigator.status)
