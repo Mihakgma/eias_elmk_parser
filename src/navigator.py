@@ -226,7 +226,9 @@ class Navigator(Singleton):
         return ";\n".join(out)
 
     def __call__(self, *args, **kwargs):
+        random_sleep(upper_bound=40, lower_bound=25)
         self.login()
+        random_sleep(upper_bound=40, lower_bound=25)
         self.parse_personal_data(**kwargs)
 
 
