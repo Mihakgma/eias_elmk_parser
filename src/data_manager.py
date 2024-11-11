@@ -7,24 +7,23 @@ class DataManager:
     """
     This class helps to process DFs from navigation class
     for example it performs merging DFs with
-    general (left part) and personal (right part) info
+    general (left part) and personal (right part) info,
+    contains static methods for doing these operations.
     """
-    def __init__(self,
-                 general_df: DataFrame,
-                 personal_data):
-        self.__general_df = general_df
-        self.__personal_df = personal_data
-        self.__df_merged = None
 
-    def preprocess_personal_df(self):
-        df_pers_data = DataFrame.from_dict(self.__personal_df).T.reset_index()
+    @staticmethod
+    def preprocess_personal_df(personal_df) -> DataFrame:
+        df_pers_data = DataFrame.from_dict(personal_df).T.reset_index()
         df_pers_data.rename({'index': APPLN_NUMBER_COLNAME}, axis='columns', inplace=True)
-        self.__personal_df = df_pers_data.copy()
+        return df_pers_data.copy()
 
-    def merge_dfs(self):
-        self.preprocess_personal_df()
-        appl_df = self.__general_df.copy()
-        df_pers_data = self.__personal_df
+    @staticmethod
+    def merge_dfs(general_df, personal_df, need_preprocess_pers_data=False) -> DataFrame:
+        if need_preprocess_pers_data:
+            df_pers_data = DataManager.preprocess_personal_df(personal_df)
+        else:
+            df_pers_data = personal_df
+        appl_df = general_df.copy()
         df_merged = merge(appl_df,
                           df_pers_data,
                           on=APPLN_NUMBER_COLNAME,

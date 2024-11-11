@@ -6,12 +6,14 @@ from info import BROWSER_FILE_PATH, WEBDRIVER_PATH, DRIVER_ARGUMENTS
 
 
 class Driver:
+    __ID = 0
     __BROWSER_FILE_PATH: str = BROWSER_FILE_PATH
     __WEBDRIVER_PATH: str = WEBDRIVER_PATH
     __DRIVER_ARGUMENTS: list = DRIVER_ARGUMENTS
     __DRIVERS_CREATED: int = 0
 
     def __new__(cls, *args, **kwargs):
+        cls.__ID += 1
         cls.__DRIVERS_CREATED += 1
         return super(Driver, cls).__new__(cls)
 
@@ -20,6 +22,7 @@ class Driver:
         self.__wait_secs = wait_secs
         self.__charged = False
         self.__driver = None
+        self.__ID = Driver.__ID
 
     def charge(self, test=False):
         if test:
@@ -58,6 +61,9 @@ class Driver:
 
     def get_driver(self):
         return self.__driver
+
+    def get_id(self):
+        return self.__ID
 
 
 if __name__ == '__main__':

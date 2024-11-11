@@ -2,6 +2,8 @@ import tqdm
 from pandas import DataFrame
 from selenium.common import StaleElementReferenceException
 
+from check_dates import DateChecker
+from data_manager import DataManager
 from df_functions import excel_to_data_frame_parser, printDimensionsOfDF
 from driver import Driver
 from functions import send_keys_by_xpath, parse_total_df, need_end_procedure, random_sleep, find_element_xpath, \
@@ -32,9 +34,9 @@ class Navigator(Singleton):
         self.__driver = None
         self.__current_url = "_"
         self.__current_application_number = -1
-        self.__appl_df = DataFrame()
+        self.__left_df = DataFrame()
         self.__appl_numbers = []
-        self.__appl_total_df = {}
+        self.__right_df = DataFrame()
 
     def get_driver(self) -> Driver:
         return self.__driver
@@ -95,7 +97,7 @@ class Navigator(Singleton):
                                                    sleep_secs_up_to=1.2,
                                                    counter_max_value=350,
                                                    ask_for_cancel_interval=100)
-        self.__appl_df = appl_df
+        self.__left_df = appl_df
         self.__appl_numbers = appl_numbers
         # подождать (?) пока контент прогрузится...
 
@@ -179,13 +181,29 @@ class Navigator(Singleton):
                                                       in_new_window=True)
 
         print(f'\nКоличество спарсенных строк таблицы заявлений составило: <{len(appl_dict)}>')
-        self.__appl_total_df = appl_dict
+        self.__right_df = DataManager.preprocess_personal_df(appl_dict)
 
+    def clear_memory(self, all_data: bool = False):
+        self.__left_df = DataFrame()
+        self.__appl_numbers = []
+        if all_data:
+            self.__right_df = DataFrame()
 
-def clear_memory(self):
-    self.__appl_df = None
-    self.__appl_numbers = None
-    self.__appl_total_df = None
+    def __str__(self):
+        driver = self.__driver
+        class_name = self.__class__.__name__
+        ts_text = f"\nAt time ({class_name}): "
+        out = [
+            f"{DateChecker.get_nowTS_messaged(text=ts_text)}",
+            f"driver ID = <{driver.get_id()}>",
+            f"driver is charged: <{driver.is_charged()}>",
+            f"current URL: <{self.__current_url}>,",
+            f"current application number: <{self.__current_application_number}>,",
+            f"left (general data) table shape: <{self.__left_df.shape}>",
+            f"applications (numbers) in instance: <{len(self.__appl_numbers)}>",
+            f"right (personal data) table shape: <{self.__right_df.shape}>"
+        ]
+        return ";\n".join(out)
 
 
 if __name__ == '__main__':
@@ -195,3 +213,6 @@ if __name__ == '__main__':
     navigator.set_driver(driver_1)
     print(navigator.get_current_url())
     print(navigator.get_current_application_number())
+    print(navigator)
+    navigator.clear_memory()
+    print(navigator)
