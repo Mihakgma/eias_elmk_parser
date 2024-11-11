@@ -59,8 +59,8 @@ class Navigator(Singleton):
         if status in self.__STATUS:
             self.__status = status
         else:
-            message = "Status must be one of the following:\n" +\
-                            "\n".join([f"{k}: {v}" for (k, v) in self.__STATUS.items()])
+            message = "Status must be one of the following:\n" + \
+                      "\n".join([f"{k}: {v}" for (k, v) in self.__STATUS.items()])
             raise ValueError(message)
 
     status = property(get_status, set_status)
@@ -224,6 +224,10 @@ class Navigator(Singleton):
             f"right (personal data) table shape: <{self.__right_df.shape}>"
         ]
         return ";\n".join(out)
+
+    def __call__(self, *args, **kwargs):
+        self.login()
+        self.parse_personal_data(**kwargs)
 
 
 if __name__ == '__main__':

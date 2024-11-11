@@ -7,9 +7,10 @@ from check_dates import DateChecker
 from driver import Driver
 from function_invoker import Invoker
 from inject_manager import InjectManager
-# from injector import Injector
 from navigator import Navigator
-from session_manager import SessionManager
+
+
+# from session_manager import SessionManager
 
 
 class TextCaching(Thread):
