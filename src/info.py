@@ -9,7 +9,8 @@ BROWSER_FILE_PATH = "C:\\Program Files\\Yandex\\YandexBrowser\\Application\\brow
 WEBDRIVER_PATH = "C:\\yandexdriver\\yandexdriver.exe"
 HOME_URL = "https://eias.rospotrebnadzor.ru/"
 ELMK_URL = "https://eias.rospotrebnadzor.ru/gov-services/elmks"
-LOGIN_PASSWORD_FULLPATH = "C:\\Users\\tabakaev_mv\\Desktop\\РАБОТА\\ЕИАС\\2023\\ТОКСИКОМОНИТОРИНГ\\ПОДГРУЗКА\\application\\eias_pass.txt"
+LOGIN_PASSWORD_FULLPATH = ("C:\\Users\\tabakaev_mv\\Desktop\\РАБОТА\\ЕИАС\\2023"
+                           "\\ТОКСИКОМОНИТОРИНГ\\ПОДГРУЗКА\\application\\eias_pass.txt")
 UPLOAD_LAN_DIR = "\\192.168.201.38\\общая папка\\06 ООДЦ\\Выгрузка_ЭЛМК\\"
 # получаем логин и пароль для входа
 LOGIN, PASSWORD = get_login_password(txt_file_path=LOGIN_PASSWORD_FULLPATH)
@@ -70,21 +71,37 @@ SUBMIT_PASS_XPATH = "/html/body/main/div/form/button"
 # ---!!! personal data !!! ---# beginning
 WAIT_XPATH = ""
 # REGISTR_ADRESS_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/app-address/div/div/div[1]/nz-form-item/nz-form-control/div/div/nz-input-group/input"
-REGISTR_ADRESS_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[7]/div/nz-form-item/nz-form-control/div/div/input"
-REGISTR_ADRESS_BUILDING_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/app-address/div/div/div[2]/nz-form-item/nz-form-control/div/div/nz-select/nz-select-top-control/nz-select-item"
-REGISTR_ADRESS_FLAT_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/app-address/div/div/div[3]/nz-form-item/nz-form-control/div/div/nz-input-group/input"
-FACT_ADRESS_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[7]/app-address/div/div/div[1]/nz-form-item/nz-form-control/div/div/nz-input-group/input"
-FACT_ADRESS_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[9]/div[2]/div/nz-form-item/nz-form-control/div/div/input"
-GENDER_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[3]/div[4]/nz-form-item/nz-form-control/div/div/app-select/div/nz-select/nz-select-top-control/nz-select-item"
-TEL_NUMB_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[3]/div[7]/nz-form-item/nz-form-control/div/div/input"
-LAST_NAME_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[3]/div[1]/nz-form-item/nz-form-control/div/div/input"
-FIRST_NAME_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[3]/div[2]/nz-form-item/nz-form-control/div/div/input"
-MIDDLE_NAME_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[3]/div[3]/nz-form-item/nz-form-control/div/div/input"
-EMAIL_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[3]/div[8]/nz-form-item/nz-form-control/div/div/input"
-PASSPRT_NUMB_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[4]/div[1]/nz-form-item/nz-form-control/div/div/input"
-PASSPRT_DATE_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[4]/div[2]/nz-form-item/nz-form-control/div/div/nz-date-picker/div/input"
-PASSPRT_DEPT_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[4]/div[3]/nz-form-item/nz-form-control/div/div/input"
-PASSPRT_CODE_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[4]/div[4]/nz-form-item/nz-form-control/div/div/input"
+REGISTR_ADRESS_XPATH = ("/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div["
+                        "7]/div/nz-form-item/nz-form-control/div/div/input")
+REGISTR_ADRESS_BUILDING_XPATH = ("/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div["
+                                 "2]/app-address/div/div/div["
+                                 "2]/nz-form-item/nz-form-control/div/div/nz-select/nz-select-top-control/nz-select"
+                                 "-item")
+REGISTR_ADRESS_FLAT_XPATH = ("/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div["
+                             "2]/app-address/div/div/div[3]/nz-form-item/nz-form-control/div/div/nz-input-group/input")
+# FACT_ADRESS_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[7]/app-address/div/div/div[1]/nz-form-item/nz-form-control/div/div/nz-input-group/input"
+FACT_ADRESS_XPATH = ("/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div["
+                     "9]/div[2]/div/nz-form-item/nz-form-control/div/div/input")
+GENDER_XPATH = ("/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[3]/div["
+                "4]/nz-form-item/nz-form-control/div/div/app-select/div/nz-select/nz-select-top-control/nz-select-item")
+TEL_NUMB_XPATH = ("/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[3]/div["
+                  "7]/nz-form-item/nz-form-control/div/div/input")
+LAST_NAME_XPATH = ("/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[3]/div["
+                   "1]/nz-form-item/nz-form-control/div/div/input")
+FIRST_NAME_XPATH = ("/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[3]/div["
+                    "2]/nz-form-item/nz-form-control/div/div/input")
+MIDDLE_NAME_XPATH = ("/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div["
+                     "3]/div[3]/nz-form-item/nz-form-control/div/div/input")
+EMAIL_XPATH = ("/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div[3]/div["
+               "8]/nz-form-item/nz-form-control/div/div/input")
+PASSPRT_NUMB_XPATH = ("/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div["
+                      "4]/div[1]/nz-form-item/nz-form-control/div/div/input")
+PASSPRT_DATE_XPATH = ("/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div["
+                      "4]/div[2]/nz-form-item/nz-form-control/div/div/nz-date-picker/div/input")
+PASSPRT_DEPT_XPATH = ("/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div["
+                      "4]/div[3]/nz-form-item/nz-form-control/div/div/input")
+PASSPRT_CODE_XPATH = ("/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div["
+                      "4]/div[4]/nz-form-item/nz-form-control/div/div/input")
 
 PERS_DATA_XPATH = {
     WAIT_XPATH: [0, 0],
@@ -105,4 +122,18 @@ PERS_DATA_XPATH = {
 
 # ---!!! personal data !!! ---# ends
 DF_ROW_NUMS_XPATH = "//*[contains(text(), 'Количество записей: ')]"
-DF_TABLE_SCROLL_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmks/div/div[3]/app-table/nz-table/nz-spin/div/div/nz-table-inner-scroll/div[2]"
+DF_TABLE_SCROLL_XPATH = ("/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmks/div/div["
+                         "3]/app-table/nz-table/nz-spin/div/div/nz-table-inner-scroll/div[2]")
+
+NAVIGATOR_STATUS = {
+        0: ["HAS_NOT_BEEN_INITIALIZED"],
+        1: ["HAS_BEEN_INITIALIZED"],
+        2: ["LOGGED_IN"],
+        3: ["ENTERED_ELMK_PAGE"],
+        4: ["LEFT_DF_HAS_BEEN_PARSED"],
+        5: ["PARSING_PERSONAL_DATA"],
+        6: ["STUCK_PARSING_PERSONAL_DATA"],
+        7: ["KICKED_ON_MAIN_MENU"],
+        8: ["KICKED_ON_CERTIFICATE_SUBMITTING_PAGE"],
+        9: ["KICKED_OUT_OF_PORTAL"],
+    }

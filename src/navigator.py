@@ -9,7 +9,7 @@ from driver import Driver
 from functions import send_keys_by_xpath, parse_total_df, need_end_procedure, random_sleep, find_element_xpath, \
     parse_part_df, move_2web_element, get_personal_data, click_element_by_xpath
 from info import HOME_URL, LOGIN_XPATH, LOGIN, PASSWORD_XPATH, PASSWORD, ELMK_URL, TEMP_XLSX_FILENAME, \
-    APPLN_NUMBER_COLNAME, NUM_ROWS_MARK, NO_or_YES
+    APPLN_NUMBER_COLNAME, NUM_ROWS_MARK, NO_or_YES, NAVIGATOR_STATUS
 from singleton import Singleton
 
 
@@ -29,18 +29,7 @@ class Navigator(Singleton):
         HOME_URL: [input, 'Confirm certificate and enter any key to continue.'],
         ELMK_URL: [input, 'Use previously downloaded DF: да (y) / нет (n)?'],
     }
-    __STATUS = {
-        0: ["HAS_NOT_BEEN_INITIALIZED"],
-        1: ["HAS_BEEN_INITIALIZED"],
-        2: ["LOGGED_IN"],
-        3: ["ENTERED_ELMK_PAGE"],
-        4: ["LEFT_DF_HAS_BEEN_PARSED"],
-        5: ["PARSING_PERSONAL_DATA"],
-        6: ["STUCK_PARSING_PERSONAL_DATA"],
-        7: ["KICKED_ON_MAIN_MENU"],
-        8: ["KICKED_ON_CERTIFICATE_SUBMITTING_PAGE"],
-        9: ["KICKED_OUT_OF_PORTAL"],
-    }
+    __STATUS = NAVIGATOR_STATUS
 
     def __init__(self):
         self.__driver = None
