@@ -44,12 +44,12 @@ class Injector:
             raise TypeError("auto_charging must be of type bool")
         self.__auto_charging = value
 
-    def inject(self):
+    def inject(self, test_charge: bool = True):
         driver = self.__driver
         navigator = self.__navigator
         session_manager = self.__session_manager
         auto_charging = self.__auto_charging
         if auto_charging:
-            driver.charge()
+            driver.charge(test_charge)
         navigator.set_driver(driver)
         session_manager.set_current_driver(driver)

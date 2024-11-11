@@ -9,9 +9,10 @@ class InjectManager:
     def do_inject(driver: Driver,
                   navigator: Navigator,
                   session_manager,
-                  auto_charge: bool = True):
+                  auto_charge: bool = True,
+                  test_charge: bool = True):
         injector = Injector(driver=driver,
                             navigator=navigator,
                             session_manager=session_manager,
                             auto_charging=auto_charge)
-        injector.inject()
+        injector.inject(test_charge)
