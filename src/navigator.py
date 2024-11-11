@@ -52,22 +52,18 @@ class Navigator(Singleton):
     def get_current_application_number(self):
         return self.__current_application_number
 
-    @property
-    def status(self):
+    def get_status(self) -> int:
         return self.__status
 
-    @status.getter
-    def status(self):
-        return self.__status
-
-    @status.setter
-    def status(self, status: int):
+    def set_status(self, status: int):
         if status in self.__STATUS:
             self.__status = status
         else:
             message = "Status must be one of the following:\n" +\
                             "\n".join([f"{k}: {v}" for (k, v) in self.__STATUS.items()])
             raise ValueError(message)
+
+    status = property(get_status, set_status)
 
     def navigate(self, page_path):
         driver = self.__driver.get_driver()
@@ -95,9 +91,11 @@ class Navigator(Singleton):
                            timeout=15,
                            need_press_enter=True)
         self.__current_url = driver.current_url
+        self.status = 2
         # input('Подождать пока страница прогрузится?')
         # переходим на страницу ЕЛМК
         answer = self.navigate(ELMK_URL).strip().lower()
+        self.status = 3
         if "y" in answer or "да" in answer:
             appl_df = excel_to_data_frame_parser(file=TEMP_XLSX_FILENAME,
                                                  sheet_name="Sheet1",
@@ -119,6 +117,8 @@ class Navigator(Singleton):
         self.__left_df = appl_df
         self.__appl_numbers = appl_numbers
         # подождать (?) пока контент прогрузится...
+        self.__current_url = driver.current_url
+        self.status = 4
 
     def parse_personal_data(self,
                             ask_for_cancel_interval=5000,
@@ -131,7 +131,8 @@ class Navigator(Singleton):
         appl_numbers = self.__appl_numbers
         # element_found = False
         browser.refresh()
-
+        self.__current_url = browser.current_url
+        self.status = 5
         appl_dict = {}
         counter = 0
         stop_parsing = False

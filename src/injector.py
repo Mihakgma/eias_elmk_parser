@@ -1,16 +1,17 @@
 from driver import Driver
 from navigator import Navigator
-from session_manager import SessionManager
+# from session_manager import SessionManager
 
 
 class Injector:
     def __init__(self,
                  driver: Driver,
                  navigator: Navigator,
+                 session_manager,
                  auto_charging: bool = True):
         self.__driver = driver
         self.__navigator = navigator
-        self.__session_manager = SessionManager()
+        self.__session_manager = session_manager
         self.__auto_charging = auto_charging
 
     @property

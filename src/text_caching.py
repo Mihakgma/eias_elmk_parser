@@ -6,14 +6,17 @@ from os import makedirs as os_makedirs
 from check_dates import DateChecker
 from driver import Driver
 from function_invoker import Invoker
-from injector import Injector
+from inject_manager import InjectManager
+# from injector import Injector
 from navigator import Navigator
+from session_manager import SessionManager
 
 
 class TextCaching(Thread):
     __METHODS_CLASSES = {
         'Navigator': ['get_current_url',
-                      'get_current_application_number']
+                      'get_current_application_number',
+                      'get_status']
     }
     __GET_DRIVER_METHOD_NAME = 'get_driver'
     __START_RUN_MESSAGE = "Starting text caching thread at"
@@ -88,10 +91,14 @@ class TextCaching(Thread):
 
 if __name__ == '__main__':
     driver_1 = Driver()
-    driver_1.charge(test=True)
+    # driver_1.charge(test=True)
     navigator_1 = Navigator()
-    injector = Injector(driver_1, navigator_1, auto_charging=False)
-    injector.inject()
+    # injector = Injector(driver_1, navigator_1, auto_charging=False)
+    # injector.inject()
+    InjectManager.do_inject(driver=driver_1,
+                            navigator=navigator_1,
+                            session_manager=SessionManager(),
+                            auto_charge=True)
     text_caching = TextCaching(sleep_time=3, obj=navigator_1)
     text_caching.start()
     time_sleep(5)

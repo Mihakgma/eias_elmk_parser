@@ -24,7 +24,7 @@ class Driver:
         self.__driver = None
         self.__ID = Driver.__ID
 
-    def charge(self, test=False):
+    def charge(self, test=True):
         if test:
             self.__charged = True
         print(f"Driver number: <{self.__DRIVERS_CREATED}> has been initiated.")

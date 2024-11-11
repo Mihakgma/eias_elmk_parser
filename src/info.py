@@ -1,5 +1,6 @@
 from login_function import get_login_password
 
+
 DRIVER_ARGUMENTS = [
     r"--user-data=C:\Users\tabakaev_mv\AppData\Local\Yandex\YandexBrowser\User Data\Default",
     "--disable-notifications"
@@ -133,7 +134,7 @@ NAVIGATOR_STATUS = {
         4: ["LEFT_DF_HAS_BEEN_PARSED"],
         5: ["PARSING_PERSONAL_DATA"],
         6: ["STUCK_PARSING_PERSONAL_DATA"],
-        7: ["KICKED_ON_MAIN_MENU"],
+        7: ["KICKED_ON_MAIN_EIAS_PAGE"],
         8: ["KICKED_ON_CERTIFICATE_SUBMITTING_PAGE"],
         9: ["KICKED_OUT_OF_PORTAL"],
     }
