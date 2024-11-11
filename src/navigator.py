@@ -1,6 +1,6 @@
 import tqdm
 from pandas import DataFrame
-from selenium.common import StaleElementReferenceException
+from selenium.common.exceptions import StaleElementReferenceException
 
 from check_dates import DateChecker
 from data_manager import DataManager

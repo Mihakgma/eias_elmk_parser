@@ -1,6 +1,6 @@
 from pandas import DataFrame, read_html
-from selenium.common import ElementNotInteractableException, TimeoutException, StaleElementReferenceException, \
-    ElementClickInterceptedException
+from selenium.common.exceptions import ElementNotInteractableException, TimeoutException, \
+    StaleElementReferenceException, ElementClickInterceptedException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
