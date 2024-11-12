@@ -29,7 +29,7 @@ class TextCaching(Thread):
                  sleep_time: int = 1,
                  obj: object = None,
                  max_iterations: int = 5):
-        Thread.__init__(self)
+        Thread.__init__(self, name=self.__class__.__name__)
         self.cache_dir = cache_dir
         self.text_filename_format = text_filename_format
         self.sleep_time = sleep_time

@@ -7,7 +7,7 @@ class ThreadsMonitor(Thread):
     def __init__(self,
                  daemon: bool = True,
                  timeout: int = 10,):
-        Thread.__init__(self)
+        Thread.__init__(self, name=self.__class__.__name__)
         self.daemon = daemon
         self.timeout = timeout
 
@@ -21,7 +21,7 @@ class ThreadsMonitor(Thread):
             print(f" - {thread.name} ({thread.ident})")
             time_sleep(self.timeout)
 
-    def run_thread_printer(self):
+    def run(self):
         """
         Runs thread printer.
         """

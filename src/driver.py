@@ -21,7 +21,7 @@ class Driver(Thread):
 
     def __init__(self,
                  wait_secs: int = 10):
-        Thread.__init__(self)
+        Thread.__init__(self, name=self.__class__.__name__)
         self.__wait_secs = wait_secs
         self.__charged = False
         self.__driver = None

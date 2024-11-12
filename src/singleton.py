@@ -6,7 +6,8 @@ class Singleton:
         if cls == Singleton:
             return
         if cls.__INSTANCE is None:
-            print("new Singleton instance has been created")
+            print(f"new Singleton instance has been created for <{cls.__name__}>")
+            # print()
             cls.__INSTANCE = super().__new__(cls)
         return cls.__INSTANCE
 
