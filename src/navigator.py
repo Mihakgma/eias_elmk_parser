@@ -96,6 +96,7 @@ class Navigator(Singleton):
                            pause_secs=2.1,
                            timeout=15,
                            need_press_enter=True)
+        input("Logged in. Press Enter to continue...")
         self.__current_url = driver.current_url
         self.status = 2
         # input('Подождать пока страница прогрузится?')
@@ -232,9 +233,11 @@ class Navigator(Singleton):
         return ";\n".join(out)
 
     def __call__(self, *args, **kwargs):
-        random_sleep(upper_bound=40, lower_bound=25)
+        input("Navigator has been called. Press Enter to continue...")
+        # random_sleep(upper_bound=40, lower_bound=25)
         self.login()
-        random_sleep(upper_bound=40, lower_bound=25)
+        input("DF with general data has been parsed. Press Enter to continue...")
+        # random_sleep(upper_bound=40, lower_bound=25)
         self.parse_personal_data(**kwargs)
 
 
