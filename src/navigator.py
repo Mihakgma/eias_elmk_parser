@@ -1,7 +1,7 @@
 import tqdm
 from pandas import DataFrame
 from selenium.common.exceptions import StaleElementReferenceException
-from threading import Thread
+from threading import Thread, RLock
 
 from check_dates import DateChecker
 from data_manager import DataManager
@@ -46,8 +46,11 @@ class Navigator(Singleton, Thread):
 
     # @thread
     def run(self, *args, **kwargs):
-        # while True:
-        self(*args, **kwargs)
+        lock = RLock
+        with lock:
+            lock.acquire()
+            self(*args, **kwargs)
+            lock.release()
 
     def get_driver(self) -> Driver:
         return self.__driver

@@ -26,7 +26,7 @@ class TextCaching(Thread):
     def __init__(self,
                  cache_dir="..\\text_data",
                  text_filename_format=".txt",
-                 sleep_time: int = 1,
+                 sleep_time: int = 5,
                  obj: object = None,
                  max_iterations: int = 5):
         Thread.__init__(self, name=self.__class__.__name__)
@@ -58,10 +58,12 @@ class TextCaching(Thread):
             is_driver_charged = invoker().is_charged()
             while counter < max_iter and is_driver_charged:
                 with lock:
+                    lock.acquire()
                     is_driver_charged = invoker().is_charged()
                     counter += 1
                     time_sleep(self.sleep_time)
                     self.save_text()
+                    lock.release()
         else:
             print("Cannot start text caching...")
             print(f"Probably class of input <{obj_class_name}> IS NOT IN CHECK LIST.")

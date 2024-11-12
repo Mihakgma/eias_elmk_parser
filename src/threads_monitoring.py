@@ -6,7 +6,7 @@ from time import sleep as time_sleep
 class ThreadsMonitor(Thread):
     def __init__(self,
                  daemon: bool = True,
-                 timeout: int = 10):
+                 timeout: int = 1):
         Thread.__init__(self,
                         name=self.__class__.__name__,
                         daemon=daemon)
@@ -31,4 +31,6 @@ class ThreadsMonitor(Thread):
         """
         while True:
             with lock:
+                lock.acquire()
                 self.print_running_threads()
+                lock.release()
