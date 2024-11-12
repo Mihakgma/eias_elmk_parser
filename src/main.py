@@ -2,6 +2,8 @@ from session_manager import SessionManager
 from text_caching import TextCaching
 from threading import Thread
 
+from threads_monitoring import ThreadsMonitor
+
 
 class ELMKParser:
     @staticmethod
@@ -27,6 +29,8 @@ class ELMKParser:
                                       sleep_secs_up_to_pesr_data_navigator,
                                   ))
         navigator_thread.start()
+        threads_monitoring = ThreadsMonitor()
+        threads_monitoring.run_thread_printer()
         # navigator(ask_for_cancel_interval=ask_for_cancel_interval_navigator,
         #           sleep_secs_up_to=sleep_secs_up_to_navigator,
         #           sleep_secs_up_to_pesr_data=sleep_secs_up_to_pesr_data_navigator)
