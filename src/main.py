@@ -1,6 +1,6 @@
 from session_manager import SessionManager
 from text_caching import TextCaching
-from threading import Thread
+# from threading import Thread
 
 from threads_monitoring import ThreadsMonitor
 
@@ -8,7 +8,7 @@ from threads_monitoring import ThreadsMonitor
 class ELMKParser:
 
     @staticmethod
-    def start(test_regime:bool=False,
+    def start(test_regime: bool = False,
               text_caching_sleep=3,
               ask_for_cancel_interval_navigator=5000,
               sleep_secs_up_to_navigator=1.1,
