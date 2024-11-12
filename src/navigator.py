@@ -43,10 +43,11 @@ class Navigator(Singleton, Thread):
         self.__appl_numbers: list = []
         self.__right_df: DataFrame = DataFrame()
         self.__status: int = 1
+        self.lock = RLock()
 
     # @thread
     def run(self, *args, **kwargs):
-        lock = RLock
+        lock = self.lock
         with lock:
             lock.acquire()
             self(*args, **kwargs)
