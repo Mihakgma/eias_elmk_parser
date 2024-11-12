@@ -1,3 +1,5 @@
+from threading import Thread
+
 from session_manager import SessionManager
 from text_caching import TextCaching
 # from threading import Thread
@@ -31,6 +33,7 @@ class ELMKParser:
                                        cache_dir=cache_dir_caching,
                                        max_iterations=max_iterations_caching)
             threads_monitoring = ThreadsMonitor()
+
             threads_to_start = {driver: [],
                                 text_caching: [],
                                 threads_monitoring: [],
@@ -40,9 +43,15 @@ class ELMKParser:
                                     sleep_secs_up_to_pesr_data_navigator
                                 ]
                                 }
+
+            threads_to_join = []
             for (t, p) in threads_to_start.items():
-                t.start(*p)
-                t.join()
+                thread = Thread(target=t, args=p)
+                threads_to_join.append(thread)
+                thread.start()
+
+            for thread in threads_to_join:
+                thread.join()
 
         # NOT USING YET
         # navigator(ask_for_cancel_interval_navigator,
