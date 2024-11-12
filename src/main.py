@@ -2,6 +2,7 @@
 
 from session_manager import SessionManager
 from text_caching import TextCaching
+
 # from threading import Thread
 
 from threads_monitoring import ThreadsMonitor
@@ -34,20 +35,21 @@ class ELMKParser:
                                        max_iterations=max_iterations_caching)
             threads_monitoring = ThreadsMonitor()
 
-            threads_to_start = {text_caching: [],
-                                threads_monitoring: [],
-                                navigator: [
-                                    ask_for_cancel_interval_navigator,
-                                    sleep_secs_up_to_navigator,
-                                    sleep_secs_up_to_pesr_data_navigator
-                                ]
-                                }
+            threads_to_start = {
+                navigator: [
+                    ask_for_cancel_interval_navigator,
+                    sleep_secs_up_to_navigator,
+                    sleep_secs_up_to_pesr_data_navigator
+                ],
+                text_caching: [],
+                threads_monitoring: [],
+            }
 
             threads_to_join = []
             for (t, p) in threads_to_start.items():
                 # thread = Thread(target=t, args=p)
                 threads_to_join.append(t)
-                t.run()
+                t.start()
 
             for thread in threads_to_join:
                 thread.join()
