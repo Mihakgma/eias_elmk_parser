@@ -1,13 +1,15 @@
-from threading import Thread
+from threading import Thread, RLock
 from threading import enumerate as thread_enumerate
 from time import sleep as time_sleep
 
 
-class ThreadsMonitor:
+class ThreadsMonitor(Thread):
     def __init__(self,
                  daemon: bool = True,
-                 timeout: int = 10,):
-        # Thread.__init__(self, name=self.__class__.__name__)
+                 timeout: int = 10):
+        Thread.__init__(self,
+                        name=self.__class__.__name__,
+                        daemon=daemon)
         self.daemon = daemon
         self.timeout = timeout
 
@@ -21,10 +23,12 @@ class ThreadsMonitor:
             print(f" - {thread.name} ({thread.ident})")
             time_sleep(self.timeout)
 
-    @staticmethod
+    # @staticmethod
     def run(self):
+        lock = RLock()
         """
         Runs thread printer.
         """
-        thread = Thread(target=self.print_running_threads, daemon=self.daemon)
-        thread.start()
+        while True:
+            with lock:
+                self.print_running_threads()

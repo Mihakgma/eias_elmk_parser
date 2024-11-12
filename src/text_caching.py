@@ -1,5 +1,5 @@
 from os import path as os_path
-from threading import Thread
+from threading import Thread, RLock
 from time import sleep as time_sleep
 from os import makedirs as os_makedirs
 
@@ -13,7 +13,7 @@ from navigator import Navigator
 # from session_manager import SessionManager
 
 
-class TextCaching:
+class TextCaching(Thread):
     __METHODS_CLASSES = {
         'Navigator': ['get_current_url',
                       'get_current_application_number',
@@ -29,7 +29,7 @@ class TextCaching:
                  sleep_time: int = 1,
                  obj: object = None,
                  max_iterations: int = 5):
-        # Thread.__init__(self, name=self.__class__.__name__)
+        Thread.__init__(self, name=self.__class__.__name__)
         self.cache_dir = cache_dir
         self.text_filename_format = text_filename_format
         self.sleep_time = sleep_time
@@ -37,9 +37,9 @@ class TextCaching:
         self.__max_iterations = max_iterations
         self.__text_info = {}
 
-    @staticmethod
+    # @staticmethod
     def run(self):
-        # lock = Lock()
+        lock = RLock()
         print(DateChecker.get_nowTS_messaged(text=self.__START_RUN_MESSAGE))
         obj = self.__obj
         obj_class_name = obj.__class__.__name__
@@ -57,12 +57,11 @@ class TextCaching:
             invoker = Invoker(obj, get_driver_method_name)
             is_driver_charged = invoker().is_charged()
             while counter < max_iter and is_driver_charged:
-                is_driver_charged = invoker().is_charged()
-                counter += 1
-                time_sleep(self.sleep_time)
-                self.save_text()
-                # with lock:
-                #     time_sleep(self.sleep_time)
+                with lock:
+                    is_driver_charged = invoker().is_charged()
+                    counter += 1
+                    time_sleep(self.sleep_time)
+                    self.save_text()
         else:
             print("Cannot start text caching...")
             print(f"Probably class of input <{obj_class_name}> IS NOT IN CHECK LIST.")

@@ -34,8 +34,7 @@ class ELMKParser:
                                        max_iterations=max_iterations_caching)
             threads_monitoring = ThreadsMonitor()
 
-            threads_to_start = {driver: [],
-                                text_caching: [],
+            threads_to_start = {text_caching: [],
                                 threads_monitoring: [],
                                 navigator: [
                                     ask_for_cancel_interval_navigator,
@@ -73,4 +72,4 @@ class ELMKParser:
 
 
 if __name__ == '__main__':
-    ELMKParser().start(test_regime=True)
+    ELMKParser().start(test_regime=False)
