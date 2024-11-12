@@ -3,11 +3,11 @@ from threading import enumerate as thread_enumerate
 from time import sleep as time_sleep
 
 
-class ThreadsMonitor(Thread):
+class ThreadsMonitor:
     def __init__(self,
                  daemon: bool = True,
                  timeout: int = 10,):
-        Thread.__init__(self, name=self.__class__.__name__)
+        # Thread.__init__(self, name=self.__class__.__name__)
         self.daemon = daemon
         self.timeout = timeout
 
@@ -21,6 +21,7 @@ class ThreadsMonitor(Thread):
             print(f" - {thread.name} ({thread.ident})")
             time_sleep(self.timeout)
 
+    @staticmethod
     def run(self):
         """
         Runs thread printer.

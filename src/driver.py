@@ -1,5 +1,5 @@
 from selenium import webdriver
-from threading import Thread
+# from threading import Thread
 from time import sleep as time_sleep
 # from selenium.webdriver.chrome.options import Options
 
@@ -7,7 +7,7 @@ from time import sleep as time_sleep
 from info import BROWSER_FILE_PATH, WEBDRIVER_PATH, DRIVER_ARGUMENTS
 
 
-class Driver(Thread):
+class Driver:
     __ID = 0
     __BROWSER_FILE_PATH: str = BROWSER_FILE_PATH
     __WEBDRIVER_PATH: str = WEBDRIVER_PATH
@@ -21,7 +21,7 @@ class Driver(Thread):
 
     def __init__(self,
                  wait_secs: int = 10):
-        Thread.__init__(self, name=self.__class__.__name__)
+        # Thread.__init__(self, name=self.__class__.__name__)
         self.__wait_secs = wait_secs
         self.__charged = False
         self.__driver = None
@@ -35,7 +35,7 @@ class Driver(Thread):
             is_charged = self.__charged
 
     def charge(self, test=True):
-        self.start()  # start new thread
+        # self.start()  # start new thread
         if test:
             self.__charged = True
         print(f"Driver number: <{self.__DRIVERS_CREATED}> has been initiated.")

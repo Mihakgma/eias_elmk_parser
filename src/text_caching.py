@@ -13,7 +13,7 @@ from navigator import Navigator
 # from session_manager import SessionManager
 
 
-class TextCaching(Thread):
+class TextCaching:
     __METHODS_CLASSES = {
         'Navigator': ['get_current_url',
                       'get_current_application_number',
@@ -29,7 +29,7 @@ class TextCaching(Thread):
                  sleep_time: int = 1,
                  obj: object = None,
                  max_iterations: int = 5):
-        Thread.__init__(self, name=self.__class__.__name__)
+        # Thread.__init__(self, name=self.__class__.__name__)
         self.cache_dir = cache_dir
         self.text_filename_format = text_filename_format
         self.sleep_time = sleep_time
@@ -37,6 +37,7 @@ class TextCaching(Thread):
         self.__max_iterations = max_iterations
         self.__text_info = {}
 
+    @staticmethod
     def run(self):
         # lock = Lock()
         print(DateChecker.get_nowTS_messaged(text=self.__START_RUN_MESSAGE))

@@ -12,9 +12,10 @@ from functions import send_keys_by_xpath, parse_total_df, need_end_procedure, ra
 from info import HOME_URL, LOGIN_XPATH, LOGIN, PASSWORD_XPATH, PASSWORD, ELMK_URL, TEMP_XLSX_FILENAME, \
     APPLN_NUMBER_COLNAME, NUM_ROWS_MARK, NO_or_YES, NAVIGATOR_STATUS
 from singleton import Singleton
+from thread_func import thread
 
 
-class Navigator(Singleton, Thread):
+class Navigator(Singleton):
     """
     need to think about this class:
     1) overriding __str__ method (to save all fields of Navigator instance):
@@ -33,7 +34,7 @@ class Navigator(Singleton, Thread):
     __STATUS = NAVIGATOR_STATUS
 
     def __init__(self):
-        Thread.__init__(self)
+        # Thread.__init__(self, name=self.__class__.__name__)
         self.__driver = None
         self.__current_url: str = "_"
         self.__current_application_number: int = -1
@@ -42,6 +43,7 @@ class Navigator(Singleton, Thread):
         self.__right_df: DataFrame = DataFrame()
         self.__status: int = 1
 
+    @thread
     def run(self, *args, **kwargs):
         self(*args, **kwargs)
 
