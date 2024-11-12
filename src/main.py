@@ -30,22 +30,30 @@ class ELMKParser:
                                        obj=navigator,
                                        cache_dir=cache_dir_caching,
                                        max_iterations=max_iterations_caching)
-            # text_caching.start()
             threads_monitoring = ThreadsMonitor()
-            # threads_monitoring.start()
-            navigator(ask_for_cancel_interval_navigator,
-                      sleep_secs_up_to_navigator,
-                      sleep_secs_up_to_pesr_data_navigator)
-            threads_to_start = [driver, text_caching, threads_monitoring]
-            for thread in threads_to_start:
-                thread.start()
-                thread.join()
+            threads_to_start = {driver: [],
+                                text_caching: [],
+                                threads_monitoring: [],
+                                navigator: [
+                                    ask_for_cancel_interval_navigator,
+                                    sleep_secs_up_to_navigator,
+                                    sleep_secs_up_to_pesr_data_navigator
+                                ]
+                                }
+            for (t, p) in threads_to_start.items():
+                t.start(*p)
+                t.join()
 
         # NOT USING YET
+        # navigator(ask_for_cancel_interval_navigator,
+        #           sleep_secs_up_to_navigator,
+        #           sleep_secs_up_to_pesr_data_navigator)
         # navigator(ask_for_cancel_interval=ask_for_cancel_interval_navigator,
         #           sleep_secs_up_to=sleep_secs_up_to_navigator,
         #           sleep_secs_up_to_pesr_data=sleep_secs_up_to_pesr_data_navigator)
         # Создаем поток для navigator
+        # text_caching.start()
+        # threads_monitoring.start()
         # navigator_thread = Thread(target=navigator,
         #                           args=(
         #                               ask_for_cancel_interval_navigator,
