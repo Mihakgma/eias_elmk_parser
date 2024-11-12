@@ -67,7 +67,7 @@ class ELMKParser:
             for (t, p) in threads_to_start.items():
                 # thread = Thread(target=t, args=p)
                 threads_to_join.append(t)
-                t.start()
+                t.run()
 
             for thread in threads_to_join:
                 thread.join()
