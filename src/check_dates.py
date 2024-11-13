@@ -83,8 +83,6 @@ class DateChecker:
         minutes_num = 0
         seconds_num = 0
 
-        # участок кода для обработки даты в формате строки!!!
-
         try:
 
             if date_format == 'short':
@@ -105,7 +103,6 @@ class DateChecker:
                 minutes_num = int(time_splitted[1])
                 seconds_num = int(time_splitted[2])
 
-            # пробуем преобразовать отдельные части даты в цифры
             day_num = int(day_num)
             date_results_dict['day_num'] = day_num
             month_num = int(month_num)
@@ -127,12 +124,10 @@ class DateChecker:
                 minutes_num,
                 seconds_num)  # Дата - ОК!!!
             date_results_dict['date_ok'] = True
-            # добавляем в словарь день недели
             weekday_num = dt.weekday(date_checked)
             date_results_dict['weekday_num'] = weekday_num + 1  # нумерация дней недели не с 0 !!!
             #print(self.weekday_lst[weekday_num])
             date_results_dict['weekday_str'] = weekday_lst[weekday_num]
-            # добавляем в словарь месяц
             month_num = date_checked.month
             date_results_dict['month_num'] = month_num
             date_results_dict['month_str'] = month_dict[month_num]

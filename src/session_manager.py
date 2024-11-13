@@ -22,10 +22,6 @@ class SessionManager(Singleton):
         self.__current_driver = my_driver
         my_navigator = Navigator()
         self.__current_navigator = my_navigator
-        # injector = Injector(driver=my_driver,
-        #                     navigator=my_navigator,
-        #                     auto_charging=True)
-        # injector.inject()
         InjectManager.do_inject(driver=my_driver,
                                 navigator=my_navigator,
                                 session_manager=self,

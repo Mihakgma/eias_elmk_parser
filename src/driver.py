@@ -59,7 +59,7 @@ class Driver:
             # input('Press to exit!')
             try:
                 self.__charged = False
-                self.__driver.close()
+                self.__driver.quit()
                 print('Selenium driver has been successfully closed.')
             except BaseException as e:
                 print('An exception occurred while Selenium driver discharging.')

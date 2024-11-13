@@ -89,7 +89,6 @@ class Navigator(Singleton, Thread):
 
     def login(self):
         driver = self.__driver.get_driver()
-        # ввод логина и пароля для входа на портал!
         send_keys_by_xpath(driver=driver,
                            xpath=LOGIN_XPATH,
                            text=LOGIN,
@@ -107,7 +106,6 @@ class Navigator(Singleton, Thread):
         self.__current_url = driver.current_url
         self.status = 2
         # input('Подождать пока страница прогрузится?')
-        # переходим на страницу ЕЛМК
         answer = self.navigate(ELMK_URL).strip().lower()
         self.status = 3
         if "y" in answer or "да" in answer:
@@ -130,7 +128,6 @@ class Navigator(Singleton, Thread):
                                                    ask_for_cancel_interval=100)
         self.__left_df = appl_df
         self.__appl_numbers = appl_numbers
-        # подождать (?) пока контент прогрузится...
         self.__current_url = driver.current_url
         self.status = 4
 

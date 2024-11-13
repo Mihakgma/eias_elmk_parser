@@ -54,24 +54,6 @@ class ELMKParser:
             for thread in threads_to_join:
                 thread.join()
 
-        # NOT USING YET
-        # navigator(ask_for_cancel_interval_navigator,
-        #           sleep_secs_up_to_navigator,
-        #           sleep_secs_up_to_pesr_data_navigator)
-        # navigator(ask_for_cancel_interval=ask_for_cancel_interval_navigator,
-        #           sleep_secs_up_to=sleep_secs_up_to_navigator,
-        #           sleep_secs_up_to_pesr_data=sleep_secs_up_to_pesr_data_navigator)
-        # Создаем поток для navigator
-        # text_caching.start()
-        # threads_monitoring.start()
-        # navigator_thread = Thread(target=navigator,
-        #                           args=(
-        #                               ask_for_cancel_interval_navigator,
-        #                               sleep_secs_up_to_navigator,
-        #                               sleep_secs_up_to_pesr_data_navigator,
-        #                           ))
-        # navigator_thread.start()
-
 
 if __name__ == '__main__':
     ELMKParser().start(test_regime=False)

@@ -27,7 +27,6 @@ def excel_to_data_frame_parser(file: str,
     # print(book_sheet_names)
     no_yes = ['НЕТ', 'ДА'][sheet_name in book_sheet_names]
     print(f'Искомый лист присутствует в книге: <{no_yes}>')
-    # В ДФ загружается первый лист книги по заданному названию
     if no_yes == 'ДА':
         sheet_number = book_sheet_names.index(sheet_name)
         df = data.parse(book_sheet_names[sheet_number], skiprows=rows_to_skip, header=first_row_header)
