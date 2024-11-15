@@ -40,7 +40,7 @@ def is_text_on_page(driver,
     browser = driver
     text_found = False
     text = text.lower().strip()
-    page_txt = get_page_text()
+    page_txt = get_page_text(driver=browser)
     try:
         text_found = has_text_found(text=text,
                                     page_text=page_txt,
