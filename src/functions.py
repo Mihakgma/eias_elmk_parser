@@ -1,6 +1,7 @@
+from bs4 import BeautifulSoup
 from pandas import DataFrame, read_html
 from selenium.common.exceptions import ElementNotInteractableException, TimeoutException, \
-    StaleElementReferenceException, ElementClickInterceptedException
+    StaleElementReferenceException, ElementClickInterceptedException, WebDriverException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -11,6 +12,44 @@ from random import uniform as random_uniform
 from re import search as re_search
 from win32clipboard import OpenClipboard, EmptyClipboard, SetClipboardText, CF_UNICODETEXT, CloseClipboard
 from pyautogui import hotkey as pyt_hotkey
+
+
+def get_page_text(driver):
+    page = driver.page_source
+    soup = BeautifulSoup(page, 'html.parser')
+    text = soup.get_text(separator=' ', strip=True)
+    return text
+
+
+def has_text_found(text: str, page_text: str, url: str) -> bool:
+    try:
+        if text in page_text:
+            print(f"\n---///---\nText: {text}\nfound on <{url}>---///---")
+            return True
+    except AttributeError as e:
+        print(e)
+    return False
+
+
+def is_text_on_page(driver,
+                    text: str,
+                    time_lower: int = 3,
+                    time_upper: int = 5,
+                    iterations: int = 15):
+    browser = driver.get_driver()
+    text = text.lower().strip()
+    page_txt = get_page_text()
+    text_found = has_text_found(text=text,
+                                page_text=page_txt,
+                                url=browser.current_url)
+    while (not text_found) and iterations > 0:
+        iterations -= 1
+        random_sleep(time_upper, time_lower)
+        text_found = has_text_found(text=text,
+                                    page_text=page_txt,
+                                    url=browser.current_url)
+    if not text_found:
+        raise WebDriverException
 
 
 def random_sleep(upper_bound: int, lower_bound=0):
@@ -414,7 +453,7 @@ def find_element_xpath(driver, xpath, timeout=3):
         return False
 
 
-def get_element_value(driver, xpath, timeout = 15):
+def get_element_value(driver, xpath, timeout=15):
     try:
         element_present = EC.presence_of_element_located((By.XPATH, xpath))
         WebDriverWait(driver, timeout).until(element_present)
@@ -425,7 +464,7 @@ def get_element_value(driver, xpath, timeout = 15):
     return found_element.get_attribute('value')
 
 
-def get_element_title(driver, xpath, timeout = 15):
+def get_element_title(driver, xpath, timeout=15):
     try:
         element_present = EC.presence_of_element_located((By.XPATH, xpath))
         WebDriverWait(driver, timeout).until(element_present)
@@ -436,7 +475,7 @@ def get_element_title(driver, xpath, timeout = 15):
     return found_element.get_attribute('title')
 
 
-def click_element_by_xpath(driver, xpath, timeout = 15, in_new_window:bool=False):
+def click_element_by_xpath(driver, xpath, timeout=15, in_new_window: bool = False):
     try:
         element_present = EC.presence_of_element_located((By.XPATH, xpath))
         WebDriverWait(driver, timeout).until(element_present)

@@ -4,11 +4,12 @@ from time import sleep as time_sleep
 
 from selenium.common.exceptions import WebDriverException
 
+from functions import is_text_on_page
 # from selenium.webdriver.chrome.options import Options
 
 
 from info import BROWSER_FILE_PATH, WEBDRIVER_PATH, DRIVER_ARGUMENTS, START_KEY_WORD
-from navigator import Navigator
+# from navigator import Navigator
 
 
 class Driver:
@@ -54,8 +55,8 @@ class Driver:
             self.__driver = webdriver.Chrome(executable_path=self.__WEBDRIVER_PATH,
                                              options=options)
             self.__driver.implicitly_wait(self.__wait_secs)
-            Navigator.is_text_on_page(driver=self.__driver,
-                                      text=self.__START_KEY_WORD)
+            is_text_on_page(driver=self.__driver,
+                            text=self.__START_KEY_WORD)
             self.__charged = True
         except TypeError as e:
             print(e)
