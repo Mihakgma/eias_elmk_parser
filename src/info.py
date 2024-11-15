@@ -1,6 +1,7 @@
 from login_function import get_login_password
 
 
+START_KEY_WORD = "бачина"
 DRIVER_ARGUMENTS = [
     r"--user-data=C:\Users\tabakaev_mv\AppData\Local\Yandex\YandexBrowser\User Data\Default",
     "--disable-notifications"

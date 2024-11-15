@@ -42,7 +42,7 @@ class ELMKParser:
                     sleep_secs_up_to_pesr_data_navigator
                 ],
                 text_caching: [],
-                threads_monitoring: [],
+                # threads_monitoring: [],
             }
 
             threads_to_join = []

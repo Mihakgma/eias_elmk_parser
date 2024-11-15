@@ -79,12 +79,45 @@ class Navigator(Singleton, Thread):
 
     status = property(get_status, set_status)
 
-    def print_page(self):
+    def get_page_text(self):
         driver = self.__driver.get_driver()
         page = driver.page_source
         soup = BeautifulSoup(page, 'html.parser')
         text = soup.get_text(separator=' ', strip=True)
-        print(f"\n---///---\nPrinting page:<{driver.current_url}> contents:\n{text}\n---///---")
+        return text
+
+    def print_page(self):
+        driver = self.__driver.get_driver()
+        text = self.get_page_text()
+        print(f"\n---///---\nPrinting page:<{driver.current_url}> "
+              f"contents:\n{text}\n---///---")
+
+    def has_text_found(self, text: str, page_text: str, url: str) -> bool:
+        if text in page_text:
+            print(f"\n---///---\nText: {text}\nfound on <{url}>---///---")
+            return True
+        return False
+
+    @staticmethod
+    def is_text_on_page(driver: Driver,
+                        text: str,
+                        time_lower: int = 3,
+                        time_upper: int = 5,
+                        iterations: int = 15):
+        browser = driver.get_driver()
+        text = text.lower().strip()
+        page_txt = Navigator().get_page_text()
+        text_found = Navigator().has_text_found(text=text,
+                                                page_text=page_txt,
+                                                url=browser.current_url)
+        while (not text_found) and iterations > 0:
+            iterations -= 1
+            random_sleep(time_upper, time_lower)
+            text_found = Navigator().has_text_found(text=text,
+                                                    page_text=page_txt,
+                                                    url=browser.current_url)
+        if not text_found:
+            raise StaleElementReferenceException
 
     def navigate(self, page_path):
         driver = self.__driver.get_driver()
