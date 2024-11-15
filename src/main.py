@@ -16,7 +16,7 @@ class ELMKParser:
               ask_for_cancel_interval_navigator=5000,
               sleep_secs_up_to_navigator=1.1,
               sleep_secs_up_to_pesr_data_navigator=0.5,
-              max_iterations_caching=15,
+              max_iterations_caching=5,
               cache_dir_caching="..\\text_data"):
 
         session_manager = SessionManager()

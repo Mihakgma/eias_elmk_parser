@@ -1,4 +1,5 @@
 import tqdm
+from bs4 import BeautifulSoup
 from pandas import DataFrame
 from selenium.common.exceptions import StaleElementReferenceException
 from threading import Thread, RLock
@@ -78,10 +79,18 @@ class Navigator(Singleton, Thread):
 
     status = property(get_status, set_status)
 
+    def print_page(self):
+        driver = self.__driver.get_driver()
+        page = driver.page_source
+        soup = BeautifulSoup(page, 'html.parser')
+        text = soup.get_text(separator=' ', strip=True)
+        print(f"\n---///---\nPrinting page:<{driver.current_url}> contents:\n{text}\n---///---")
+
     def navigate(self, page_path):
         driver = self.__driver.get_driver()
         self.__current_url = driver.current_url
         driver.get(page_path)
+        self.print_page()
         warnings = self.WARNINGS
         if page_path in warnings:
             func, warn_text = warnings[page_path][0], warnings[page_path][1]
@@ -237,6 +246,7 @@ class Navigator(Singleton, Thread):
         return ";\n".join(out)
 
     def __call__(self, *args, **kwargs):
+        self.print_page()
         input("Navigator has been called. Press Enter to continue...")
         # random_sleep(upper_bound=40, lower_bound=25)
         self.login()
