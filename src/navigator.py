@@ -8,9 +8,9 @@ from data_manager import DataManager
 from df_functions import excel_to_data_frame_parser, printDimensionsOfDF
 from driver import Driver
 from functions import send_keys_by_xpath, parse_total_df, need_end_procedure, random_sleep, find_element_xpath, \
-    parse_part_df, move_2web_element, get_personal_data, click_element_by_xpath, get_page_text
+    parse_part_df, move_2web_element, get_personal_data, click_element_by_xpath, get_page_text, is_text_on_page
 from info import HOME_URL, LOGIN_XPATH, LOGIN, PASSWORD_XPATH, PASSWORD, ELMK_URL, TEMP_XLSX_FILENAME, \
-    APPLN_NUMBER_COLNAME, NUM_ROWS_MARK, NO_or_YES, NAVIGATOR_STATUS
+    APPLN_NUMBER_COLNAME, NUM_ROWS_MARK, NO_or_YES, NAVIGATOR_STATUS, START_KEY_WORD
 from singleton import Singleton
 # from thread_func import thread
 
@@ -32,11 +32,12 @@ class Navigator(Singleton, Thread):
         ELMK_URL: [input, 'Use previously downloaded DF: да (y) / нет (n)?'],
     }
     __STATUS = NAVIGATOR_STATUS
+    __START_KEY_WORD = START_KEY_WORD
 
     def __init__(self):
         Thread.__init__(self, name=self.__class__.__name__)
         print(self.__class__.__name__ + " initialized")
-        self.__driver = None
+        self.__driver_obj = None
         self.__current_url: str = "_"
         self.__current_application_number: int = -1
         self.__left_df: DataFrame = DataFrame()
@@ -53,11 +54,11 @@ class Navigator(Singleton, Thread):
             self(*args, **kwargs)
             lock.release()
 
-    def get_driver(self) -> Driver:
-        return self.__driver
+    def get_driver_obj(self) -> Driver:
+        return self.__driver_obj
 
-    def set_driver(self, driver: Driver):
-        self.__driver = driver
+    def set_driver_obj(self, driver: Driver):
+        self.__driver_obj = driver
 
     def get_current_url(self):
         return self.__current_url
@@ -79,7 +80,7 @@ class Navigator(Singleton, Thread):
     status = property(get_status, set_status)
 
     def print_page(self):
-        driver = self.__driver.get_driver()
+        driver = self.__driver_obj.get_driver()
         text = get_page_text(driver)
         try:
             print(f"\n---///---\nPrinting page:<{driver.current_url}> "
@@ -88,7 +89,7 @@ class Navigator(Singleton, Thread):
             print(e)
 
     def navigate(self, page_path):
-        driver = self.__driver.get_driver()
+        driver = self.__driver_obj.get_driver()
         self.__current_url = driver.current_url
         driver.get(page_path)
         self.print_page()
@@ -98,7 +99,7 @@ class Navigator(Singleton, Thread):
             return func(warn_text)
 
     def login(self):
-        driver = self.__driver.get_driver()
+        driver = self.__driver_obj.get_driver()
         send_keys_by_xpath(driver=driver,
                            xpath=LOGIN_XPATH,
                            text=LOGIN,
@@ -113,6 +114,8 @@ class Navigator(Singleton, Thread):
                            timeout=15,
                            need_press_enter=True)
         input("Logged in. Press Enter to continue...")
+        is_text_on_page(driver=self.__driver_obj.get_driver(),
+                        text=self.__START_KEY_WORD)
         self.__current_url = driver.current_url
         self.status = 2
         # input('Подождать пока страница прогрузится?')
@@ -148,7 +151,7 @@ class Navigator(Singleton, Thread):
 
         # %%time
         # ask_for_cancel_interval - периодичность по количеству заявлений - запрос на завершение процедуры
-        browser = self.__driver.get_driver()
+        browser = self.__driver_obj.get_driver()
         appl_numbers = self.__appl_numbers
         # element_found = False
         browser.refresh()
@@ -231,7 +234,7 @@ class Navigator(Singleton, Thread):
             self.__right_df = DataFrame()
 
     def __str__(self):
-        driver = self.__driver
+        driver = self.__driver_obj
         class_name = self.__class__.__name__
         ts_text = f"\nAt time ({class_name}): "
         out = [
@@ -260,7 +263,7 @@ if __name__ == '__main__':
     driver_1 = Driver()
     driver_1.charge()
     navigator = Navigator()
-    navigator.set_driver(driver_1)
+    navigator.set_driver_obj(driver_1)
     print(navigator.get_current_url())
     print(navigator.get_current_application_number())
     print(navigator)

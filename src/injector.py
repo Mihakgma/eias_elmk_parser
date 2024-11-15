@@ -51,5 +51,5 @@ class Injector:
         auto_charging = self.__auto_charging
         if auto_charging:
             driver.charge(test_charge)
-        navigator.set_driver(driver)
+        navigator.set_driver_obj(driver)
         session_manager.set_current_driver(driver)

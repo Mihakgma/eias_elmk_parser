@@ -55,8 +55,8 @@ class Driver:
             self.__driver = webdriver.Chrome(executable_path=self.__WEBDRIVER_PATH,
                                              options=options)
             self.__driver.implicitly_wait(self.__wait_secs)
-            is_text_on_page(driver=self.__driver,
-                            text=self.__START_KEY_WORD)
+            # is_text_on_page(driver=self.__driver,
+            #                 text=self.__START_KEY_WORD)
             self.__charged = True
         except TypeError as e:
             print(e)

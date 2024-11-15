@@ -22,7 +22,7 @@ class ELMKParser:
         session_manager = SessionManager()
         session_manager.start_new_session()
         navigator = session_manager.get_navigator()
-        driver = navigator.get_driver()
+        driver = navigator.get_driver_obj()
         driver_s_m = session_manager.get_current_driver()
         print("\nDrivers from navigator & session_manager are equal?")
         print(driver == driver_s_m)
