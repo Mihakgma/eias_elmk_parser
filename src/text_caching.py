@@ -19,7 +19,7 @@ class TextCaching(Thread):
                       'get_current_application_number',
                       'get_status']
     }
-    __GET_DRIVER_METHOD_NAME = 'get_driver'
+    __GET_DRIVER_METHOD_NAME = 'get_driver_obj'
     __START_RUN_MESSAGE = "Starting text caching thread at"
     __STOP_RUN_MESSAGE = "Stopping text caching thread at"
 
