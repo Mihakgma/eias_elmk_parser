@@ -2,7 +2,7 @@ from selenium import webdriver
 # from threading import Thread
 from time import sleep as time_sleep
 
-from selenium.common import StaleElementReferenceException
+from selenium.common.exceptions import WebDriverException
 
 # from selenium.webdriver.chrome.options import Options
 
@@ -60,8 +60,8 @@ class Driver:
         except TypeError as e:
             print(e)
             print("Selenium driver error: probably versions conflict...")
-        except StaleElementReferenceException as sere:
-            print(sere)
+        except WebDriverException as wde:
+            print(wde)
             print(f"Cannon find text <{self.__START_KEY_WORD}>!!!")
 
     def discharge(self):

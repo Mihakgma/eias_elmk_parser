@@ -1,7 +1,7 @@
 import tqdm
 from bs4 import BeautifulSoup
 from pandas import DataFrame
-from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import StaleElementReferenceException, WebDriverException
 from threading import Thread, RLock
 
 from check_dates import DateChecker
@@ -117,7 +117,7 @@ class Navigator(Singleton, Thread):
                                                     page_text=page_txt,
                                                     url=browser.current_url)
         if not text_found:
-            raise StaleElementReferenceException
+            raise WebDriverException
 
     def navigate(self, page_path):
         driver = self.__driver.get_driver()
