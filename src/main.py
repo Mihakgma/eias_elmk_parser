@@ -1,5 +1,5 @@
 # from threading import Thread
-
+from funct_wrapper import handle_exceptions_quit_driver
 from session_manager import SessionManager
 from text_caching import TextCaching
 
@@ -11,6 +11,7 @@ from threads_monitoring import ThreadsMonitor
 class ELMKParser:
 
     @staticmethod
+    @handle_exceptions_quit_driver
     def start(test_regime: bool = False,
               text_caching_sleep=3,
               ask_for_cancel_interval_navigator=5000,
