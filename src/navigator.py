@@ -81,8 +81,11 @@ class Navigator(Singleton, Thread):
     def print_page(self):
         driver = self.__driver.get_driver()
         text = get_page_text(driver)
-        print(f"\n---///---\nPrinting page:<{driver.current_url}> "
-              f"contents:\n{text}\n---///---")
+        try:
+            print(f"\n---///---\nPrinting page:<{driver.current_url}> "
+                  f"contents:\n{text}\n---///---")
+        except AttributeError as e:
+            print(e)
 
     def navigate(self, page_path):
         driver = self.__driver.get_driver()

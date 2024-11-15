@@ -15,19 +15,20 @@ from pyautogui import hotkey as pyt_hotkey
 
 
 def get_page_text(driver):
-    page = driver.page_source
-    soup = BeautifulSoup(page, 'html.parser')
-    text = soup.get_text(separator=' ', strip=True)
+    text = ""
+    try:
+        page = driver.page_source
+        soup = BeautifulSoup(page, 'html.parser')
+        text = soup.get_text(separator=' ', strip=True)
+    except AttributeError as e:
+        print(e)
     return text
 
 
 def has_text_found(text: str, page_text: str, url: str) -> bool:
-    try:
-        if text in page_text:
-            print(f"\n---///---\nText: {text}\nfound on <{url}>---///---")
-            return True
-    except AttributeError as e:
-        print(e)
+    if text in page_text:
+        print(f"\n---///---\nText: {text}\nfound on <{url}>---///---")
+        return True
     return False
 
 
@@ -36,18 +37,25 @@ def is_text_on_page(driver,
                     time_lower: int = 3,
                     time_upper: int = 5,
                     iterations: int = 15):
-    browser = driver.get_driver()
+    browser = driver
+    text_found = False
     text = text.lower().strip()
     page_txt = get_page_text()
-    text_found = has_text_found(text=text,
-                                page_text=page_txt,
-                                url=browser.current_url)
-    while (not text_found) and iterations > 0:
-        iterations -= 1
-        random_sleep(time_upper, time_lower)
+    try:
         text_found = has_text_found(text=text,
                                     page_text=page_txt,
                                     url=browser.current_url)
+    except AttributeError as e:
+        print(e)
+    while (not text_found) and iterations > 0:
+        iterations -= 1
+        random_sleep(time_upper, time_lower)
+        try:
+            text_found = has_text_found(text=text,
+                                        page_text=page_txt,
+                                        url=browser.current_url)
+        except AttributeError as e:
+            print(e)
     if not text_found:
         raise WebDriverException
 
