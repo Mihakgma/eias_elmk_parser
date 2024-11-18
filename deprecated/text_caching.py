@@ -3,11 +3,11 @@ from threading import Thread, RLock
 from time import sleep as time_sleep
 from os import makedirs as os_makedirs
 
-from check_dates import DateChecker
-from driver import Driver
-from function_invoker import Invoker
-from inject_manager import InjectManager
-from navigator import Navigator
+from classes.check_dates import DateChecker
+from classes.driver import Driver
+from patterns.function_invoker import Invoker
+from classes.inject_manager import InjectManager
+from classes.navigator import Navigator
 
 
 # from session_manager import SessionManager

@@ -1,5 +1,5 @@
 # import session_manager
-from driver import Driver
+from classes.driver import Driver
 from injector import Injector
 from navigator import Navigator
 

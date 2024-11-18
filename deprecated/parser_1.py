@@ -1,8 +1,8 @@
-from session_manager import SessionManager
+from classes.session_manager import SessionManager
 from text_caching import TextCaching
 # from threading import Thread
 
-from threads_monitoring import ThreadsMonitor
+from classes.threads_monitoring import ThreadsMonitor
 
 
 class ELMKParser:

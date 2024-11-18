@@ -1,4 +1,4 @@
-from login_function import get_login_password
+from functions.login_function import get_login_password
 
 
 START_KEY_WORD = "бачина"

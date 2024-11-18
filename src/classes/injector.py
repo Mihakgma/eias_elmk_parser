@@ -1,4 +1,4 @@
-from driver import Driver
+from classes.driver import Driver
 from navigator import Navigator
 # from session_manager import SessionManager
 

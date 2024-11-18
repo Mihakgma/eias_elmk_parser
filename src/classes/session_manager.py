@@ -1,9 +1,9 @@
-from driver import Driver
-from inject_manager import InjectManager
+from classes.driver import Driver
+from classes.inject_manager import InjectManager
 # from injector import Injector
-from navigator import Navigator
-from singleton import Singleton
-from text_caching import TextCaching
+from classes.navigator import Navigator
+from patterns.singleton import Singleton
+from deprecated.text_caching import TextCaching
 
 
 class SessionManager(Singleton):

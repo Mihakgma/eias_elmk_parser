@@ -1,11 +1,11 @@
 # from threading import Thread
-from funct_wrapper import handle_exceptions_quit_driver
-from session_manager import SessionManager
-from text_caching import TextCaching
+from patterns.funct_wrapper import handle_exceptions_quit_driver
+from classes.session_manager import SessionManager
+from deprecated.text_caching import TextCaching
 
 # from threading import Thread
 
-from threads_monitoring import ThreadsMonitor
+from classes.threads_monitoring import ThreadsMonitor
 
 
 class ELMKParser:

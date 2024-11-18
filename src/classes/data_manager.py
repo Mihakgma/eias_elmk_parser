@@ -1,6 +1,6 @@
 from pandas import DataFrame, merge
 
-from info import APPLN_NUMBER_COLNAME, JOIN_WARNING
+from variables import APPLN_NUMBER_COLNAME, JOIN_WARNING
 
 
 class DataManager:

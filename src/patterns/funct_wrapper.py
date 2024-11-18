@@ -1,6 +1,6 @@
 import functools
 
-from navigator import Navigator
+from classes.navigator import Navigator
 
 
 def handle_exceptions_quit_driver(func):
