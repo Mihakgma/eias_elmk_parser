@@ -12,6 +12,36 @@ from random import uniform as random_uniform
 from re import search as re_search
 from win32clipboard import OpenClipboard, EmptyClipboard, SetClipboardText, CF_UNICODETEXT, CloseClipboard
 from pyautogui import hotkey as pyt_hotkey
+from pyautogui import click as pyt_click
+from pyautogui import locateOnScreen as pyt_locateOnScreen
+
+from patterns.thread_func import thread
+
+
+@thread
+def submit_certificate(cert_screen_file_path: str = "",
+                       ok_screen_file_path: str = "",
+                       counter: int = 10):
+    i = 0
+    need_submit = True
+    while i < counter and need_submit:
+        i += 1
+        pyt_hotkey('alt', 'tab')
+        print(f"Iteration number = <{i}>")
+        random_sleep(10, 3)
+        cert_detected = pyt_locateOnScreen(cert_screen_file_path)
+        # print(cert_detected)
+        try:
+            screen_sum = sum(cert_detected)
+            print(f"Screen sum = <{screen_sum}>")
+            if screen_sum > 0:
+                ok_button_detected = pyt_locateOnScreen(ok_screen_file_path)
+                print(ok_button_detected)
+                pyt_click(ok_button_detected)
+                print("Certificate has been successfully submitted!")
+                need_submit = False
+        except TypeError as e:
+            print(e)
 
 
 def get_page_text(driver):

@@ -19,6 +19,9 @@ LOGIN, PASSWORD = get_login_password(txt_file_path=LOGIN_PASSWORD_FULLPATH)
 NUM_ROWS_MARK = 'Количество записей: '
 TEMP_XLSX_FILENAME = "temp_xlsx_elmk_first_df.xlsx"
 
+CERT_SCREEN_FILE = r"C:\Users\tabakaev_mv\Desktop\РАБОТА\ЕИАС\2024\ЭЛМК\ELMK_screen_scans\cert_submit_window.bmp"
+OK_CERT_SCREEN_FILE = r"C:\Users\tabakaev_mv\Desktop\РАБОТА\ЕИАС\2024\ЭЛМК\ELMK_screen_scans\OK_SUBMIT_SCAN_cert.png"
+
 # выводы(print-ы) о проверках
 NO_or_YES = ["НЕТ", "ДА"]
 JOIN_WARNING = [
