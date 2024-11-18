@@ -1,4 +1,3 @@
-# import session_manager
 from classes.driver import Driver
 from injector import Injector
 from navigator import Navigator

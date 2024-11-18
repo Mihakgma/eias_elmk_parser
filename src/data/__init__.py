@@ -1,2 +1,2 @@
 
-import variables
+from data.variables import *

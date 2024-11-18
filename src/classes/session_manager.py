@@ -1,6 +1,5 @@
 from classes.driver import Driver
 from classes.inject_manager import InjectManager
-# from injector import Injector
 from classes.navigator import Navigator
 from patterns.singleton import Singleton
 from deprecated.text_caching import TextCaching
