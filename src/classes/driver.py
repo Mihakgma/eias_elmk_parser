@@ -4,11 +4,11 @@ from time import sleep as time_sleep
 
 from selenium.common.exceptions import WebDriverException
 
-from functions import is_text_on_page
+# from functions import is_text_on_page
 # from selenium.webdriver.chrome.options import Options
 
 
-from variables import BROWSER_FILE_PATH, WEBDRIVER_PATH, DRIVER_ARGUMENTS, START_KEY_WORD
+from data.variables import BROWSER_FILE_PATH, WEBDRIVER_PATH, DRIVER_ARGUMENTS, START_KEY_WORD
 # from navigator import Navigator
 
 

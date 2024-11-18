@@ -7,11 +7,14 @@ from classes.check_dates import DateChecker
 from classes.data_manager import DataManager
 from functions.df_functions import excel_to_data_frame_parser, printDimensionsOfDF
 from classes.driver import Driver
-from functions import send_keys_by_xpath, parse_total_df, need_end_procedure, random_sleep, find_element_xpath, \
-    parse_part_df, move_2web_element, get_personal_data, click_element_by_xpath, get_page_text, is_text_on_page
-from variables import HOME_URL, LOGIN_XPATH, LOGIN, PASSWORD_XPATH, PASSWORD, ELMK_URL, TEMP_XLSX_FILENAME, \
-    APPLN_NUMBER_COLNAME, NUM_ROWS_MARK, NO_or_YES, NAVIGATOR_STATUS, START_KEY_WORD
+from functions.parsing_functions import (send_keys_by_xpath, parse_total_df, need_end_procedure, random_sleep,
+                                         find_element_xpath, parse_part_df, move_2web_element, get_personal_data,
+                                         click_element_by_xpath, get_page_text, is_text_on_page)
+from data.variables import (HOME_URL, LOGIN_XPATH, LOGIN, PASSWORD_XPATH, PASSWORD, ELMK_URL, TEMP_XLSX_FILENAME,
+                            APPLN_NUMBER_COLNAME, NUM_ROWS_MARK, NO_or_YES, NAVIGATOR_STATUS, START_KEY_WORD)
 from patterns.singleton import Singleton
+
+
 # from thread_func import thread
 
 
