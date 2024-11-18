@@ -1,9 +1,6 @@
-# from threading import Thread
 from patterns.funct_wrapper import handle_exceptions_quit_driver
 from classes.session_manager import SessionManager
 from deprecated.text_caching import TextCaching
-
-# from threading import Thread
 
 from classes.threads_monitoring import ThreadsMonitor
 
