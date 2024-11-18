@@ -12,7 +12,10 @@ def thread(func):
 
     def wrapper(*args, **kwargs):
         current_thread = Thread(
-            target=func, args=args, kwargs=kwargs)
+            target=func,
+            args=args,
+            kwargs=kwargs,
+            name=func.__name__)
         current_thread.start()
 
     return wrapper
