@@ -8,13 +8,11 @@ from functions.df_functions import excel_to_data_frame_parser, printDimensionsOf
 from classes.driver import Driver
 from functions.parsing_functions import (send_keys_by_xpath, parse_total_df, need_end_procedure, random_sleep,
                                          find_element_xpath, parse_part_df, move_2web_element, get_personal_data,
-                                         click_element_by_xpath, get_page_text, is_text_on_page)
+                                         click_element_by_xpath, get_page_text, is_text_on_page, submit_certificate)
 from data import (HOME_URL, LOGIN_XPATH, LOGIN, PASSWORD_XPATH, PASSWORD, ELMK_URL, TEMP_XLSX_FILENAME,
-                            APPLN_NUMBER_COLNAME, NUM_ROWS_MARK, NO_or_YES, NAVIGATOR_STATUS, START_KEY_WORD)
+                  APPLN_NUMBER_COLNAME, NUM_ROWS_MARK, NO_or_YES, NAVIGATOR_STATUS, START_KEY_WORD, OK_CERT_SCREEN_FILE,
+                  CERT_SCREEN_FILE)
 from patterns.singleton import Singleton
-
-
-# from thread_func import thread
 
 
 class Navigator(Singleton):
@@ -35,6 +33,8 @@ class Navigator(Singleton):
     }
     __STATUS = NAVIGATOR_STATUS
     __START_KEY_WORD = START_KEY_WORD
+    __CERT_SCREEN_FILE = CERT_SCREEN_FILE
+    __OK_CERT_SCREEN_FILE = OK_CERT_SCREEN_FILE
 
     def __init__(self):
         print(self.__class__.__name__ + " initialized")
@@ -244,6 +244,9 @@ class Navigator(Singleton):
     def __call__(self, *args, **kwargs):
         self.print_page()
         input("Navigator has been called. Press Enter to continue...")
+        submit_certificate(cert_screen_file_path=CERT_SCREEN_FILE,
+                           ok_screen_file_path=OK_CERT_SCREEN_FILE,
+                           counter=5)
         # random_sleep(upper_bound=40, lower_bound=25)
         self.login()
         input("DF with general data has been parsed. Press Enter to continue...")
