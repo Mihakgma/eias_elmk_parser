@@ -12,7 +12,7 @@ from functions.parsing_functions import (send_keys_by_xpath, parse_total_df, nee
                                          click_element_by_xpath, get_page_text, is_text_on_page, submit_certificate)
 from data import (HOME_URL, LOGIN_XPATH, LOGIN, PASSWORD_XPATH, PASSWORD, ELMK_URL, TEMP_XLSX_FILENAME,
                   APPLN_NUMBER_COLNAME, NUM_ROWS_MARK, NO_or_YES, NAVIGATOR_STATUS, START_KEY_WORD, OK_CERT_SCREEN_FILE,
-                  CERT_SCREEN_FILE)
+                  CERT_SCREEN_FILES)
 from patterns.browser_error_wrapper import handle_exceptions_quit_driver
 from patterns.setter_logger import setter_log
 
@@ -33,10 +33,10 @@ class Navigator:
         HOME_URL: [print, 'Confirm certificate and enter any key to continue.'],
         ELMK_URL: [input, 'Use previously downloaded DF: да (y) / нет (n)?'],
     }
-    __STATUS = NAVIGATOR_STATUS
-    __START_KEY_WORD = START_KEY_WORD
-    __CERT_SCREEN_FILE = CERT_SCREEN_FILE
-    __OK_CERT_SCREEN_FILE = OK_CERT_SCREEN_FILE
+    __STATUS: int = NAVIGATOR_STATUS
+    __START_KEY_WORD: str = START_KEY_WORD
+    __CERT_SCREEN_FILES: list = CERT_SCREEN_FILES
+    __OK_CERT_SCREEN_FILE: str = OK_CERT_SCREEN_FILE
     __CERT_TRIES: int = 7
 
     def __init__(self):
@@ -96,7 +96,7 @@ class Navigator:
         driver = self.__driver_obj.get_driver()
         self.set_current_url(driver.current_url)
         if page_path == HOME_URL:
-            submit_certificate(cert_screen_file_path=CERT_SCREEN_FILE,
+            submit_certificate(cert_screen_files_path=CERT_SCREEN_FILES,
                                ok_screen_file_path=OK_CERT_SCREEN_FILE,
                                counter=5)
         driver.get(page_path)

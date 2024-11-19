@@ -19,29 +19,34 @@ from patterns.thread_func import thread
 
 
 @thread
-def submit_certificate(cert_screen_file_path: str = "",
+def submit_certificate(cert_screen_files_path: list = "",
                        ok_screen_file_path: str = "",
                        counter: int = 10):
     i = 0
     need_submit = True
     while i < counter and need_submit:
         i += 1
+        screen_sum = 0
         pyt_hotkey('alt', 'tab')
         print(f"Iteration number = <{i}>")
         random_sleep(10, 3)
-        cert_detected = pyt_locateOnScreen(cert_screen_file_path)
-        # print(cert_detected)
-        try:
-            screen_sum = sum(cert_detected)
-            print(f"Screen sum = <{screen_sum}>")
-            if screen_sum > 0:
-                ok_button_detected = pyt_locateOnScreen(ok_screen_file_path)
-                print(ok_button_detected)
-                pyt_click(ok_button_detected)
-                print("Certificate has been successfully submitted!")
-                need_submit = False
-        except TypeError as e:
-            print(e)
+        for cert_screen in range(len(cert_screen_files_path)):
+            cert_detected = pyt_locateOnScreen(cert_screen)
+            try:
+                screen_sum = sum(cert_detected)
+                print(f"Screen sum = <{screen_sum}>")
+                break
+            except TypeError as e:
+                print(e)
+                screen_sum = 0
+        if screen_sum > 0:
+            ok_button_detected = pyt_locateOnScreen(ok_screen_file_path)
+            print(ok_button_detected)
+            pyt_click(ok_button_detected)
+            print("Certificate has been successfully submitted!")
+            need_submit = False
+        else:
+            print("Certificate has not been successfully submitted!")
 
 
 def get_page_text(driver):
