@@ -30,7 +30,8 @@ def submit_certificate(cert_screen_files_path: list = "",
         pyt_hotkey('alt', 'tab')
         print(f"Iteration number = <{i}>")
         random_sleep(10, 3)
-        for cert_screen in range(len(cert_screen_files_path)):
+        for j in range(len(cert_screen_files_path)):
+            cert_screen = cert_screen_files_path[j]
             try:
                 cert_detected = pyt_locateOnScreen(cert_screen)
                 screen_sum = sum(cert_detected)
