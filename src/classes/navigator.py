@@ -183,7 +183,6 @@ class Navigator:
                     if need_end_procedure(text_in=input('для отмены процесса парсинга введите х')):
                         print('Процесс - прерван ...')
                         stop_parsing = True
-                        # need_parse_appl = False
                         break
                 print(number)
                 counter += 1
@@ -256,6 +255,12 @@ class Navigator:
             f"right (personal data) table shape: <{self.__right_df.shape}>"
         ]
         return ";\n".join(out)
+
+    def __quit_driver(self):
+        try:
+            self.__driver_obj.discharge()
+        except BaseException as e:
+            print(e)
 
     def __call__(self, *args, **kwargs):
         # self.print_page()

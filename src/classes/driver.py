@@ -1,15 +1,8 @@
 from selenium import webdriver
-# from threading import Thread
-from time import sleep as time_sleep
 
 from selenium.common.exceptions import WebDriverException
 
-# from functions import is_text_on_page
-# from selenium.webdriver.chrome.options import Options
-
-
 from data.variables import BROWSER_FILE_PATH, WEBDRIVER_PATH, DRIVER_ARGUMENTS, START_KEY_WORD
-# from navigator import Navigator
 
 
 class Driver:
@@ -27,18 +20,10 @@ class Driver:
 
     def __init__(self,
                  wait_secs: int = 10):
-        # Thread.__init__(self, name=self.__class__.__name__)
         self.__wait_secs = wait_secs
         self.__charged = False
         self.__driver = None
         self.__ID = Driver.__ID
-
-    def run(self):
-        is_charged = self.__charged
-        print("Starting a new thread for " + self.__class__.__name__ + " class instance.")
-        while is_charged:
-            time_sleep(self.__wait_secs)
-            is_charged = self.__charged
 
     def charge(self, test=True):
         # self.start()  # start new thread
@@ -55,8 +40,6 @@ class Driver:
             self.__driver = webdriver.Chrome(executable_path=self.__WEBDRIVER_PATH,
                                              options=options)
             self.__driver.implicitly_wait(self.__wait_secs)
-            # is_text_on_page(driver=self.__driver,
-            #                 text=self.__START_KEY_WORD)
             self.__charged = True
         except TypeError as e:
             print(e)
@@ -67,7 +50,6 @@ class Driver:
 
     def discharge(self):
         if self.__charged:
-            # input('Press to exit!')
             try:
                 self.__charged = False
                 self.__driver.quit()
