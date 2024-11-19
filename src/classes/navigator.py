@@ -92,7 +92,7 @@ class Navigator:
 
     def navigate(self, page_path):
         driver = self.__driver_obj.get_driver()
-        self.__current_url = driver.current_url
+        self.set_current_url(driver.current_url)
         if page_path == HOME_URL:
             submit_certificate(cert_screen_file_path=CERT_SCREEN_FILE,
                                ok_screen_file_path=OK_CERT_SCREEN_FILE,
@@ -119,10 +119,10 @@ class Navigator:
                            pause_secs=2.1,
                            timeout=15,
                            need_press_enter=True)
-        input("Logged in. Press Enter to continue...")
+        print("Logged in. Press Enter to continue...")
         is_text_on_page(driver=self.__driver_obj.get_driver(),
                         text=self.__START_KEY_WORD)
-        self.__current_url = driver.current_url
+        self.set_current_url(driver.current_url)
         self.set_status(2)
         # input('Подождать пока страница прогрузится?')
         answer = self.navigate(ELMK_URL).strip().lower()
@@ -147,7 +147,7 @@ class Navigator:
                                                    ask_for_cancel_interval=100)
         self.__left_df = appl_df
         self.__appl_numbers = appl_numbers
-        self.__current_url = driver.current_url
+        self.set_current_url(driver.current_url)
         self.set_status(4)
 
     def parse_personal_data(self,
