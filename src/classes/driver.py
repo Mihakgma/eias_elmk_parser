@@ -12,11 +12,13 @@ class Driver:
     __DRIVER_ARGUMENTS: list = DRIVER_ARGUMENTS
     __DRIVERS_CREATED: int = 0
     __START_KEY_WORD: str = START_KEY_WORD
+    CURRENT_INSTANCE = None
 
     def __new__(cls, *args, **kwargs):
         cls.__ID += 1
         cls.__DRIVERS_CREATED += 1
-        return super(Driver, cls).__new__(cls)
+        cls.CURRENT_INSTANCE = super(Driver, cls).__new__(cls)
+        return cls.CURRENT_INSTANCE
 
     def __init__(self,
                  wait_secs: int = 10):

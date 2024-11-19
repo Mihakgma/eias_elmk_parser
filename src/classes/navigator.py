@@ -13,6 +13,7 @@ from functions.parsing_functions import (send_keys_by_xpath, parse_total_df, nee
 from data import (HOME_URL, LOGIN_XPATH, LOGIN, PASSWORD_XPATH, PASSWORD, ELMK_URL, TEMP_XLSX_FILENAME,
                   APPLN_NUMBER_COLNAME, NUM_ROWS_MARK, NO_or_YES, NAVIGATOR_STATUS, START_KEY_WORD, OK_CERT_SCREEN_FILE,
                   CERT_SCREEN_FILE)
+from patterns.browser_error_wrapper import handle_exceptions_quit_driver
 from patterns.setter_logger import setter_log
 
 
@@ -90,6 +91,7 @@ class Navigator:
         except AttributeError as e:
             print(e)
 
+    @handle_exceptions_quit_driver
     def navigate(self, page_path):
         driver = self.__driver_obj.get_driver()
         self.set_current_url(driver.current_url)
@@ -104,6 +106,7 @@ class Navigator:
             func, warn_text = warnings[page_path][0], warnings[page_path][1]
             return func(warn_text)
 
+    @handle_exceptions_quit_driver
     def login(self):
         driver = self.__driver_obj.get_driver()
         send_keys_by_xpath(driver=driver,
@@ -150,6 +153,7 @@ class Navigator:
         self.set_current_url(driver.current_url)
         self.set_status(4)
 
+    @handle_exceptions_quit_driver
     def parse_personal_data(self,
                             ask_for_cancel_interval=5000,
                             sleep_secs_up_to=1.1,
@@ -255,12 +259,6 @@ class Navigator:
             f"right (personal data) table shape: <{self.__right_df.shape}>"
         ]
         return ";\n".join(out)
-
-    def __quit_driver(self):
-        try:
-            self.__driver_obj.discharge()
-        except BaseException as e:
-            print(e)
 
     def __call__(self, *args, **kwargs):
         # self.print_page()
