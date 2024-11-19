@@ -13,6 +13,7 @@ from functions.parsing_functions import (send_keys_by_xpath, parse_total_df, nee
 from data import (HOME_URL, LOGIN_XPATH, LOGIN, PASSWORD_XPATH, PASSWORD, ELMK_URL, TEMP_XLSX_FILENAME,
                   APPLN_NUMBER_COLNAME, NUM_ROWS_MARK, NO_or_YES, NAVIGATOR_STATUS, START_KEY_WORD, OK_CERT_SCREEN_FILE,
                   CERT_SCREEN_FILE)
+from patterns.setter_logger import setter_log
 
 
 class Navigator:
@@ -55,12 +56,14 @@ class Navigator:
     def get_current_url(self):
         return self.__current_url
 
+    @setter_log("LOGS")
     def set_current_url(self, url: str):
         self.__current_url = url
 
     def get_current_application_number(self):
         return self.__current_application_number
 
+    @setter_log("LOGS")
     def set_current_application_number(self, number: int):
         self.__current_application_number = number
 
