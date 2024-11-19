@@ -36,6 +36,7 @@ class Navigator:
     __START_KEY_WORD = START_KEY_WORD
     __CERT_SCREEN_FILE = CERT_SCREEN_FILE
     __OK_CERT_SCREEN_FILE = OK_CERT_SCREEN_FILE
+    __CERT_TRIES: int = 7
 
     def __init__(self):
         print(self.__class__.__name__ + " initialized")
@@ -92,15 +93,15 @@ class Navigator:
     def navigate(self, page_path):
         driver = self.__driver_obj.get_driver()
         self.__current_url = driver.current_url
+        if page_path == HOME_URL:
+            submit_certificate(cert_screen_file_path=CERT_SCREEN_FILE,
+                               ok_screen_file_path=OK_CERT_SCREEN_FILE,
+                               counter=5)
         driver.get(page_path)
         self.print_page()
         warnings = self.WARNINGS
         if page_path in warnings:
             func, warn_text = warnings[page_path][0], warnings[page_path][1]
-            if page_path == HOME_URL:
-                submit_certificate(cert_screen_file_path=CERT_SCREEN_FILE,
-                                   ok_screen_file_path=OK_CERT_SCREEN_FILE,
-                                   counter=5)
             return func(warn_text)
 
     def login(self):
@@ -122,10 +123,10 @@ class Navigator:
         is_text_on_page(driver=self.__driver_obj.get_driver(),
                         text=self.__START_KEY_WORD)
         self.__current_url = driver.current_url
-        self.status = 2
+        self.set_status(2)
         # input('Подождать пока страница прогрузится?')
         answer = self.navigate(ELMK_URL).strip().lower()
-        self.status = 3
+        self.set_status(3)
         if "y" in answer or "да" in answer:
             appl_df = excel_to_data_frame_parser(file=TEMP_XLSX_FILENAME,
                                                  sheet_name="Sheet1",
@@ -147,7 +148,7 @@ class Navigator:
         self.__left_df = appl_df
         self.__appl_numbers = appl_numbers
         self.__current_url = driver.current_url
-        self.status = 4
+        self.set_status(4)
 
     def parse_personal_data(self,
                             ask_for_cancel_interval=5000,
@@ -161,7 +162,7 @@ class Navigator:
         # element_found = False
         browser.refresh()
         self.__current_url = browser.current_url
-        self.status = 5
+        self.set_status(5)
         appl_dict = {}
         counter = 0
         stop_parsing = False
