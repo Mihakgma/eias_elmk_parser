@@ -8,12 +8,9 @@ class ELMKParser:
     @staticmethod
     @handle_exceptions_quit_driver
     def start(test_regime: bool = False,
-              text_caching_sleep=3,
               ask_for_cancel_interval_navigator=5000,
               sleep_secs_up_to_navigator=1.1,
-              sleep_secs_up_to_pesr_data_navigator=0.5,
-              max_iterations_caching=5,
-              data_dir_caching="..\\text_data"):
+              sleep_secs_up_to_pesr_data_navigator=0.5):
 
         session_manager = SessionManager()
         session_manager.start_new_session()
@@ -25,10 +22,11 @@ class ELMKParser:
         if test_regime:
             return
         else:
+            navigator(ask_for_cancel_interval=ask_for_cancel_interval_navigator,
+                      sleep_secs_up_to=sleep_secs_up_to_navigator,
+                      sleep_secs_up_to_pesr_data=sleep_secs_up_to_pesr_data_navigator)
             threads_monitoring = ThreadsMonitor()
-            threads_monitoring.start(ask_for_cancel_interval_navigator,
-                                     sleep_secs_up_to_navigator,
-                                     sleep_secs_up_to_pesr_data_navigator)
+            threads_monitoring.start()
 
 
 if __name__ == '__main__':
