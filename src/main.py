@@ -1,7 +1,5 @@
 from patterns.funct_wrapper import handle_exceptions_quit_driver
 from classes.session_manager import SessionManager
-from deprecated.text_caching import TextCaching
-
 from classes.threads_monitoring import ThreadsMonitor
 
 
@@ -15,7 +13,7 @@ class ELMKParser:
               sleep_secs_up_to_navigator=1.1,
               sleep_secs_up_to_pesr_data_navigator=0.5,
               max_iterations_caching=5,
-              cache_dir_caching="..\\text_data"):
+              data_dir_caching="..\\text_data"):
 
         session_manager = SessionManager()
         session_manager.start_new_session()
@@ -27,30 +25,10 @@ class ELMKParser:
         if test_regime:
             return
         else:
-            text_caching = TextCaching(sleep_time=text_caching_sleep,
-                                       obj=navigator,
-                                       cache_dir=cache_dir_caching,
-                                       max_iterations=max_iterations_caching)
             threads_monitoring = ThreadsMonitor()
-
-            threads_to_start = {
-                navigator: [
-                    ask_for_cancel_interval_navigator,
-                    sleep_secs_up_to_navigator,
-                    sleep_secs_up_to_pesr_data_navigator
-                ],
-                text_caching: [],
-                # threads_monitoring: [],
-            }
-
-            threads_to_join = []
-            for (t, p) in threads_to_start.items():
-                # thread = Thread(target=t, args=p)
-                threads_to_join.append(t)
-                t.start()
-
-            for thread in threads_to_join:
-                thread.join()
+            threads_monitoring.start(ask_for_cancel_interval_navigator,
+                                     sleep_secs_up_to_navigator,
+                                     sleep_secs_up_to_pesr_data_navigator)
 
 
 if __name__ == '__main__':

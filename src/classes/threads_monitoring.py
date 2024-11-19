@@ -2,8 +2,10 @@ from threading import Thread, RLock
 from threading import enumerate as thread_enumerate
 from time import sleep as time_sleep
 
+from patterns.singleton import Singleton
 
-class ThreadsMonitor(Thread):
+
+class ThreadsMonitor(Thread, Singleton):
     def __init__(self,
                  daemon: bool = True,
                  timeout: int = 1):

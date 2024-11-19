@@ -4,6 +4,7 @@ from selenium.common.exceptions import StaleElementReferenceException
 
 from classes.check_dates import DateChecker
 from classes.data_manager import DataManager
+from classes.threads_monitoring import ThreadsMonitor
 from functions.df_functions import excel_to_data_frame_parser, printDimensionsOfDF
 from classes.driver import Driver
 from functions.parsing_functions import (send_keys_by_xpath, parse_total_df, need_end_procedure, random_sleep,
@@ -12,10 +13,9 @@ from functions.parsing_functions import (send_keys_by_xpath, parse_total_df, nee
 from data import (HOME_URL, LOGIN_XPATH, LOGIN, PASSWORD_XPATH, PASSWORD, ELMK_URL, TEMP_XLSX_FILENAME,
                   APPLN_NUMBER_COLNAME, NUM_ROWS_MARK, NO_or_YES, NAVIGATOR_STATUS, START_KEY_WORD, OK_CERT_SCREEN_FILE,
                   CERT_SCREEN_FILE)
-from patterns.singleton import Singleton
 
 
-class Navigator(Singleton):
+class Navigator:
     """
     need to think about this class:
     1) overriding __str__ method (to save all fields of Navigator instance):
@@ -55,8 +55,14 @@ class Navigator(Singleton):
     def get_current_url(self):
         return self.__current_url
 
+    def set_current_url(self, url: str):
+        self.__current_url = url
+
     def get_current_application_number(self):
         return self.__current_application_number
+
+    def set_current_application_number(self, number: int):
+        self.__current_application_number = number
 
     def get_status(self) -> int:
         return self.__status
@@ -153,6 +159,8 @@ class Navigator(Singleton):
         counter = 0
         stop_parsing = False
         for number in tqdm.tqdm(appl_numbers):
+            self.set_current_application_number(number=number)
+            self.set_current_url(url=browser.current_url)
             # переименовать флаг!!!
             if stop_parsing:  # завершаем досрочно, если юзер ввел х (русс / англ. раскладка)
                 break
@@ -250,6 +258,8 @@ class Navigator(Singleton):
         # random_sleep(upper_bound=40, lower_bound=25)
         self.login()
         input("DF with general data has been parsed. Press Enter to continue...")
+        threads_monitoring = ThreadsMonitor()
+        threads_monitoring.close_self()
         # random_sleep(upper_bound=40, lower_bound=25)
         self.parse_personal_data(**kwargs)
 

@@ -26,6 +26,7 @@ class SessionManager(Singleton):
                                 session_manager=self,
                                 auto_charge=True)
         SessionManager.__SESSIONS_CREATED.append(my_navigator)
+        my_navigator()
 
     def get_current_driver(self):
         return self.__current_driver
