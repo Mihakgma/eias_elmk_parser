@@ -1,5 +1,5 @@
 from classes.driver import Driver
-from navigator import Navigator
+from classes.navigator import Navigator
 
 
 class Injector:

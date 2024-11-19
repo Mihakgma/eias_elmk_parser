@@ -54,4 +54,4 @@ class ELMKParser:
 
 
 if __name__ == '__main__':
-    ELMKParser().start(test_regime=False)
+    ELMKParser().start(test_regime=True)

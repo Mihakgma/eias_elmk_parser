@@ -50,4 +50,4 @@ class DataManager:
 
 
 if __name__ == '__main__':
-    pass
+    data_manager = DataManager()

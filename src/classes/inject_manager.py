@@ -1,6 +1,6 @@
 from classes.driver import Driver
-from injector import Injector
-from navigator import Navigator
+from classes.injector import Injector
+from classes.navigator import Navigator
 
 
 class InjectManager:
