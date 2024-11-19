@@ -29,7 +29,7 @@ class Navigator:
         which contain in Navigator instance...
     """
     WARNINGS = {
-        HOME_URL: [input, 'Confirm certificate and enter any key to continue.'],
+        HOME_URL: [print, 'Confirm certificate and enter any key to continue.'],
         ELMK_URL: [input, 'Use previously downloaded DF: да (y) / нет (n)?'],
     }
     __STATUS = NAVIGATOR_STATUS
@@ -97,6 +97,10 @@ class Navigator:
         warnings = self.WARNINGS
         if page_path in warnings:
             func, warn_text = warnings[page_path][0], warnings[page_path][1]
+            if page_path == HOME_URL:
+                submit_certificate(cert_screen_file_path=CERT_SCREEN_FILE,
+                                   ok_screen_file_path=OK_CERT_SCREEN_FILE,
+                                   counter=5)
             return func(warn_text)
 
     def login(self):
@@ -253,12 +257,9 @@ class Navigator:
         return ";\n".join(out)
 
     def __call__(self, *args, **kwargs):
-        self.print_page()
-        input("Navigator has been called. Press Enter to continue...")
-        submit_certificate(cert_screen_file_path=CERT_SCREEN_FILE,
-                           ok_screen_file_path=OK_CERT_SCREEN_FILE,
-                           counter=5)
-        # random_sleep(upper_bound=40, lower_bound=25)
+        # self.print_page()
+        # input("Navigator has been called. Press Enter to continue...")
+        self.navigate(HOME_URL)
         self.login()
         input("DF with general data has been parsed. Press Enter to continue...")
         threads_monitoring = ThreadsMonitor()
