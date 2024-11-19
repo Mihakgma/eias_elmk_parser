@@ -1,5 +1,5 @@
 import functools
-from selenium.common.exceptions import NoSuchWindowException
+from selenium.common.exceptions import NoSuchWindowException, WebDriverException
 
 from classes.driver import Driver
 
@@ -11,6 +11,10 @@ def handle_exceptions_quit_driver(func):
         try:
             return func(*args, **kwargs)
         except NoSuchWindowException as e:
+            print(f"Произошла ошибка: {e}")
+            Driver.CURRENT_INSTANCE.discharge()
+            return None
+        except WebDriverException as e:
             print(f"Произошла ошибка: {e}")
             Driver.CURRENT_INSTANCE.discharge()
             return None
