@@ -10,7 +10,8 @@ class ELMKParser:
     def start(test_regime: bool = False,
               ask_for_cancel_interval_navigator=5000,
               sleep_secs_up_to_navigator=1.1,
-              sleep_secs_up_to_pesr_data_navigator=0.5):
+              sleep_secs_up_to_pesr_data_navigator=0.5,
+              daemon_tm: bool=False):
 
         session_manager = SessionManager()
         session_manager.start_new_session()
@@ -25,7 +26,7 @@ class ELMKParser:
             navigator(ask_for_cancel_interval=ask_for_cancel_interval_navigator,
                       sleep_secs_up_to=sleep_secs_up_to_navigator,
                       sleep_secs_up_to_pesr_data=sleep_secs_up_to_pesr_data_navigator)
-            threads_monitoring = ThreadsMonitor()
+            threads_monitoring = ThreadsMonitor(daemon=daemon_tm)
             threads_monitoring.start()
 
 
