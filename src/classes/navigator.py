@@ -262,9 +262,9 @@ class Navigator:
         # input("Navigator has been called. Press Enter to continue...")
         self.navigate(HOME_URL)
         self.login()
-        input("DF with general data has been parsed. Press Enter to continue...")
         threads_monitoring = ThreadsMonitor()
         threads_monitoring.close_self()
+        print("DF with general data has been parsed. Press Enter to continue...")
         # random_sleep(upper_bound=40, lower_bound=25)
         self.parse_personal_data(**kwargs)
 

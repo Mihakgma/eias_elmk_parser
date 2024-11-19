@@ -23,11 +23,12 @@ class ELMKParser:
         if test_regime:
             return
         else:
+            threads_monitoring = ThreadsMonitor(daemon=daemon_tm)
+            threads_monitoring.start()
             navigator(ask_for_cancel_interval=ask_for_cancel_interval_navigator,
                       sleep_secs_up_to=sleep_secs_up_to_navigator,
                       sleep_secs_up_to_pesr_data=sleep_secs_up_to_pesr_data_navigator)
-            threads_monitoring = ThreadsMonitor(daemon=daemon_tm)
-            threads_monitoring.start()
+
 
 
 if __name__ == '__main__':
