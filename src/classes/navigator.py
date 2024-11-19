@@ -48,6 +48,10 @@ class Navigator:
         self.__appl_numbers: list = []
         self.__right_df: DataFrame = DataFrame()
         self.__status: int = 1
+        self.__need_parse_left_df = False
+
+    def set_need_parse_left_df(self, need_parse_left_df: bool):
+        self.__need_parse_left_df = need_parse_left_df
 
     def get_driver_obj(self) -> Driver:
         return self.__driver_obj
@@ -123,14 +127,10 @@ class Navigator:
                            timeout=15,
                            need_press_enter=True)
         print("Logged in. Press Enter to continue...")
-        is_text_on_page(driver=self.__driver_obj.get_driver(),
-                        text=self.__START_KEY_WORD)
         self.set_current_url(driver.current_url)
         self.set_status(2)
-        # input('Подождать пока страница прогрузится?')
-        answer = self.navigate(ELMK_URL).strip().lower()
         self.set_status(3)
-        if "y" in answer or "да" in answer:
+        if self.__need_parse_left_df:
             appl_df = excel_to_data_frame_parser(file=TEMP_XLSX_FILENAME,
                                                  sheet_name="Sheet1",
                                                  rows_to_skip=0,
@@ -173,7 +173,6 @@ class Navigator:
         for number in tqdm.tqdm(appl_numbers):
             self.set_current_application_number(number=number)
             self.set_current_url(url=browser.current_url)
-            # переименовать флаг!!!
             if stop_parsing:  # завершаем досрочно, если юзер ввел х (русс / англ. раскладка)
                 break
             need_parse_appl = True
