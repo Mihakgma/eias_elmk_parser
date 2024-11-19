@@ -14,5 +14,9 @@ def handle_exceptions_quit_driver(func):
             print(f"Произошла ошибка: {e}")
             Driver.CURRENT_INSTANCE.discharge()
             return None
+        except TypeError as te:
+            print(f"Произошла ошибка: {te}")
+            Driver.CURRENT_INSTANCE.discharge()
+            return None
 
     return wrapper
