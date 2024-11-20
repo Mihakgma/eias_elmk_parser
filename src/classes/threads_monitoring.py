@@ -29,8 +29,8 @@ class ThreadsMonitor(Thread, Singleton):
                 memory_info = process.memory_info()
                 memory_usage = memory_info.rss / (1024 ** 2)  # Memory in MB
                 print(f" - {thread.name} ({thread.ident}) - Memory usage: {memory_usage:.2f} MB")
-            except psutil.NoSuchProcess:
-                print(f" - {thread.name} ({thread.ident}) - Process not found.")
+            except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess) as e:
+                print(f" - {thread.name} ({thread.ident}) - {type(e).__name__}: {e}")
             except Exception as e:
                 print(f" - Error getting memory usage for {thread.name}: {e}")
             time_sleep(self.timeout)
@@ -59,3 +59,10 @@ class ThreadsMonitor(Thread, Singleton):
             f"Is running: <{self.__is_running}>"
         ])
         return out
+
+
+if __name__ == '__main__':
+    threads_monitor = ThreadsMonitor()
+    threads_monitor.start()
+    time_sleep(5)
+    threads_monitor.close_self()
