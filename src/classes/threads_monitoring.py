@@ -48,7 +48,7 @@ class ThreadsMonitor(Thread, Singleton):
         else:
             print(f"Threading of instance <{self}>\nHas been successfully stopped...")
 
-    def close_self(self):
+    def stop(self):
         self.__is_running = False
 
     def __str__(self):
@@ -65,4 +65,4 @@ if __name__ == '__main__':
     threads_monitor = ThreadsMonitor()
     threads_monitor.start()
     time_sleep(5)
-    threads_monitor.close_self()
+    threads_monitor.stop()
