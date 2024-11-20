@@ -33,7 +33,7 @@ class ThreadsMonitor(Thread, Singleton):
                 print(f" - {thread.name} ({thread.ident}) - {type(e).__name__}: {e}")
             except Exception as e:
                 print(f" - Error getting memory usage for {thread.name}: {e}")
-            time_sleep(self.timeout)
+            # time_sleep(self.timeout)
 
     def run(self):
         lock = RLock()
@@ -41,6 +41,7 @@ class ThreadsMonitor(Thread, Singleton):
         Runs thread printer.
         """
         while self.__is_running:
+            time_sleep(self.timeout)
             with lock:
                 lock.acquire()
                 self.print_running_threads()
