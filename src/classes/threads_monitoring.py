@@ -2,6 +2,8 @@ from threading import Thread, RLock
 from threading import enumerate as thread_enumerate
 from time import sleep as time_sleep
 
+import psutil
+
 from patterns.singleton import Singleton
 
 
@@ -22,7 +24,15 @@ class ThreadsMonitor(Thread, Singleton):
         """
         print("Current running threads:")
         for thread in thread_enumerate():
-            print(f" - {thread.name} ({thread.ident})")
+            try:
+                process = psutil.Process(thread.ident)
+                memory_info = process.memory_info()
+                memory_usage = memory_info.rss / (1024 ** 2)  # Memory in MB
+                print(f" - {thread.name} ({thread.ident}) - Memory usage: {memory_usage:.2f} MB")
+            except psutil.NoSuchProcess:
+                print(f" - {thread.name} ({thread.ident}) - Process not found.")
+            except Exception as e:
+                print(f" - Error getting memory usage for {thread.name}: {e}")
             time_sleep(self.timeout)
 
     def run(self):
