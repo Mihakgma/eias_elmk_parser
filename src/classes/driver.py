@@ -6,7 +6,6 @@ from data.variables import BROWSER_FILE_PATH, WEBDRIVER_PATH, DRIVER_ARGUMENTS, 
 
 
 class Driver:
-    __ID = 0
     __BROWSER_FILE_PATH: str = BROWSER_FILE_PATH
     __WEBDRIVER_PATH: str = WEBDRIVER_PATH
     __DRIVER_ARGUMENTS: list = DRIVER_ARGUMENTS
@@ -15,7 +14,6 @@ class Driver:
     CURRENT_INSTANCE = None
 
     def __new__(cls, *args, **kwargs):
-        cls.__ID += 1
         cls.__DRIVERS_CREATED += 1
         cls.CURRENT_INSTANCE = super(Driver, cls).__new__(cls)
         return cls.CURRENT_INSTANCE
@@ -25,7 +23,7 @@ class Driver:
         self.__wait_secs = wait_secs
         self.__charged = False
         self.__driver = None
-        self.__ID = Driver.__ID
+        self.__ID = Driver.__DRIVERS_CREATED
 
     def charge(self, test=True):
         # self.start()  # start new thread
@@ -70,6 +68,10 @@ class Driver:
 
     def get_id(self):
         return self.__ID
+
+    def __str__(self):
+        return f"Driver number: {self.__ID}"
+
 
 
 if __name__ == '__main__':
