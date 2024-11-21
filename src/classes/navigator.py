@@ -64,6 +64,7 @@ class Navigator:
 
     @setter_log("LOGS")
     def set_current_url(self, url: str):
+        print(url)
         self.__current_url = url
 
     def get_current_application_number(self):
@@ -71,6 +72,7 @@ class Navigator:
 
     @setter_log("LOGS")
     def set_current_application_number(self, number: int):
+        print(number)
         self.__current_application_number = number
 
     def get_status(self) -> int:
@@ -79,6 +81,7 @@ class Navigator:
     @setter_log("LOGS")
     def set_status(self, status: int):
         if status in self.__STATUS:
+            print(f"Status: <{status}>")
             self.__status = status
         else:
             message = "Status must be one of the following:\n" + \
