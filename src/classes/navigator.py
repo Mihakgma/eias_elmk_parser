@@ -31,7 +31,6 @@ class Navigator:
     """
     WARNINGS = {
         HOME_URL: [print, 'Confirm certificate and enter any key to continue.'],
-        ELMK_URL: [input, 'Use previously downloaded DF: да (y) / нет (n)?'],
     }
     __STATUS: int = NAVIGATOR_STATUS
     __START_KEY_WORD: str = START_KEY_WORD
@@ -266,9 +265,10 @@ class Navigator:
         return ";\n".join(out)
 
     def __call__(self, *args, **kwargs):
-        # threads_monitoring = ThreadsMonitor()
-        # threads_monitoring.stop()
+        threads_monitoring = ThreadsMonitor()
+        threads_monitoring.start()
         self.navigate(HOME_URL)
+        threads_monitoring.stop()
         self.login()
         print("DF with general data has been parsed. Press Enter to continue...")
         # random_sleep(upper_bound=40, lower_bound=25)
