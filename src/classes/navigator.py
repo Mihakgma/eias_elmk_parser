@@ -76,6 +76,7 @@ class Navigator:
     def get_status(self) -> int:
         return self.__status
 
+    @setter_log("LOGS")
     def set_status(self, status: int):
         if status in self.__STATUS:
             self.__status = status
@@ -129,6 +130,7 @@ class Navigator:
         print("Logged in. Press Enter to continue...")
         self.set_current_url(driver.current_url)
         self.set_status(2)
+        self.navigate(ELMK_URL)
         self.set_status(3)
         if self.__need_parse_left_df:
             appl_df = excel_to_data_frame_parser(file=TEMP_XLSX_FILENAME,
