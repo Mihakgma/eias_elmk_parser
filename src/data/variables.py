@@ -18,6 +18,7 @@ UPLOAD_LAN_DIR = "\\192.168.201.38\\общая папка\\06 ООДЦ\\Выгр
 LOGIN, PASSWORD = get_login_password(txt_file_path=LOGIN_PASSWORD_FULLPATH)
 NUM_ROWS_MARK = 'Количество записей: '
 TEMP_XLSX_FILENAME = "temp_xlsx_elmk_first_df.xlsx"
+LOGS_DIR = "LOGS"
 
 CERT_SCREEN_FILES = [
     r"C:\Users\tabakaev_mv\Desktop\РАБОТА\ЕИАС\2024\ЭЛМК\ELMK_screen_scans\cert_submit_window_1.bmp",
