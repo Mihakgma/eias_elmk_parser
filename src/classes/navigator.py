@@ -266,8 +266,8 @@ class Navigator:
         return ";\n".join(out)
 
     def __call__(self, *args, **kwargs):
-        threads_monitoring = ThreadsMonitor()
-        threads_monitoring.stop()
+        # threads_monitoring = ThreadsMonitor()
+        # threads_monitoring.stop()
         self.navigate(HOME_URL)
         self.login()
         print("DF with general data has been parsed. Press Enter to continue...")
