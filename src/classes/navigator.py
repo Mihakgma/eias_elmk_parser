@@ -108,7 +108,8 @@ class Navigator:
                                ok_screen_file_path=OK_CERT_SCREEN_FILE,
                                counter=5)
         driver.get(page_path)
-        self.print_page()
+        # self.print_page()
+        self.set_current_url(driver.current_url)
         warnings = self.WARNINGS
         if page_path in warnings:
             func, warn_text = warnings[page_path][0], warnings[page_path][1]
@@ -265,12 +266,10 @@ class Navigator:
         return ";\n".join(out)
 
     def __call__(self, *args, **kwargs):
-        # self.print_page()
-        # input("Navigator has been called. Press Enter to continue...")
-        self.navigate(HOME_URL)
-        self.login()
         threads_monitoring = ThreadsMonitor()
         threads_monitoring.stop()
+        self.navigate(HOME_URL)
+        self.login()
         print("DF with general data has been parsed. Press Enter to continue...")
         # random_sleep(upper_bound=40, lower_bound=25)
         self.parse_personal_data(**kwargs)

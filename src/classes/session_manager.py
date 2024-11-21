@@ -39,6 +39,16 @@ class SessionManager(Singleton):
 
     def stop_current_session(self,
                              start_session_automatically=False):
+        """
+        Для данного метода необходимо продумать,
+        как очищать память по сохраненным объектам навигатор, а именно,
+        в плане очистки данных в них с помощью метода clear_memory(),
+        предположительно необходимо будет очищать ВСЕ данные у объектов этого класса
+        ЗА ИСКЛЮЧЕНИЕМ ПОСЛЕДНЕГО ОБЪЕКТА КЛАССА НАВИГАТОР,
+        ПОМЕЩЕННЫХ (СОЗДАННЫХ РАНЕЕ) В ПОЛЕ ТЕКУЩЕГО КЛАССА __SESSIONS_CREATED!!!
+        :param start_session_automatically:
+        :return:
+        """
         self.__current_driver.discharge()
         if start_session_automatically:
             self.start_new_session()

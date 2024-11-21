@@ -12,7 +12,7 @@ from patterns.singleton import Singleton
 class ThreadsMonitor(Thread, Singleton):
     def __init__(self,
                  daemon: bool = True,
-                 timeout: int = 1):
+                 timeout: int = 10):
         Thread.__init__(self,
                         name=self.__class__.__name__,
                         daemon=daemon)
