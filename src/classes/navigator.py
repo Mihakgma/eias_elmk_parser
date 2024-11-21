@@ -48,6 +48,7 @@ class Navigator:
         self.__right_df: DataFrame = DataFrame()
         self.__status: int = 1
         self.__need_parse_left_df = False
+        self.__right_df_dict = dict
 
     def set_need_parse_left_df(self, need_parse_left_df: bool):
         self.__need_parse_left_df = need_parse_left_df
@@ -176,8 +177,8 @@ class Navigator:
         counter = 0
         stop_parsing = False
         for number in tqdm.tqdm(appl_numbers):
-            self.set_current_application_number(number=number)
-            self.set_current_url(url=browser.current_url)
+            self.set_current_application_number(number)
+            self.set_current_url(browser.current_url)
             if stop_parsing:  # завершаем досрочно, если юзер ввел х (русс / англ. раскладка)
                 break
             need_parse_appl = True
@@ -238,7 +239,7 @@ class Navigator:
                 appl_dict[number] = get_personal_data(driver=browser,
                                                       sleep_up_to=sleep_secs_up_to_pesr_data,
                                                       in_new_window=True)
-
+            self.__right_df_dict = appl_dict
         print(f'\nКоличество спарсенных строк таблицы заявлений составило: <{len(appl_dict)}>')
         self.__right_df = DataManager.preprocess_personal_df(appl_dict)
 
