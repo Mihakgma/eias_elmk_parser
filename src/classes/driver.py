@@ -24,6 +24,13 @@ class Driver:
         self.__charged = False
         self.__driver = None
         self.__ID = Driver.__DRIVERS_CREATED
+        self.__linked_navigator = None
+
+    def get_linked_navigator(self):
+        return self.__linked_navigator
+
+    def set_linked_navigator(self, linked_navigator):
+        self.__linked_navigator = linked_navigator
 
     def charge(self, test=True):
         # self.start()  # start new thread

@@ -57,6 +57,7 @@ class Navigator:
         return self.__driver_obj
 
     def set_driver_obj(self, driver: Driver):
+        driver.set_linked_navigator(self)
         self.__driver_obj = driver
 
     def get_current_url(self):
@@ -176,7 +177,9 @@ class Navigator:
         appl_dict = {}
         counter = 0
         stop_parsing = False
+        ind = -1
         for number in tqdm.tqdm(appl_numbers):
+            ind += 1
             self.set_current_application_number(number)
             self.set_current_url(browser.current_url)
             if stop_parsing:  # завершаем досрочно, если юзер ввел х (русс / англ. раскладка)
@@ -240,6 +243,10 @@ class Navigator:
                                                       sleep_up_to=sleep_secs_up_to_pesr_data,
                                                       in_new_window=True)
             self.__right_df_dict = appl_dict
+            try:
+                self.__appl_numbers = appl_numbers[ind+1:]
+            except IndexError:
+                print("list __appl_numbers out of range")
         print(f'\nКоличество спарсенных строк таблицы заявлений составило: <{len(appl_dict)}>')
         self.__right_df = DataManager.preprocess_personal_df(appl_dict)
 
@@ -248,6 +255,9 @@ class Navigator:
         self.__appl_numbers = []
         if all_data:
             self.__right_df = DataFrame()
+
+    def serialize(self):
+        print(f"\nSerializing process for <{self}>\nhas been initiated...\n")
 
     def __str__(self):
         driver = self.__driver_obj

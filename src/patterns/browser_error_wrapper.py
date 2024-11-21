@@ -27,6 +27,9 @@ def __print_error_discharge_driver(exception,
                                    function,
                                    text: str = "",
                                    need_traceback: bool = True):
+    last_driver = Driver.CURRENT_INSTANCE
+    last_navigator = last_driver.get_linked_navigator()
+    last_navigator.serialize()
     print(f"An error | exception occurred: {exception}")
     print(f"<{function.__name__}> function has been crashed on ...")
     if need_traceback:
@@ -36,4 +39,4 @@ def __print_error_discharge_driver(exception,
                 print(f" {line.filename}:{line.lineno} in {line.name} ({line.line})")
                 break  # Exit the loop after finding the relevant line
     input(text)
-    Driver.CURRENT_INSTANCE.discharge()
+    last_driver.discharge()
