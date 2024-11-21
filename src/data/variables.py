@@ -19,6 +19,7 @@ LOGIN, PASSWORD = get_login_password(txt_file_path=LOGIN_PASSWORD_FULLPATH)
 NUM_ROWS_MARK = 'Количество записей: '
 TEMP_XLSX_FILENAME = "temp_xlsx_elmk_first_df.xlsx"
 LOGS_DIR = "LOGS"
+NAVIGATOR_SERIALIZE_FILE = "navigator_data.json"
 
 CERT_SCREEN_FILES = [
     r"C:\Users\tabakaev_mv\Desktop\РАБОТА\ЕИАС\2024\ЭЛМК\ELMK_screen_scans\cert_submit_window_1.bmp",

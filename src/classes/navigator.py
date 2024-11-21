@@ -1,6 +1,11 @@
+import json
+
 import tqdm
 from pandas import DataFrame
 from selenium.common.exceptions import StaleElementReferenceException
+
+from os import path as os_path
+from os import makedirs as os_makedirs
 
 from classes.check_dates import DateChecker
 from classes.data_manager import DataManager
@@ -9,10 +14,10 @@ from functions.df_functions import excel_to_data_frame_parser, printDimensionsOf
 from classes.driver import Driver
 from functions.parsing_functions import (send_keys_by_xpath, parse_total_df, need_end_procedure, random_sleep,
                                          find_element_xpath, parse_part_df, move_2web_element, get_personal_data,
-                                         click_element_by_xpath, get_page_text, is_text_on_page, submit_certificate)
+                                         click_element_by_xpath, get_page_text, submit_certificate)
 from data import (HOME_URL, LOGIN_XPATH, LOGIN, PASSWORD_XPATH, PASSWORD, ELMK_URL, TEMP_XLSX_FILENAME,
                   APPLN_NUMBER_COLNAME, NUM_ROWS_MARK, NO_or_YES, NAVIGATOR_STATUS, START_KEY_WORD, OK_CERT_SCREEN_FILE,
-                  CERT_SCREEN_FILES, LOGS_DIR)
+                  CERT_SCREEN_FILES, LOGS_DIR, NAVIGATOR_SERIALIZE_FILE)
 from patterns.browser_error_wrapper import handle_exceptions_quit_driver
 from patterns.setter_logger import setter_log
 
@@ -48,7 +53,7 @@ class Navigator:
         self.__right_df: DataFrame = DataFrame()
         self.__status: int = 1
         self.__need_parse_left_df = False
-        self.__right_df_dict = dict
+        self.__right_df_dict = {}
 
     def set_need_parse_left_df(self, need_parse_left_df: bool):
         self.__need_parse_left_df = need_parse_left_df
@@ -258,6 +263,23 @@ class Navigator:
 
     def serialize(self):
         print(f"\nSerializing process for <{self}>\nhas been initiated...\n")
+        """Serializes the Navigator object to a JSON file."""
+        data_to_serialize = {
+            "__status": self.__status,
+            "__appl_numbers": self.__appl_numbers,
+            "__right_df_dict": self.__right_df_dict,
+            # Add other relevant attributes as needed
+            # e.g., '__left_df': self.__left_df.to_dict('records'), # Convert DataFrame to list of dictionaries
+        }
+        try:  # Handle potential errors during serialization
+            fullpath_json = os_path.join(LOGS_DIR, NAVIGATOR_SERIALIZE_FILE)
+            os_makedirs(LOGS_DIR, exist_ok=True)
+            with open(fullpath_json, "w") as f:
+                json.dump(data_to_serialize, f, indent=4)
+            print("Navigator data serialized successfully to navigator_data.json")
+        except Exception as e:
+            print(f"Error during serialization: {e}")
+            # Consider logging the error to better track issues
 
     def __str__(self):
         driver = self.__driver_obj
