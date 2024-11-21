@@ -5,6 +5,7 @@ from datetime import datetime
 
 import psutil
 
+from classes.driver import Driver
 from patterns.singleton import Singleton
 
 
@@ -59,7 +60,7 @@ class ThreadsMonitor(Thread, Singleton):
         """
         Runs thread printer.
         """
-        while self.__is_running:
+        while self.__is_running and Driver.CURRENT_INSTANCE.is_charged():
             time_sleep(self.timeout)
             with lock:
                 lock.acquire()
