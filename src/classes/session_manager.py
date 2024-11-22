@@ -51,6 +51,7 @@ class SessionManager(Singleton):
         SessionManager.__SESSIONS_CREATED.append(my_navigator)
         if not test_regime:
             observe_session(session_manager=self, navigator=my_navigator, driver=my_driver)
+            my_navigator.deserialize()
             my_navigator()
 
     def get_current_driver(self):
@@ -80,6 +81,7 @@ class SessionManager(Singleton):
         :return:
         """
         self.__current_driver.discharge()
+        self.__current_navigator.serialize()
         if clear_previous_navigators:
             SessionManager.clear_previous_sessions()
         if start_session_automatically:
