@@ -25,6 +25,7 @@ def get_constants(
         PASSPRT_DATE_XPATH,
         PASSPRT_DEPT_XPATH,
         PASSPRT_CODE_XPATH):
+
     COLNAMES_DICT = (
         WAIT_DICT,
         REGISTR_ADRESS_DICT,
