@@ -16,7 +16,10 @@ from pyautogui import click as pyt_click
 from pyautogui import locateOnScreen as pyt_locateOnScreen
 
 from patterns.thread_func import thread
-from data.constants import *
+from data.constants import get_constants
+
+
+COLNAMES_DICT, PERS_DATA_XPATH = get_constants()
 
 @thread
 def submit_certificate(cert_screen_files_path: list = "",
