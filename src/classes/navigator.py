@@ -116,19 +116,23 @@ class Navigator:
 
     @handle_exceptions_quit_driver
     def navigate(self, page_path):
-        driver = self.__driver_obj.get_driver()
-        self.set_current_url(driver.current_url)
-        if page_path == HOME_URL:
-            submit_certificate(cert_screen_files_path=CERT_SCREEN_FILES,
-                               ok_screen_file_path=OK_CERT_SCREEN_FILE,
-                               counter=5)
-        driver.get(page_path)
-        # self.print_page()
-        self.set_current_url(driver.current_url)
-        warnings = self.WARNINGS
-        if page_path in warnings:
-            func, warn_text = warnings[page_path][0], warnings[page_path][1]
-            return func(warn_text)
+        try:
+            driver = self.__driver_obj.get_driver()
+
+            self.set_current_url(driver.current_url)
+            if page_path == HOME_URL:
+                submit_certificate(cert_screen_files_path=CERT_SCREEN_FILES,
+                                   ok_screen_file_path=OK_CERT_SCREEN_FILE,
+                                   counter=5)
+            driver.get(page_path)
+            # self.print_page()
+            self.set_current_url(driver.current_url)
+            warnings = self.WARNINGS
+            if page_path in warnings:
+                func, warn_text = warnings[page_path][0], warnings[page_path][1]
+                return func(warn_text)
+        except AttributeError as e:
+            print(f"navigate method failed with <{e}>")
 
     @handle_exceptions_quit_driver
     def login(self):
