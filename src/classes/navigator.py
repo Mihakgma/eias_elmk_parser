@@ -210,6 +210,9 @@ class Navigator:
         ind = -1
         for number in tqdm.tqdm(appl_numbers):
             ind += 1
+            if number in self.__right_df_dict:
+                pass
+
             self.set_current_application_number(number)
             self.set_current_url(browser.current_url)
             if stop_parsing:  # завершаем досрочно, если юзер ввел х (русс / англ. раскладка)
