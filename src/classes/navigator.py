@@ -143,15 +143,6 @@ class Navigator:
         self.navigate(ELMK_URL)
         self.set_status(3)
         if self.__need_parse_left_df:
-            appl_df = excel_to_data_frame_parser(file=TEMP_XLSX_FILENAME,
-                                                 sheet_name="Sheet1",
-                                                 rows_to_skip=0,
-                                                 blank_values_drop=0,
-                                                 first_row_header=0)
-            printDimensionsOfDF(dfInput=appl_df,
-                                warnStr="подгрузки временного ранее сохраненного ДФ")
-            appl_numbers = appl_df[APPLN_NUMBER_COLNAME].to_list()
-        else:
             appl_df, appl_numbers = parse_total_df(driver=driver,
                                                    num_rows_mark=NUM_ROWS_MARK,
                                                    appln_number_colname=APPLN_NUMBER_COLNAME,
@@ -160,6 +151,16 @@ class Navigator:
                                                    sleep_secs_up_to=1.2,
                                                    counter_max_value=350,
                                                    ask_for_cancel_interval=100)
+        else:
+            appl_df = excel_to_data_frame_parser(file=TEMP_XLSX_FILENAME,
+                                                 sheet_name="Sheet1",
+                                                 rows_to_skip=0,
+                                                 blank_values_drop=0,
+                                                 first_row_header=0)
+            printDimensionsOfDF(dfInput=appl_df,
+                                warnStr="downloading left DF from excel",)
+            appl_numbers = appl_df[APPLN_NUMBER_COLNAME].to_list()
+
         self.__left_df = appl_df
         self.__appl_numbers = appl_numbers
         self.set_current_url(driver.current_url)
