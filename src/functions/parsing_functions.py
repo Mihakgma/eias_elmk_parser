@@ -16,7 +16,7 @@ from pyautogui import click as pyt_click
 from pyautogui import locateOnScreen as pyt_locateOnScreen
 
 from patterns.thread_func import thread
-from data import *
+from data.constants import *
 
 @thread
 def submit_certificate(cert_screen_files_path: list = "",
