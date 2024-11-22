@@ -94,29 +94,41 @@ def observe_session(session_manager: SessionManager,
                      start_session_automatically=True,
                      clear_previous_navigators: bool = True,
                      test_regime: bool = False):
-    checks_per_application = {
-        "driver_id": driver.get_id(),
-        "navigator": navigator,
-        "check_time_seconds": check_time_seconds,
-        "max_iter_per_application": max_iter_per_application,
-        "start_session_automatically": start_session_automatically,
-        "clear_previous_navigators": clear_previous_navigators,
-        "test_regime": test_regime}
-    while driver.is_charged():
-        time_sleep(check_time_seconds)
-        application_number = navigator.get_current_application_number()
-        if application_number == -1:
-            pass
-        elif application_number in checks_per_application:
-            checks_per_application[application_number] += 1
-            if checks_per_application[application_number] > max_iter_per_application:
-                session_manager.stop_current_session(start_session_automatically=start_session_automatically,
-                                                     clear_previous_navigators=clear_previous_navigators,
-                                                     test_regime=test_regime)
+    try:
+
+        checks_per_application = {
+            "driver_id": driver.get_id(),
+            "navigator": navigator,
+            "check_time_seconds": check_time_seconds,
+            "max_iter_per_application": max_iter_per_application,
+            "start_session_automatically": start_session_automatically,
+            "clear_previous_navigators": clear_previous_navigators,
+            "test_regime": test_regime}
+        while driver.is_charged():
+            time_sleep(check_time_seconds)
+            application_number = navigator.get_current_application_number()
+            if application_number == -1:
+                pass
+            elif application_number in checks_per_application:
+                checks_per_application[application_number] += 1
+                if checks_per_application[application_number] > max_iter_per_application:
+                    session_manager.stop_current_session(start_session_automatically=start_session_automatically,
+                                                         clear_previous_navigators=clear_previous_navigators,
+                                                         test_regime=test_regime)
+            else:
+                checks_per_application[application_number] = 1
         else:
-            checks_per_application[application_number] = 1
-    else:
-        print("trying to save application numbers tries")
+            print("trying to save application numbers tries")
+            try:  # Handle potential errors during serialization
+                fullpath_json = os_path.join(LOGS_DIR, APPLICATIONS_NUMBERS_COUNTER_FILE)
+                os_makedirs(LOGS_DIR, exist_ok=True)
+                with open(fullpath_json, "w", encoding='utf-8') as f:  # Добавлено encoding='utf-8'
+                    json.dump(checks_per_application, f, indent=4)  # Используем json.dump, а не f.write
+                print(f"Application numbers of tries has been successfully to <{APPLICATIONS_NUMBERS_COUNTER_FILE}>")
+            except Exception as e:
+                print(f"Error during saving application numbers of tries: {e}")
+
+    except Exception as e:
         try:  # Handle potential errors during serialization
             fullpath_json = os_path.join(LOGS_DIR, APPLICATIONS_NUMBERS_COUNTER_FILE)
             os_makedirs(LOGS_DIR, exist_ok=True)
@@ -125,6 +137,9 @@ def observe_session(session_manager: SessionManager,
             print(f"Application numbers of tries has been successfully to <{APPLICATIONS_NUMBERS_COUNTER_FILE}>")
         except Exception as e:
             print(f"Error during saving application numbers of tries: {e}")
+        session_manager.stop_current_session(start_session_automatically=start_session_automatically,
+                                             clear_previous_navigators=clear_previous_navigators,
+                                             test_regime=test_regime)
 
 
 if __name__ == '__main__':
