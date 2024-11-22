@@ -15,7 +15,8 @@ class ELMKParser:
               need_parse_left_df: bool = False):
 
         session_manager = SessionManager()
-        session_manager.start_new_session()
+        session_manager.start_new_session(test_regime=test_regime)
+        print("session manager started")
         navigator = session_manager.get_navigator()
         driver = navigator.get_driver_obj()
         driver_s_m = session_manager.get_current_driver()
@@ -24,14 +25,14 @@ class ELMKParser:
         if test_regime:
             return
         else:
-            threads_monitoring = ThreadsMonitor(daemon=daemon_tm)
-            threads_monitoring.start()
-            navigator.set_need_parse_left_df(need_parse_left_df)
+            # threads_monitoring = ThreadsMonitor(daemon=daemon_tm)
+            # threads_monitoring.start()
+            # navigator.set_need_parse_left_df(need_parse_left_df)
             navigator(ask_for_cancel_interval=ask_for_cancel_interval_navigator,
                       sleep_secs_up_to=sleep_secs_up_to_navigator,
-                      sleep_secs_up_to_pesr_data=sleep_secs_up_to_pesr_data_navigator)
-
+                      sleep_secs_up_to_pesr_data=sleep_secs_up_to_pesr_data_navigator,
+                      need_parse_left_df=need_parse_left_df)
 
 
 if __name__ == '__main__':
-    ELMKParser().start(test_regime=True)
+    ELMKParser().start(test_regime=False)

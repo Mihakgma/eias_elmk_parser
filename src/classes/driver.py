@@ -2,7 +2,7 @@ from selenium import webdriver
 
 from selenium.common.exceptions import WebDriverException
 
-from data.variables import BROWSER_FILE_PATH, WEBDRIVER_PATH, DRIVER_ARGUMENTS, START_KEY_WORD
+from data import BROWSER_FILE_PATH, WEBDRIVER_PATH, DRIVER_ARGUMENTS, START_KEY_WORD
 
 
 class Driver:
