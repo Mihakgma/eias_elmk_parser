@@ -11,7 +11,8 @@ class ELMKParser:
               ask_for_cancel_interval_navigator=5000,
               sleep_secs_up_to_navigator=1.1,
               sleep_secs_up_to_pesr_data_navigator=0.5,
-              daemon_tm: bool=False):
+              daemon_tm: bool=False,
+              need_parse_left_df: bool = False):
 
         session_manager = SessionManager()
         session_manager.start_new_session()
@@ -25,6 +26,7 @@ class ELMKParser:
         else:
             threads_monitoring = ThreadsMonitor(daemon=daemon_tm)
             threads_monitoring.start()
+            navigator.set_need_parse_left_df(need_parse_left_df)
             navigator(ask_for_cancel_interval=ask_for_cancel_interval_navigator,
                       sleep_secs_up_to=sleep_secs_up_to_navigator,
                       sleep_secs_up_to_pesr_data=sleep_secs_up_to_pesr_data_navigator)
