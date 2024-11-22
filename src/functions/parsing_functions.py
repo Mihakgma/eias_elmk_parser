@@ -16,6 +16,7 @@ from pyautogui import click as pyt_click
 from pyautogui import locateOnScreen as pyt_locateOnScreen
 
 from patterns.thread_func import thread
+from data.variables import COLNAMES_DICT, PERS_DATA_XPATH
 
 
 @thread
@@ -341,8 +342,8 @@ def clipboard_copy(text: str, paste_value: bool = True):
             SetClipboardText(text, CF_UNICODETEXT)
             CloseClipboard()
             need_copy = False
-        except:
-            print("Ошибка при помещении объекта в буфер обмена!")
+        except BaseException as e:
+            print(f"Ошибка при помещении объекта в буфер обмена: <{e}>")
             print(f'Попытка номер: <{counter}>')
             time_sleep(2.5)
     if paste_value:
@@ -448,7 +449,7 @@ def get_personal_data(driver,
             # switch to new (just opened) web page
             driver.switch_to.window(driver.window_handles[1])
     out_dict = {}
-    global COLNAMES_DICT, PERS_DATA_XPATH
+
     for colname, xpath in zip(COLNAMES_DICT, PERS_DATA_XPATH):
         # print(colname, xpath)
         curr_value = ''
