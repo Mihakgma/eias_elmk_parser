@@ -12,7 +12,7 @@ from classes.data_manager import DataManager
 from classes.threads_monitoring import ThreadsMonitor
 from functions.df_functions import excel_to_data_frame_parser, printDimensionsOfDF
 from classes.driver import Driver
-from functions.parsing_functions import (send_keys_by_xpath, parse_total_df, need_end_procedure, random_sleep,
+from functions.parsing_functions import (send_keys_by_xpath, parse_total_df, random_sleep,
                                          find_element_xpath, parse_part_df, move_2web_element, get_personal_data,
                                          click_element_by_xpath, get_page_text, submit_certificate)
 from data import (HOME_URL, LOGIN_XPATH, LOGIN, PASSWORD_XPATH, PASSWORD, ELMK_URL, TEMP_XLSX_FILENAME,
@@ -167,6 +167,7 @@ class Navigator:
                                                    sleep_secs_up_to=1.2,
                                                    counter_max_value=350,
                                                    ask_for_cancel_interval=100)
+            self.__appl_numbers = appl_numbers
         else:
             appl_df = excel_to_data_frame_parser(file=TEMP_XLSX_FILENAME,
                                                  sheet_name="Sheet1",
@@ -178,7 +179,6 @@ class Navigator:
             appl_numbers = appl_df[APPLN_NUMBER_COLNAME].to_list()
 
         self.__left_df = appl_df
-        self.__appl_numbers = appl_numbers
         self.set_current_url(driver.current_url)
         self.set_status(4)
 
@@ -316,7 +316,7 @@ class Navigator:
             with open(fullpath_json, "r", encoding='utf-8') as f: # Открываем файл для чтения
                 j = json.load(f) # Используем json.load для чтения из файла
             print("\nRead json-file:")
-            [print(key, val) for key, val in j.items()]
+            # [print(key, val) for key, val in j.items()]
             [setattr(self, key, val) for key, val in j.items()
              if hasattr(self, key)]
             # “private” instance variables recovering...
@@ -377,5 +377,3 @@ if __name__ == '__main__':
     navigator_1.deserialize()
     print(navigator_1)
     print(navigator_1.get_appl_numbers())
-    # print(*[(k,v) for (k,v) in navigator.__dict__.items()], sep="\n")
-    # print(navigator.__class__.__name__)
