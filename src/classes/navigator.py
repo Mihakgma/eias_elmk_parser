@@ -182,6 +182,14 @@ class Navigator:
         self.set_current_url(driver.current_url)
         self.set_status(4)
 
+    def set_appl_numbers(self, appl_numbers: list):
+        if type(appl_numbers) != list:
+            raise TypeError(f"Cannot set 'appl_numbers' field to {type(appl_numbers)}")
+        self.__appl_numbers = appl_numbers
+
+    def get_appl_numbers(self):
+        return self.__appl_numbers
+
     @handle_exceptions_quit_driver
     def parse_personal_data(self,
                             ask_for_cancel_interval=5000,
@@ -292,12 +300,30 @@ class Navigator:
         try:  # Handle potential errors during serialization
             fullpath_json = os_path.join(LOGS_DIR, NAVIGATOR_SERIALIZE_FILE)
             os_makedirs(LOGS_DIR, exist_ok=True)
-            with open(fullpath_json, "w") as f:
-                json.dump(data_to_serialize, f, indent=4)
-            print("Navigator data serialized successfully to navigator_data.json")
+            with open(fullpath_json, "w", encoding='utf-8') as f:  # Добавлено encoding='utf-8'
+                json.dump(data_to_serialize, f, indent=4)  # Используем json.dump, а не f.write
+            print(f"Navigator data SERIALIZED successfully to <{NAVIGATOR_SERIALIZE_FILE}>")
         except Exception as e:
             print(f"Error during serialization: {e}")
             # Consider logging the error to better track issues
+
+    def deserialize(self):
+        try:
+            fullpath_json = os_path.join(LOGS_DIR, NAVIGATOR_SERIALIZE_FILE)
+            with open(fullpath_json, "r", encoding='utf-8') as f: # Открываем файл для чтения
+                j = json.load(f) # Используем json.load для чтения из файла
+            print("\nRead json-file:")
+            [print(key, val) for key, val in j.items()]
+            [setattr(self, key, val) for key, val in j.items()
+             if hasattr(self, key)]
+            # “private” instance variables recovering...
+            cls_name = "_" + self.__class__.__name__
+            [setattr(self, cls_name + key, val) for key, val in j.items()
+             if hasattr(self, cls_name + key)]
+            print(f"Navigator data DESERIALIZED successfully FROM <{NAVIGATOR_SERIALIZE_FILE}>")
+            self.set_status(12)
+        except Exception as e:
+            print(f"Error during deserialization: {e}")
 
     def __str__(self):
         driver = self.__driver_obj
@@ -338,3 +364,15 @@ if __name__ == '__main__':
     print(navigator)
     # navigator.status = 999
     print(navigator.status)
+    applications_test = [1, 2, 3, 4, '', "sdfsd", True, False]
+    navigator.set_appl_numbers(applications_test)
+    navigator.serialize()
+    print(navigator)
+    print(navigator.get_appl_numbers())
+    navigator_1 = Navigator()
+    navigator_1.set_driver_obj(driver_1)
+    navigator_1.deserialize()
+    print(navigator_1)
+    print(navigator_1.get_appl_numbers())
+    # print(*[(k,v) for (k,v) in navigator.__dict__.items()], sep="\n")
+    # print(navigator.__class__.__name__)

@@ -119,7 +119,8 @@ NAVIGATOR_STATUS = {
         8: ["KICKED_ON_CERTIFICATE_SUBMITTING_PAGE"],
         9: ["KICKED_OUT_OF_PORTAL"],
         10: ["ABORTED"],
-        11: ["SERIALIZED"]
+        11: ["SERIALIZED"],
+        12: ["DESERIALIZED"],
     }
 
 
