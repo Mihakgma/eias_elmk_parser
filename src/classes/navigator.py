@@ -56,12 +56,16 @@ class Navigator:
         self.__right_df_dict = {}
 
     def set_need_parse_left_df(self, need_parse_left_df: bool):
+        if type(need_parse_left_df) != bool:
+            raise TypeError(f"Cannot set 'need_parse_left_df' field to {type(need_parse_left_df)}")
         self.__need_parse_left_df = need_parse_left_df
 
     def get_driver_obj(self) -> Driver:
         return self.__driver_obj
 
     def set_driver_obj(self, driver: Driver):
+        if type(driver) != Driver:
+            raise TypeError(f"cannot set driver of {type(driver)} type to a <{self.__class__.__name__}> instance")
         driver.set_linked_navigator(self)
         self.__driver_obj = driver
 
@@ -70,7 +74,8 @@ class Navigator:
 
     @setter_log(LOGS_DIR)
     def set_current_url(self, url: str):
-        print(url)
+        if type(url) != str:
+            raise TypeError(f"cannot set url of {type(url)} type to a <{self.__class__.__name__}> instance")
         self.__current_url = url
 
     def get_current_application_number(self):
@@ -78,7 +83,11 @@ class Navigator:
 
     @setter_log(LOGS_DIR)
     def set_current_application_number(self, number: int):
-        print(number)
+        if type(number) != int:
+            raise TypeError(f"Cannot set application number of {type(number)} type")
+        elif number < -1:
+            raise ValueError(f"Cannot set negative application number: <{number}>")
+        # print(number)
         self.__current_application_number = number
 
     def get_status(self) -> int:
@@ -270,8 +279,6 @@ class Navigator:
             "__status": self.__status,
             "__appl_numbers": self.__appl_numbers,
             "__right_df_dict": self.__right_df_dict,
-            # Add other relevant attributes as needed
-            # e.g., '__left_df': self.__left_df.to_dict('records'), # Convert DataFrame to list of dictionaries
         }
         try:  # Handle potential errors during serialization
             fullpath_json = os_path.join(LOGS_DIR, NAVIGATOR_SERIALIZE_FILE)
