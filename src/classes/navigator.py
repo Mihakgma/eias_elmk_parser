@@ -17,7 +17,7 @@ from functions.parsing_functions import (send_keys_by_xpath, parse_total_df, nee
                                          click_element_by_xpath, get_page_text, submit_certificate)
 from data import (HOME_URL, LOGIN_XPATH, LOGIN, PASSWORD_XPATH, PASSWORD, ELMK_URL, TEMP_XLSX_FILENAME,
                   APPLN_NUMBER_COLNAME, NUM_ROWS_MARK, NO_or_YES, NAVIGATOR_STATUS, START_KEY_WORD, OK_CERT_SCREEN_FILE,
-                  CERT_SCREEN_FILES, LOGS_DIR, NAVIGATOR_SERIALIZE_FILE)
+                  CERT_SCREEN_FILES, LOGS_DIR, NAVIGATOR_SERIALIZE_FILE, COLNAMES_DICT, PERS_DATA_XPATH)
 from patterns.browser_error_wrapper import handle_exceptions_quit_driver
 from patterns.setter_logger import setter_log
 
@@ -42,6 +42,8 @@ class Navigator:
     __CERT_SCREEN_FILES: list = CERT_SCREEN_FILES
     __OK_CERT_SCREEN_FILE: str = OK_CERT_SCREEN_FILE
     __CERT_TRIES: int = 7
+    __COLNAMES_DICT = COLNAMES_DICT
+    __PERS_DATA_XPATH = PERS_DATA_XPATH
 
     def __init__(self):
         print(self.__class__.__name__ + " initialized")
@@ -260,6 +262,8 @@ class Navigator:
             # ПОЛУЧАЕМ ПЕРСОНАЛЬНЫЕ ДАННЫЕ!
             if not stop_parsing:
                 appl_dict[number] = get_personal_data(driver=browser,
+                                                      COLNAMES_DICT=self.__COLNAMES_DICT,
+                                                      PERS_DATA_XPATH=self.__PERS_DATA_XPATH,
                                                       sleep_up_to=sleep_secs_up_to_pesr_data,
                                                       in_new_window=True)
             self.__right_df_dict = appl_dict
