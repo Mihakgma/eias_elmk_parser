@@ -2,7 +2,7 @@ from selenium import webdriver
 
 from selenium.common.exceptions import WebDriverException
 
-from data import BROWSER_FILE_PATH, WEBDRIVER_PATH, DRIVER_ARGUMENTS, START_KEY_WORD
+from data.variables import BROWSER_FILE_PATH, WEBDRIVER_PATH, DRIVER_ARGUMENTS, START_KEY_WORD
 
 
 class Driver:
@@ -78,7 +78,6 @@ class Driver:
 
     def __str__(self):
         return f"Driver number: {self.__ID}"
-
 
 
 if __name__ == '__main__':
