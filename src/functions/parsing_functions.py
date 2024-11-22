@@ -15,8 +15,6 @@ from pyautogui import hotkey as pyt_hotkey
 from pyautogui import click as pyt_click
 from pyautogui import locateOnScreen as pyt_locateOnScreen
 
-# from data import *
-# from data.variables import *
 from patterns.thread_func import thread
 
 
