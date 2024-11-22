@@ -17,7 +17,32 @@ from pyautogui import locateOnScreen as pyt_locateOnScreen
 
 from functions.get_constants import get_constants
 from patterns.thread_func import thread
-from data import *
+from data import (WAIT_DICT,
+                    REGISTR_ADRESS_DICT,
+                    FACT_ADRESS_DICT,
+                    GENDER_DICT,
+                    TEL_NUMB_DICT,
+                    LAST_NAME_DICT,
+                    FIRST_NAME_DICT,
+                    MIDDLE_NAME_DICT,
+                    EMAIL_DICT,
+                    PASSPRT_NUMB_DICT,
+                    PASSPRT_DATE_DICT,
+                    PASSPRT_DEPT_DICT,
+                    PASSPRT_CODE_DICT,
+                    WAIT_XPATH,
+                    REGISTR_ADRESS_XPATH,
+                    FACT_ADRESS_XPATH,
+                    GENDER_XPATH,
+                    TEL_NUMB_XPATH,
+                    LAST_NAME_XPATH,
+                    FIRST_NAME_XPATH,
+                    MIDDLE_NAME_XPATH,
+                    EMAIL_XPATH,
+                    PASSPRT_NUMB_XPATH,
+                    PASSPRT_DATE_XPATH,
+                    PASSPRT_DEPT_XPATH,
+                    PASSPRT_CODE_XPATH)
 
 COLNAMES_DICT, PERS_DATA_XPATH = get_constants(WAIT_DICT,
                                                 REGISTR_ADRESS_DICT,
