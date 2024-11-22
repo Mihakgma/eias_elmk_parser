@@ -221,11 +221,11 @@ class Navigator:
                 if abs(tries) % 5 == 0:
                     print(f"Trying to refresh homepage <{ELMK_URL}> on try number <{tries}>")
                     browser.get(url=ELMK_URL)
-                if counter % ask_for_cancel_interval == 0:
-                    if need_end_procedure(text_in=input('для отмены процесса парсинга введите х')):
-                        print('Процесс - прерван ...')
-                        stop_parsing = True
-                        break
+                # if counter % ask_for_cancel_interval == 0:
+                #     if need_end_procedure(text_in=input('для отмены процесса парсинга введите х')):
+                #         print('Процесс - прерван ...')
+                #         stop_parsing = True
+                #         break
                 print(number)
                 counter += 1
                 try:
