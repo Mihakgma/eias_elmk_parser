@@ -204,13 +204,13 @@ class Navigator:
         browser.refresh()
         self.__current_url = browser.current_url
         self.set_status(5)
-        appl_dict = {}
+        appl_dict = self.__right_df_dict
         counter = 0
         stop_parsing = False
         ind = -1
         for number in tqdm.tqdm(appl_numbers):
             ind += 1
-            if number in self.__right_df_dict:
+            if number in appl_dict:
                 pass
 
             self.set_current_application_number(number)
