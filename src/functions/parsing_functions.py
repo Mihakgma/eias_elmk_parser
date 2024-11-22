@@ -15,7 +15,6 @@ from pyautogui import hotkey as pyt_hotkey
 from pyautogui import click as pyt_click
 from pyautogui import locateOnScreen as pyt_locateOnScreen
 
-# import data
 from patterns.thread_func import thread
 from data import *
 
@@ -452,7 +451,7 @@ def get_personal_data(driver,
             # switch to new (just opened) web page
             driver.switch_to.window(driver.window_handles[1])
     out_dict = {}
-
+    global COLNAMES_DICT, PERS_DATA_XPATH
     for colname, xpath in zip(COLNAMES_DICT, PERS_DATA_XPATH):
         # print(colname, xpath)
         curr_value = ''
