@@ -15,11 +15,12 @@ from pyautogui import hotkey as pyt_hotkey
 from pyautogui import click as pyt_click
 from pyautogui import locateOnScreen as pyt_locateOnScreen
 
+# import data
 from patterns.thread_func import thread
-from data.constants import get_constants
+from data import *
 
 
-COLNAMES_DICT, PERS_DATA_XPATH = get_constants()
+# COLNAMES_DICT, PERS_DATA_XPATH = get_constants()
 
 @thread
 def submit_certificate(cert_screen_files_path: list = "",
@@ -540,3 +541,7 @@ def click_element_by_xpath(driver, xpath, timeout=15, in_new_window: bool = Fals
     except ElementClickInterceptedException:
         print(f'<{found_element}>\nis not clickable at the moment!')
         print(f'Element XPath:\n<{xpath}>')
+
+
+if __name__ == '__main__':
+    print(COLNAMES_DICT, PERS_DATA_XPATH)
