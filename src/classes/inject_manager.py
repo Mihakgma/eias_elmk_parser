@@ -9,7 +9,7 @@ class InjectManager:
                   navigator: Navigator,
                   session_manager,
                   auto_charge: bool = True,
-                  test_charge: bool = True):
+                  test_charge: bool = False):
         injector = Injector(driver=driver,
                             navigator=navigator,
                             session_manager=session_manager,

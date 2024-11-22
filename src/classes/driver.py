@@ -53,6 +53,7 @@ class Driver:
             print("Selenium driver error: probably versions conflict...")
         except WebDriverException as wde:
             print(wde)
+            print("PROBABLY WEB DRIVER IS OUT OF DATE!!!")
             print(f"Cannon find text <{self.__START_KEY_WORD}>!!!")
 
     def discharge(self):

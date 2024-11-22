@@ -34,7 +34,8 @@ def __print_error_discharge_driver(exception,
     print(f"<{function.__name__}> function has been crashed on ...")
     if need_traceback:
         tb_lines = extract_stack()
-        for line in reversed(tb_lines):  # Iterate in reverse order
+        for line in reversed(tb_lines):
+            print(line)     # Iterate in reverse order
             if function.__name__ in line.filename:
                 print(f" {line.filename}:{line.lineno} in {line.name} ({line.line})")
                 break  # Exit the loop after finding the relevant line

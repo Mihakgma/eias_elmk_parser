@@ -64,8 +64,8 @@ class Navigator:
         return self.__driver_obj
 
     def set_driver_obj(self, driver: Driver):
-        # if type(driver) != Driver:
-        #     raise TypeError(f"cannot set driver of {type(driver)} type to a <{self.__class__.__name__}> instance")
+        if type(driver) != Driver:
+            raise TypeError(f"cannot set driver of {type(driver)} type to a <{self.__class__.__name__}> instance")
         driver.set_linked_navigator(self)
         self.__driver_obj = driver
 
@@ -316,7 +316,6 @@ class Navigator:
         threads_monitoring.start()
         self.navigate(HOME_URL)
         threads_monitoring.stop()
-        self.set_need_parse_left_df(**kwargs)
         self.login()
         print("DF with general data has been parsed. Press Enter to continue...")
         # random_sleep(upper_bound=40, lower_bound=25)
