@@ -39,5 +39,5 @@ def __print_error_discharge_driver(exception,
             if function.__name__ in line.filename:
                 print(f" {line.filename}:{line.lineno} in {line.name} ({line.line})")
                 break  # Exit the loop after finding the relevant line
-    input(text)
+    print(text)
     last_driver.discharge()

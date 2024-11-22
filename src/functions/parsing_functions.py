@@ -123,7 +123,7 @@ def send_keys_by_xpath(driver,
         print(f'Невозможно отправить текст: <{text}>')
         print(f'В форму или элемент: <{found_element}>')
         clipboard_copy(text=str(text), paste_value=False)
-        input('Исправьте, пожалуйста, в ручную, а затем нажмите Enter для продолжения ввода информации по ЭИ!')
+        print('Исправьте, пожалуйста, в ручную, а затем нажмите Enter для продолжения ввода информации по ЭИ!')
 
 
 def parse_total_df(driver,
@@ -156,9 +156,9 @@ def parse_total_df(driver,
         while need_parse_page and counter < counter_max_value:
             counter += 1
             df = get_total_df(df, appln_number_colname, ERROR_APPL_NUMBER, driver)
-            if counter % ask_for_cancel_interval == 0:
-                if need_end_procedure(text_in=input('для отмены процесса парсинга введите х')):
-                    need_parse_page = False
+            # if counter % ask_for_cancel_interval == 0:
+            #     if need_end_procedure(text_in=input('для отмены процесса парсинга введите х')):
+            #         need_parse_page = False
             if rows_df >= num_rows:
                 print(f'\nСпарсили ВСЕ строки ДФ <{rows_df}> в ДОЛЖНОМ количестве <{num_rows}>!')
                 need_parse_page = False
