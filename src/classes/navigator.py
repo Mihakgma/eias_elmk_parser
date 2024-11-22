@@ -133,6 +133,7 @@ class Navigator:
                 return func(warn_text)
         except AttributeError as e:
             print(f"navigate method failed with <{e}>")
+            return
 
     @handle_exceptions_quit_driver
     def login(self):
