@@ -19,8 +19,6 @@ from patterns.thread_func import thread
 from data import *
 
 
-# COLNAMES_DICT, PERS_DATA_XPATH = get_constants()
-
 @thread
 def submit_certificate(cert_screen_files_path: list = "",
                        ok_screen_file_path: str = "",
@@ -445,13 +443,13 @@ def get_filial_name(first_lst_in: list,
 def get_personal_data(driver,
                       sleep_up_to: float,
                       in_new_window: bool = False):
+    COLNAMES_DICT, PERS_DATA_XPATH = Constant.get_constants()
     # in new window and close it after parsing is ended
     if in_new_window:
         if len(list(driver.window_handles)) > 1:
             # switch to new (just opened) web page
             driver.switch_to.window(driver.window_handles[1])
     out_dict = {}
-    global COLNAMES_DICT, PERS_DATA_XPATH
     for colname, xpath in zip(COLNAMES_DICT, PERS_DATA_XPATH):
         # print(colname, xpath)
         curr_value = ''
