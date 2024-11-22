@@ -262,6 +262,7 @@ class Navigator:
             self.__right_df = DataFrame()
 
     def serialize(self):
+        self.set_status(11)
         print(f"\nSerializing process for <{self}>\nhas been initiated...\n")
         """Serializes the Navigator object to a JSON file."""
         data_to_serialize = {
