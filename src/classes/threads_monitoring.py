@@ -53,7 +53,7 @@ class ThreadsMonitor(Thread, Singleton):
                 print(f" Error getting info of: {thread.name}: {e}")
         self.__log["threads_number"].append(threads_number_now)
         self.__log["time"].append(ts_now)
-        print(f"Current RAM total: {ram_used:.2f} MB")
+        print(f"Current RAM total USED: {ram_used:.2f} MB")
 
     def run(self):
         lock = RLock()
