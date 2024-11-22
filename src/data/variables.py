@@ -60,20 +60,6 @@ PASSPRT_CODE_DICT = 'паспорт_код_подразделения'
 # в объединенном ДФ
 FILIAL_COLNAME = 'филиал'
 
-COLNAMES_DICT = (
-    WAIT_DICT,
-    REGISTR_ADRESS_DICT,
-    FACT_ADRESS_DICT,
-    GENDER_DICT,
-    TEL_NUMB_DICT,
-    LAST_NAME_DICT,
-    FIRST_NAME_DICT,
-    MIDDLE_NAME_DICT,
-    EMAIL_DICT,
-    PASSPRT_NUMB_DICT,
-    PASSPRT_DATE_DICT,
-    PASSPRT_DEPT_DICT,
-    PASSPRT_CODE_DICT)
 
 # XPATHS!!!
 LOGIN_XPATH = "/html/body/main/div/form/div[1]/input"
@@ -114,20 +100,7 @@ PASSPRT_DEPT_XPATH = ("/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app
 PASSPRT_CODE_XPATH = ("/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div["
                       "4]/div[4]/nz-form-item/nz-form-control/div/div/input")
 
-PERS_DATA_XPATH = {
-    WAIT_XPATH: [0, 0],
-    REGISTR_ADRESS_XPATH: [0, 0],
-    FACT_ADRESS_XPATH: [0, 1],
-    GENDER_XPATH: [1, 0],
-    TEL_NUMB_XPATH: [0, 0],
-    LAST_NAME_XPATH: [0, 0],
-    FIRST_NAME_XPATH: [0, 0],
-    MIDDLE_NAME_XPATH: [0, 0],
-    EMAIL_XPATH: [0, 0],
-    PASSPRT_NUMB_XPATH: [0, 0],
-    PASSPRT_DATE_XPATH: [0, 0],
-    PASSPRT_DEPT_XPATH: [0, 0],
-    PASSPRT_CODE_XPATH: [0, 0]}
+
 
 # ---!!! personal data !!! ---# ends
 DF_ROW_NUMS_XPATH = "//*[contains(text(), 'Количество записей: ')]"
