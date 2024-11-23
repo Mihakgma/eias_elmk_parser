@@ -37,7 +37,7 @@ class Navigator:
     WARNINGS = {
         HOME_URL: [print, 'Confirm certificate and enter any key to continue.'],
     }
-    __STATUS: int = NAVIGATOR_STATUS
+    __STATUS: dict = NAVIGATOR_STATUS
     __START_KEY_WORD: str = START_KEY_WORD
     __CERT_SCREEN_FILES: list = CERT_SCREEN_FILES
     __OK_CERT_SCREEN_FILE: str = OK_CERT_SCREEN_FILE
@@ -58,7 +58,7 @@ class Navigator:
         self.__right_df_dict = {}
 
     def set_need_parse_left_df(self, need_parse_left_df: bool):
-        if type(need_parse_left_df) != bool:
+        if type(need_parse_left_df) is not bool:
             raise TypeError(f"Cannot set 'need_parse_left_df' field to {type(need_parse_left_df)}")
         self.__need_parse_left_df = need_parse_left_df
 
@@ -66,7 +66,7 @@ class Navigator:
         return self.__driver_obj
 
     def set_driver_obj(self, driver: Driver):
-        if type(driver) != Driver:
+        if type(driver) is not Driver:
             raise TypeError(f"cannot set driver of {type(driver)} type to a <{self.__class__.__name__}> instance")
         driver.set_linked_navigator(self)
         self.__driver_obj = driver
@@ -76,7 +76,7 @@ class Navigator:
 
     @setter_log(LOGS_DIR)
     def set_current_url(self, url: str):
-        if type(url) != str:
+        if type(url) is not str:
             raise TypeError(f"cannot set url of {type(url)} type to a <{self.__class__.__name__}> instance")
         self.__current_url = url
 
@@ -85,7 +85,7 @@ class Navigator:
 
     @setter_log(LOGS_DIR)
     def set_current_application_number(self, number: int):
-        if type(number) != int:
+        if type(number) is not int:
             raise TypeError(f"Cannot set application number of {type(number)} type")
         elif number < -1:
             raise ValueError(f"Cannot set negative application number: <{number}>")
@@ -183,7 +183,7 @@ class Navigator:
         self.set_status(4)
 
     def set_appl_numbers(self, appl_numbers: list):
-        if type(appl_numbers) != list:
+        if type(appl_numbers) is not list:
             raise TypeError(f"Cannot set 'appl_numbers' field to {type(appl_numbers)}")
         self.__appl_numbers = appl_numbers
 
@@ -345,14 +345,15 @@ class Navigator:
         return ";\n".join(out)
 
     def __call__(self, *args, **kwargs):
-        threads_monitoring = ThreadsMonitor()
-        threads_monitoring.start()
-        self.navigate(HOME_URL)
-        threads_monitoring.stop()
-        self.login()
-        print("DF with general data has been parsed. Press Enter to continue...")
-        # random_sleep(upper_bound=40, lower_bound=25)
-        self.parse_personal_data(**kwargs)
+        with self.__driver_obj.get_driver():
+            threads_monitoring = ThreadsMonitor()
+            threads_monitoring.start()
+            self.navigate(HOME_URL)
+            threads_monitoring.stop()
+            self.login()
+            print("DF with general data has been parsed. Press Enter to continue...")
+            # random_sleep(upper_bound=40, lower_bound=25)
+            self.parse_personal_data(**kwargs)
 
 
 if __name__ == '__main__':
