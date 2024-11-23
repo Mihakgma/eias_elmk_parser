@@ -14,8 +14,9 @@ from data import APPLICATIONS_NUMBERS_COUNTER_FILE, LOGS_DIR
 
 class SessionManager(Singleton):
     """
-    need to think if I need to add field
-    navigator = Navigator() ???
+    manages sessions (Navigator class),
+    realizes adapter pattern to inject driver to navigator and navigator
+    to session manager instance...
     """
     __SESSIONS_CREATED = []
 
@@ -68,15 +69,7 @@ class SessionManager(Singleton):
                              clear_previous_navigators: bool = False,
                              test_regime: bool=False):
         """
-        Для данного метода необходимо продумать,
-        как очищать память по сохраненным объектам навигатор, а именно,
-        в плане очистки данных в них с помощью метода clear_memory(),
-        предположительно необходимо будет очищать ВСЕ данные у объектов этого класса
-        ЗА ИСКЛЮЧЕНИЕМ ПОСЛЕДНЕГО ОБЪЕКТА КЛАССА НАВИГАТОР,
-        ПОМЕЩЕННЫХ (СОЗДАННЫХ РАНЕЕ) В ПОЛЕ ТЕКУЩЕГО КЛАССА __SESSIONS_CREATED!!!
-
-
-        DONE !!! NEED TO CHECK!!!
+        this method will stop the current session
         :param start_session_automatically:
         :return:
         """
