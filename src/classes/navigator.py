@@ -24,15 +24,9 @@ from patterns.setter_logger import setter_log
 
 class Navigator:
     """
-    need to think about this class:
-    1) overriding __str__ method (to save all fields of Navigator instance):
-        a) before calling clear_memory();
-        b) after calling clear_memory();
-        Why?
-        Cause maybe it would be useful to remember the shapes of the DFs
-        or also save min-max dates of the applications from DFs
-        or maybe another data from DFs???
-        which contain in Navigator instance...
+    this class is used to navigate through web pages
+    and saving parsed data to excel and json file
+    after successful navigation or even if exception occurs...
     """
     WARNINGS = {
         HOME_URL: [print, 'Confirm certificate and enter any key to continue.'],
@@ -127,7 +121,6 @@ class Navigator:
                                    ok_screen_file_path=OK_CERT_SCREEN_FILE,
                                    counter=5)
             driver.get(page_path)
-            # self.print_page()
             self.set_current_url(driver.current_url)
             warnings = self.WARNINGS
             if page_path in warnings:
@@ -176,7 +169,6 @@ class Navigator:
                                                  first_row_header=0)
             printDimensionsOfDF(dfInput=appl_df,
                                 warnStr="downloading left DF from excel",)
-            appl_numbers = appl_df[APPLN_NUMBER_COLNAME].to_list()
 
         self.__left_df = appl_df
         self.set_current_url(driver.current_url)
@@ -195,9 +187,6 @@ class Navigator:
                             ask_for_cancel_interval=5000,
                             sleep_secs_up_to=1.1,
                             sleep_secs_up_to_pesr_data=0.5):
-
-        # %%time
-        # ask_for_cancel_interval - периодичность по количеству заявлений - запрос на завершение процедуры
         browser = self.__driver_obj.get_driver()
         appl_numbers = self.__appl_numbers
         # element_found = False
@@ -215,7 +204,7 @@ class Navigator:
 
             self.set_current_application_number(number)
             self.set_current_url(browser.current_url)
-            if stop_parsing:  # завершаем досрочно, если юзер ввел х (русс / англ. раскладка)
+            if stop_parsing:
                 break
             need_parse_appl = True
             tries = 0
@@ -224,11 +213,6 @@ class Navigator:
                 if abs(tries) % 5 == 0:
                     print(f"Trying to refresh homepage <{ELMK_URL}> on try number <{tries}>")
                     browser.get(url=ELMK_URL)
-                # if counter % ask_for_cancel_interval == 0:
-                #     if need_end_procedure(text_in=input('для отмены процесса парсинга введите х')):
-                #         print('Процесс - прерван ...')
-                #         stop_parsing = True
-                #         break
                 print(number)
                 counter += 1
                 try:
@@ -240,8 +224,6 @@ class Navigator:
                         if element_found:
                             pass
                         else:  # ссылка (по XPath) на заявление не найдена!
-                            # print(f'Пропуск парсинга по номеру: <{number}>')
-                            # весь код после слова "continue" - не будет выполнен на данной итерации!
                             need_scroll_down = True
                             while need_scroll_down:
                                 df_temp, rows_df = parse_part_df(driver=browser,
@@ -270,7 +252,6 @@ class Navigator:
 
                 except StaleElementReferenceException:
                     pass
-            # ПОЛУЧАЕМ ПЕРСОНАЛЬНЫЕ ДАННЫЕ!
             if not stop_parsing:
                 appl_dict[number] = get_personal_data(driver=browser,
                                                       COLNAMES_DICT=self.__COLNAMES_DICT,
@@ -303,23 +284,21 @@ class Navigator:
         try:  # Handle potential errors during serialization
             fullpath_json = os_path.join(LOGS_DIR, NAVIGATOR_SERIALIZE_FILE)
             os_makedirs(LOGS_DIR, exist_ok=True)
-            with open(fullpath_json, "w", encoding='utf-8') as f:  # Добавлено encoding='utf-8'
-                json.dump(data_to_serialize, f, indent=4)  # Используем json.dump, а не f.write
+            with open(fullpath_json, "w", encoding='utf-8') as f:
+                json.dump(data_to_serialize, f, indent=4)
             print(f"Navigator data SERIALIZED successfully to <{NAVIGATOR_SERIALIZE_FILE}>")
         except Exception as e:
             print(f"Error during serialization: {e}")
-            # Consider logging the error to better track issues
 
     def deserialize(self):
         try:
             fullpath_json = os_path.join(LOGS_DIR, NAVIGATOR_SERIALIZE_FILE)
-            with open(fullpath_json, "r", encoding='utf-8') as f: # Открываем файл для чтения
-                j = json.load(f) # Используем json.load для чтения из файла
+            with open(fullpath_json, "r", encoding='utf-8') as f:
+                j = json.load(f)
             print("\nRead json-file:")
             # [print(key, val) for key, val in j.items()]
             [setattr(self, key, val) for key, val in j.items()
              if hasattr(self, key)]
-            # “private” instance variables recovering...
             cls_name = "_" + self.__class__.__name__
             [setattr(self, cls_name + key, val) for key, val in j.items()
              if hasattr(self, cls_name + key)]
@@ -352,7 +331,6 @@ class Navigator:
             threads_monitoring.stop()
             self.login()
             print("DF with general data has been parsed. Press Enter to continue...")
-            # random_sleep(upper_bound=40, lower_bound=25)
             self.parse_personal_data(**kwargs)
 
 
