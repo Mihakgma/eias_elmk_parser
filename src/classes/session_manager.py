@@ -87,11 +87,12 @@ class SessionManager(Singleton):
 def observe_session(session_manager: SessionManager,
                     navigator: Navigator,
                     driver: Driver,
-                    check_time_seconds: int = 30,
+                    check_time_seconds: int = 60,
                     max_iter_per_application: int = 5,
                     start_session_automatically=True,
                     clear_previous_navigators: bool = True,
                     test_regime: bool = False):
+    application_skipped: bool = False
     checks_per_application = {
         "driver_id": driver.get_id(),
         "navigator": str(navigator),
@@ -109,6 +110,8 @@ def observe_session(session_manager: SessionManager,
             elif application_number in checks_per_application:
                 checks_per_application[application_number] += 1
                 if checks_per_application[application_number] > max_iter_per_application:
+                    navigator.set_appl_numbers(navigator.get_appl_numbers()[1:])
+                    application_skipped = True
                     session_manager.stop_current_session(start_session_automatically=start_session_automatically,
                                                          clear_previous_navigators=clear_previous_navigators,
                                                          test_regime=test_regime)
@@ -134,6 +137,8 @@ def observe_session(session_manager: SessionManager,
             print(f"Application numbers of tries has been successfully to <{APPLICATIONS_NUMBERS_COUNTER_FILE}>")
         except Exception as e:
             print(f"Error during saving application numbers of tries: {e}")
+        if not application_skipped:
+            navigator.set_appl_numbers(navigator.get_appl_numbers()[1:])
         session_manager.stop_current_session(start_session_automatically=start_session_automatically,
                                              clear_previous_navigators=clear_previous_navigators,
                                              test_regime=test_regime)
