@@ -169,6 +169,8 @@ class Navigator:
                                                  first_row_header=0)
             printDimensionsOfDF(dfInput=appl_df,
                                 warnStr="downloading left DF from excel",)
+            if len(self.__appl_numbers) == 0:
+                self.__appl_numbers = appl_df[APPLN_NUMBER_COLNAME].to_list()
 
         self.__left_df = appl_df
         self.set_current_url(driver.current_url)
