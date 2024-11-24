@@ -116,6 +116,9 @@ def observe_session(session_manager: SessionManager,
                                                          clear_previous_navigators=clear_previous_navigators,
                                                          test_regime=test_regime)
             else:
+                print(f"for application number <{application_number}>")
+                print(f"has been done <{checks_per_application[application_number]}> tries"
+                      f"of possible <{max_iter_per_application}> iterations...")
                 checks_per_application[application_number] = 1
         else:
             print("trying to save application numbers tries")
