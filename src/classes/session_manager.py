@@ -40,7 +40,7 @@ class SessionManager(Singleton):
         else:
             pass
 
-    def start_new_session(self, test_regime: bool=False):
+    def start_new_session(self, test_regime: bool = False):
         my_driver = Driver()
         self.__current_driver = my_driver
         my_navigator = Navigator()
@@ -67,10 +67,12 @@ class SessionManager(Singleton):
     def stop_current_session(self,
                              start_session_automatically=False,
                              clear_previous_navigators: bool = False,
-                             test_regime: bool=False):
+                             test_regime: bool = False):
         """
         this method will stop the current session
         :param start_session_automatically:
+        :param clear_previous_navigators: - delete navigators after start session
+        :param test_regime: no comments...
         :return:
         """
         self.__current_driver.discharge()
@@ -80,25 +82,26 @@ class SessionManager(Singleton):
         if start_session_automatically:
             self.start_new_session(test_regime=test_regime)
 
+
 @thread
 def observe_session(session_manager: SessionManager,
-                     navigator: Navigator,
-                     driver: Driver,
-                     check_time_seconds: int = 30,
-                     max_iter_per_application: int = 5,
-                     start_session_automatically=True,
-                     clear_previous_navigators: bool = True,
-                     test_regime: bool = False):
+                    navigator: Navigator,
+                    driver: Driver,
+                    check_time_seconds: int = 30,
+                    max_iter_per_application: int = 5,
+                    start_session_automatically=True,
+                    clear_previous_navigators: bool = True,
+                    test_regime: bool = False):
+    checks_per_application = {
+        "driver_id": driver.get_id(),
+        "navigator": navigator,
+        "check_time_seconds": check_time_seconds,
+        "max_iter_per_application": max_iter_per_application,
+        "start_session_automatically": start_session_automatically,
+        "clear_previous_navigators": clear_previous_navigators,
+        "test_regime": test_regime}
     try:
 
-        checks_per_application = {
-            "driver_id": driver.get_id(),
-            "navigator": navigator,
-            "check_time_seconds": check_time_seconds,
-            "max_iter_per_application": max_iter_per_application,
-            "start_session_automatically": start_session_automatically,
-            "clear_previous_navigators": clear_previous_navigators,
-            "test_regime": test_regime}
         while driver.is_charged():
             time_sleep(check_time_seconds)
             application_number = navigator.get_current_application_number()
