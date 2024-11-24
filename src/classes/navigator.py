@@ -183,13 +183,41 @@ class Navigator:
         return self.__appl_numbers
 
     @handle_exceptions_quit_driver
+    def parse_personal_data_by_filter(self,
+                                      sleep_secs_up_to=1.1,
+                                      sleep_secs_up_to_pesr_data=0.5):
+        """
+        This method is gonna be used to parse the personal data
+        with help of filtering on the page with left DF...
+        :param sleep_secs_up_to:
+        :param sleep_secs_up_to_pesr_data:
+        :return:
+        """
+        browser = self.__driver_obj.get_driver()
+        appl_numbers = self.__appl_numbers
+        browser.refresh()
+        self.__current_url = browser.current_url
+        self.set_status(5)
+        appl_dict = self.__right_df_dict
+        stop_parsing = False
+        ind = -1
+        for number in tqdm.tqdm(appl_numbers):
+            ind += 1
+            if number in appl_dict:
+                pass
+
+            self.set_current_application_number(number)
+            self.set_current_url(browser.current_url)
+            if stop_parsing:
+                break
+            need_parse_appl = True
+
+    @handle_exceptions_quit_driver
     def parse_personal_data(self,
-                            ask_for_cancel_interval=5000,
                             sleep_secs_up_to=1.1,
                             sleep_secs_up_to_pesr_data=0.5):
         browser = self.__driver_obj.get_driver()
         appl_numbers = self.__appl_numbers
-        # element_found = False
         browser.refresh()
         self.__current_url = browser.current_url
         self.set_status(5)
@@ -345,7 +373,7 @@ if __name__ == '__main__':
     navigator.clear_memory()
     print(navigator)
     # navigator.status = 999
-    print(navigator.status)
+    print(navigator.get_status())
     applications_test = [1, 2, 3, 4, '', "sdfsd", True, False]
     navigator.set_appl_numbers(applications_test)
     navigator.serialize()

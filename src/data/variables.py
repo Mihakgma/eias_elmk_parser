@@ -100,7 +100,14 @@ PASSPRT_DEPT_XPATH = ("/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app
                       "4]/div[3]/nz-form-item/nz-form-control/div/div/input")
 PASSPRT_CODE_XPATH = ("/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmk/div/div[3]/form/div[2]/div["
                       "4]/div[4]/nz-form-item/nz-form-control/div/div/input")
-
+# XPATHS FOR GETTING PERSONAL DATA WITH FILTER HELP!
+FILTER_BUTTON_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmks/div/div[2]/div[4]/a[1]/img[1]"
+# or
+# FILTER_BUTTON_XPATH = "/html/body/app-root/nz-layout/nz-layout/nz-layout/div/app-elmks/div/div[2]/div[4]/a[1]"
+FILTER_APPL_NUMBER_INPUT_XPATH = "/html/body/div/div/div/div/div/form/nz-form-item[1]/nz-form-control/div/div/input"
+FILTER_APPL_SUBMIT_BUTTON_XPATH = "/html/body/div/div/div/div/div/form/div/div/button[1]"
+# or
+# FILTER_APPL_SUBMIT_BUTTON_XPATH ="/html/body/div/div/div/div/div/form/div/div/button[1]/span"
 
 
 # ---!!! personal data !!! ---# ends
@@ -122,6 +129,7 @@ NAVIGATOR_STATUS = {
         10: ["ABORTED"],
         11: ["SERIALIZED"],
         12: ["DESERIALIZED"],
+        14: ["APPLICATION_NUMBER_NOT_FOUND_BY_FILTER"],
     }
 
 
