@@ -94,14 +94,13 @@ def observe_session(session_manager: SessionManager,
                     test_regime: bool = False):
     checks_per_application = {
         "driver_id": driver.get_id(),
-        "navigator": navigator,
+        "navigator": str(navigator),
         "check_time_seconds": check_time_seconds,
         "max_iter_per_application": max_iter_per_application,
         "start_session_automatically": start_session_automatically,
         "clear_previous_navigators": clear_previous_navigators,
         "test_regime": test_regime}
     try:
-
         while driver.is_charged():
             time_sleep(check_time_seconds)
             application_number = navigator.get_current_application_number()
