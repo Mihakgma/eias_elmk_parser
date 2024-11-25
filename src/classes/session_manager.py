@@ -40,10 +40,11 @@ class SessionManager(Singleton):
         else:
             pass
 
-    def start_new_session(self, test_regime: bool = False):
+    def start_new_session(self, test_regime: bool = False, personal_data_by_filter=True):
         my_driver = Driver()
         self.__current_driver = my_driver
         my_navigator = Navigator()
+        my_navigator.set_personal_data_by_filter(personal_data_by_filter)
         self.__current_navigator = my_navigator
         InjectManager.do_inject(driver=my_driver,
                                 navigator=my_navigator,

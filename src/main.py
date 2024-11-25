@@ -16,22 +16,22 @@ class ELMKParser:
               personal_data_by_filter: bool = False):
 
         session_manager = SessionManager()
-        session_manager.start_new_session(test_regime=test_regime)
+        session_manager.start_new_session(test_regime=test_regime,
+                                          personal_data_by_filter=personal_data_by_filter)
         print("session manager started")
-        navigator = session_manager.get_navigator()
-        navigator.set_personal_data_by_filter(personal_data_by_filter)
-        driver = navigator.get_driver_obj()
-        driver_s_m = session_manager.get_current_driver()
-        print("\nDrivers from navigator & session_manager are equal?")
-        print(driver == driver_s_m)
+        #
+        # driver = navigator.get_driver_obj()
+        # driver_s_m = session_manager.get_current_driver()
+        # print("\nDrivers from navigator & session_manager are equal?")
+        # print(driver == driver_s_m)
         if test_regime:
             return
-        else:
-            navigator.set_need_parse_left_df(need_parse_left_df=need_parse_left_df)
-            navigator(ask_for_cancel_interval=ask_for_cancel_interval_navigator,
-                      sleep_secs_up_to=sleep_secs_up_to_navigator,
-                      sleep_secs_up_to_pesr_data=sleep_secs_up_to_pesr_data_navigator,
-                      personal_data_by_filter=True)
+        # else:
+        #     navigator.set_need_parse_left_df(need_parse_left_df=need_parse_left_df)
+        #     navigator(ask_for_cancel_interval=ask_for_cancel_interval_navigator,
+        #               sleep_secs_up_to=sleep_secs_up_to_navigator,
+        #               sleep_secs_up_to_pesr_data=sleep_secs_up_to_pesr_data_navigator,
+        #               personal_data_by_filter=True)
 
 
 if __name__ == '__main__':
