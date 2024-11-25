@@ -501,6 +501,9 @@ def find_element_xpath(driver, xpath, timeout=3):
     except TimeoutException:
         print("Timed out waiting for page to load")
         return False
+    except WebDriverException as e:
+        print(e)
+        return False
 
 
 def get_element_value(driver, xpath, timeout=15):

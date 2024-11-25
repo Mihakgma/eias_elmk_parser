@@ -222,9 +222,11 @@ class Navigator:
             ind += 1
             random_sleep(int(sleep_secs_up_to))
             if number in appl_dict:
+                self.set_status(15)
                 appl_number_dict = appl_dict[number]
                 if all([str(v).replace("null", "") == ""
                         for (k, v) in appl_number_dict.items()]):
+                    self.set_status(16)
                     pass
             self.set_current_application_number(number)
             self.set_current_url(browser.current_url)
@@ -232,8 +234,9 @@ class Navigator:
                 break
             filter_found = find_element_xpath(driver=browser,
                                               xpath=FILTER_APPL_SUBMIT_BUTTON_XPATH)
-            print("Submit filter button found")
+            print("Submit filter button search has been ended...")
             if not filter_found:
+                self.set_status(17)
                 print("Submit filter button has not been found")
                 click_element_by_xpath(driver=browser,
                                        xpath=FILTER_BUTTON_XPATH,
