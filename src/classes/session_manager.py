@@ -23,6 +23,10 @@ class SessionManager(Singleton):
     def __init__(self):
         self.__current_driver = None
         self.__current_navigator = None
+        self.__start_session_automatically = False
+
+    def set_start_session_automatically(self, start_session_automatically):
+        self.__start_session_automatically = start_session_automatically
 
     @staticmethod
     def get_sessions_created():
@@ -40,7 +44,8 @@ class SessionManager(Singleton):
         else:
             pass
 
-    def start_new_session(self, test_regime: bool = False,
+    def start_new_session(self,
+                          test_regime: bool = False,
                           personal_data_by_filter=True,
                           need_parse_left_df=False,
                           *args,
@@ -85,7 +90,7 @@ class SessionManager(Singleton):
         self.__current_navigator.serialize()
         if clear_previous_navigators:
             SessionManager.clear_previous_sessions()
-        if start_session_automatically:
+        if self.__start_session_automatically:
             self.start_new_session(test_regime=test_regime)
 
 
