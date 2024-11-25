@@ -418,7 +418,8 @@ class Navigator:
             self.login()
             print("DF with general data has been parsed. Press Enter to continue...")
             if self.get_personal_data_by_filter():
-                self.parse_personal_data_by_filter(**kwargs)
+                # self.parse_personal_data_by_filter(**kwargs)
+                self.parse_personal_data_by_filter()
             else:
                 self.parse_personal_data(**kwargs)
 

@@ -40,11 +40,14 @@ class SessionManager(Singleton):
         else:
             pass
 
-    def start_new_session(self, test_regime: bool = False, personal_data_by_filter=True):
+    def start_new_session(self, test_regime: bool = False,
+                          personal_data_by_filter=True,
+                          need_parse_left_df=False):
         my_driver = Driver()
         self.__current_driver = my_driver
         my_navigator = Navigator()
         my_navigator.set_personal_data_by_filter(personal_data_by_filter)
+        my_navigator.set_need_parse_left_df(need_parse_left_df=need_parse_left_df)
         self.__current_navigator = my_navigator
         InjectManager.do_inject(driver=my_driver,
                                 navigator=my_navigator,
