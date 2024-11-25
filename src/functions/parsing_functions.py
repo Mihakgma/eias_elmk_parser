@@ -106,7 +106,8 @@ def send_keys_by_xpath(driver,
                        text,
                        pause_secs=2.1,
                        timeout=15,
-                       need_press_enter: bool = False):
+                       need_press_enter: bool = False,
+                       need_clear_input: bool = False):
     try:
         element_present = EC.presence_of_element_located((By.XPATH, xpath))
         WebDriverWait(driver, timeout).until(element_present)
@@ -115,6 +116,8 @@ def send_keys_by_xpath(driver,
         return
     found_element = driver.find_element(By.XPATH, xpath)
     try:
+        if need_clear_input:
+            found_element.clear()
         found_element.send_keys(text)
         if need_press_enter:
             random_sleep(upper_bound=pause_secs)

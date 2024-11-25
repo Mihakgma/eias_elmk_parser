@@ -12,12 +12,14 @@ class ELMKParser:
               sleep_secs_up_to_navigator=1.1,
               sleep_secs_up_to_pesr_data_navigator=0.5,
               daemon_tm: bool=False,
-              need_parse_left_df: bool = False):
+              need_parse_left_df: bool = False,
+              personal_data_by_filter: bool = False):
 
         session_manager = SessionManager()
         session_manager.start_new_session(test_regime=test_regime)
         print("session manager started")
         navigator = session_manager.get_navigator()
+        navigator.set_personal_data_by_filter(personal_data_by_filter)
         driver = navigator.get_driver_obj()
         driver_s_m = session_manager.get_current_driver()
         print("\nDrivers from navigator & session_manager are equal?")
@@ -28,7 +30,8 @@ class ELMKParser:
             navigator.set_need_parse_left_df(need_parse_left_df=need_parse_left_df)
             navigator(ask_for_cancel_interval=ask_for_cancel_interval_navigator,
                       sleep_secs_up_to=sleep_secs_up_to_navigator,
-                      sleep_secs_up_to_pesr_data=sleep_secs_up_to_pesr_data_navigator)
+                      sleep_secs_up_to_pesr_data=sleep_secs_up_to_pesr_data_navigator,
+                      personal_data_by_filter=True)
 
 
 if __name__ == '__main__':

@@ -17,7 +17,8 @@ from functions.parsing_functions import (send_keys_by_xpath, parse_total_df, ran
                                          click_element_by_xpath, get_page_text, submit_certificate)
 from data import (HOME_URL, LOGIN_XPATH, LOGIN, PASSWORD_XPATH, PASSWORD, ELMK_URL, TEMP_XLSX_FILENAME,
                   APPLN_NUMBER_COLNAME, NUM_ROWS_MARK, NO_or_YES, NAVIGATOR_STATUS, START_KEY_WORD, OK_CERT_SCREEN_FILE,
-                  CERT_SCREEN_FILES, LOGS_DIR, NAVIGATOR_SERIALIZE_FILE, COLNAMES_DICT, PERS_DATA_XPATH)
+                  CERT_SCREEN_FILES, LOGS_DIR, NAVIGATOR_SERIALIZE_FILE, COLNAMES_DICT, PERS_DATA_XPATH,
+                  FILTER_BUTTON_XPATH, FILTER_APPL_NUMBER_INPUT_XPATH, FILTER_APPL_SUBMIT_BUTTON_XPATH)
 from patterns.browser_error_wrapper import handle_exceptions_quit_driver
 from patterns.setter_logger import setter_log
 
@@ -50,6 +51,15 @@ class Navigator:
         self.__status: int = 1
         self.__need_parse_left_df = False
         self.__right_df_dict = {}
+        self.__personal_data_by_filter = False
+
+    def set_personal_data_by_filter(self, personal_data_by_filter: bool):
+        if type(personal_data_by_filter) is not bool:
+            raise TypeError(f"Cannot set 'personal_data_by_filter' field to {type(personal_data_by_filter)}")
+        self.__personal_data_by_filter = personal_data_by_filter
+
+    def get_personal_data_by_filter(self):
+        return self.__personal_data_by_filter
 
     def set_need_parse_left_df(self, need_parse_left_df: bool):
         if type(need_parse_left_df) is not bool:
@@ -168,7 +178,7 @@ class Navigator:
                                                  blank_values_drop=0,
                                                  first_row_header=0)
             printDimensionsOfDF(dfInput=appl_df,
-                                warnStr="downloading left DF from excel",)
+                                warnStr="downloading left DF from excel", )
             if len(self.__appl_numbers) == 0:
                 self.__appl_numbers = appl_df[APPLN_NUMBER_COLNAME].to_list()
 
@@ -205,14 +215,48 @@ class Navigator:
         ind = -1
         for number in tqdm.tqdm(appl_numbers):
             ind += 1
+            random_sleep(int(sleep_secs_up_to))
             if number in appl_dict:
-                pass
-
+                appl_number_dict = appl_dict[number]
+                if all([str(v).replace("null", "") == ""
+                        for (k, v) in appl_number_dict.items()]):
+                    pass
             self.set_current_application_number(number)
             self.set_current_url(browser.current_url)
             if stop_parsing:
                 break
-            need_parse_appl = True
+            filter_found = find_element_xpath(driver=browser,
+                                               xpath=FILTER_APPL_SUBMIT_BUTTON_XPATH)
+            if not filter_found:
+                click_element_by_xpath(driver=browser,
+                                   xpath=FILTER_BUTTON_XPATH,
+                                   timeout=15,
+                                   in_new_window=False)
+            send_keys_by_xpath(driver=browser,
+                               xpath=FILTER_APPL_NUMBER_INPUT_XPATH,
+                               text=LOGIN,
+                               pause_secs=2.1,
+                               timeout=15,
+                               need_press_enter=False,
+                               need_clear_input=True)
+            click_element_by_xpath(driver=browser,
+                                   xpath=FILTER_APPL_SUBMIT_BUTTON_XPATH,
+                                   timeout=15,
+                                   in_new_window=False)
+            if not stop_parsing:
+                appl_dict[number] = get_personal_data(driver=browser,
+                                                      COLNAMES_DICT=self.__COLNAMES_DICT,
+                                                      PERS_DATA_XPATH=self.__PERS_DATA_XPATH,
+                                                      sleep_up_to=sleep_secs_up_to_pesr_data,
+                                                      in_new_window=True)
+            self.__right_df_dict = appl_dict
+            try:
+                self.__appl_numbers = appl_numbers[ind + 1:]
+            except IndexError:
+                stop_parsing = True
+                print("list __appl_numbers out of range")
+        print(f'\nКоличество спарсенных строк таблицы заявлений составило: <{len(appl_dict)}>')
+        self.__right_df = DataManager.preprocess_personal_df(appl_dict)
 
     @handle_exceptions_quit_driver
     def parse_personal_data(self,
@@ -229,9 +273,10 @@ class Navigator:
         ind = -1
         for number in tqdm.tqdm(appl_numbers):
             ind += 1
-            if number in appl_dict:
+            appl_number_dict = appl_dict[number]
+            if all([str(v).replace("null", "") == ""
+                    for (k, v) in appl_number_dict.items()]):
                 pass
-
             self.set_current_application_number(number)
             self.set_current_url(browser.current_url)
             if stop_parsing:
@@ -290,8 +335,9 @@ class Navigator:
                                                       in_new_window=True)
             self.__right_df_dict = appl_dict
             try:
-                self.__appl_numbers = appl_numbers[ind+1:]
+                self.__appl_numbers = appl_numbers[ind + 1:]
             except IndexError:
+                stop_parsing = True
                 print("list __appl_numbers out of range")
         print(f'\nКоличество спарсенных строк таблицы заявлений составило: <{len(appl_dict)}>')
         self.__right_df = DataManager.preprocess_personal_df(appl_dict)
@@ -361,7 +407,10 @@ class Navigator:
             threads_monitoring.stop()
             self.login()
             print("DF with general data has been parsed. Press Enter to continue...")
-            self.parse_personal_data(**kwargs)
+            if self.get_personal_data_by_filter():
+                self.parse_personal_data_by_filter(**kwargs)
+            else:
+                self.parse_personal_data(**kwargs)
 
 
 if __name__ == '__main__':
