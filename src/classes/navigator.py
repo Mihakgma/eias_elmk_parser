@@ -254,8 +254,16 @@ class Navigator:
                                    xpath=FILTER_APPL_SUBMIT_BUTTON_XPATH,
                                    timeout=15,
                                    in_new_window=False)
-            answer = input(f"Enter x to stop parsing <{number}>").lower().strip()
-            if answer == "x" or answer == "х":
+            click_element_by_xpath(driver=browser,
+                                   xpath=FILTER_BUTTON_XPATH,
+                                   timeout=15,
+                                   in_new_window=False)
+            # answer = input(f"Enter x to stop parsing <{number}>").lower().strip()
+            # if answer == "x" or answer == "х":
+            number_found = find_element_xpath(driver=browser,
+                                              xpath=f"//*[contains(text(), '{number}')]")
+            print(f"Number <{number_found}> has been found on the page")
+            if not number_found:
                 self.__appl_numbers = appl_numbers[ind + 1:]
                 continue
             if not stop_parsing:
