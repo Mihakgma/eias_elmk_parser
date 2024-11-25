@@ -223,11 +223,11 @@ class Navigator:
             random_sleep(int(sleep_secs_up_to))
             if number in appl_dict:
                 self.set_status(15)
-                appl_number_dict = appl_dict[number]
-                if all([str(v).replace("null", "") == ""
-                        for (k, v) in appl_number_dict.items()]):
-                    self.set_status(16)
-                    pass
+                # appl_number_dict = appl_dict[number]
+                # if all([str(v).replace("null", "") == ""
+                #         for (k, v) in appl_number_dict.items()]):
+                #     self.set_status(16)
+                pass
             self.set_current_application_number(number)
             self.set_current_url(browser.current_url)
             if stop_parsing:
