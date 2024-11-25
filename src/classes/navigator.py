@@ -199,7 +199,7 @@ class Navigator:
     def get_appl_numbers(self):
         return self.__appl_numbers
 
-    @handle_exceptions_quit_driver
+    # @handle_exceptions_quit_driver
     def parse_personal_data_by_filter(self,
                                       sleep_secs_up_to=1.1,
                                       sleep_secs_up_to_pesr_data=0.5):
