@@ -42,7 +42,9 @@ class SessionManager(Singleton):
 
     def start_new_session(self, test_regime: bool = False,
                           personal_data_by_filter=True,
-                          need_parse_left_df=False):
+                          need_parse_left_df=False,
+                          *args,
+                          **kwargs):
         my_driver = Driver()
         self.__current_driver = my_driver
         my_navigator = Navigator()

@@ -46,6 +46,7 @@ class Injector:
     def inject(self, test_charge: bool = True):
         driver = self.__driver
         navigator = self.__navigator
+        driver.set_linked_navigator(navigator)
         session_manager = self.__session_manager
         auto_charging = self.__auto_charging
         if auto_charging:
