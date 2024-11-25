@@ -56,6 +56,11 @@ class Navigator:
     def set_personal_data_by_filter(self, personal_data_by_filter: bool):
         if type(personal_data_by_filter) is not bool:
             raise TypeError(f"Cannot set 'personal_data_by_filter' field to {type(personal_data_by_filter)}")
+        getting_personal_data_approach = [
+            "by scrolling left DF",
+            "by using filter"
+        ]
+        print(f"Getting personal data has been changed to <{getting_personal_data_approach[personal_data_by_filter]}>")
         self.__personal_data_by_filter = personal_data_by_filter
 
     def get_personal_data_by_filter(self):
@@ -226,12 +231,15 @@ class Navigator:
             if stop_parsing:
                 break
             filter_found = find_element_xpath(driver=browser,
-                                               xpath=FILTER_APPL_SUBMIT_BUTTON_XPATH)
+                                              xpath=FILTER_APPL_SUBMIT_BUTTON_XPATH)
+            print("Submit filter button found")
             if not filter_found:
+                print("Submit filter button has not been found")
                 click_element_by_xpath(driver=browser,
-                                   xpath=FILTER_BUTTON_XPATH,
-                                   timeout=15,
-                                   in_new_window=False)
+                                       xpath=FILTER_BUTTON_XPATH,
+                                       timeout=15,
+                                       in_new_window=False)
+                print("Filter button has been clicked")
             send_keys_by_xpath(driver=browser,
                                xpath=FILTER_APPL_NUMBER_INPUT_XPATH,
                                text=LOGIN,
