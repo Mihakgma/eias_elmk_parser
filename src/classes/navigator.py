@@ -254,6 +254,10 @@ class Navigator:
                                    xpath=FILTER_APPL_SUBMIT_BUTTON_XPATH,
                                    timeout=15,
                                    in_new_window=False)
+            answer = input(f"Enter x to stop parsing <{number}>").lower().strip()
+            if answer == "x" or answer == "х":
+                self.__appl_numbers = appl_numbers[ind + 1:]
+                continue
             if not stop_parsing:
                 appl_dict[number] = get_personal_data(driver=browser,
                                                       COLNAMES_DICT=self.__COLNAMES_DICT,
