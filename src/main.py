@@ -1,20 +1,18 @@
 from patterns.browser_error_wrapper import handle_exceptions_quit_driver
 from classes.session_manager import SessionManager
-from classes.threads_monitoring import ThreadsMonitor
 
 
 class ELMKParser:
 
     @staticmethod
-    @handle_exceptions_quit_driver
+    # @handle_exceptions_quit_driver
     def start(test_regime: bool = False,
               ask_for_cancel_interval_navigator=5000,
               sleep_secs_up_to_navigator=1.1,
               sleep_secs_up_to_pesr_data_navigator=0.5,
-              daemon_tm: bool=False,
+              daemon_tm: bool = False,
               need_parse_left_df: bool = False,
               personal_data_by_filter: bool = False):
-
         session_manager = SessionManager()
         session_manager.start_new_session(test_regime=test_regime,
                                           personal_data_by_filter=personal_data_by_filter,
@@ -23,11 +21,6 @@ class ELMKParser:
                                           sleep_secs_up_to_navigator=sleep_secs_up_to_navigator,
                                           sleep_secs_up_to_pesr_data_navigator=sleep_secs_up_to_pesr_data_navigator)
         print("session manager started")
-        #
-        # driver = navigator.get_driver_obj()
-        # driver_s_m = session_manager.get_current_driver()
-        # print("\nDrivers from navigator & session_manager are equal?")
-        # print(driver == driver_s_m)
         if test_regime:
             return
         # else:
