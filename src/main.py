@@ -18,7 +18,10 @@ class ELMKParser:
         session_manager = SessionManager()
         session_manager.start_new_session(test_regime=test_regime,
                                           personal_data_by_filter=personal_data_by_filter,
-                                          need_parse_left_df=need_parse_left_df)
+                                          need_parse_left_df=need_parse_left_df,
+                                          ask_for_cancel_interval=ask_for_cancel_interval_navigator,
+                                          sleep_secs_up_to=sleep_secs_up_to_navigator,
+                                          sleep_secs_up_to_pesr_data=sleep_secs_up_to_pesr_data_navigator)
         print("session manager started")
         #
         # driver = navigator.get_driver_obj()

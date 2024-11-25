@@ -245,7 +245,7 @@ class Navigator:
                 print("Filter button has been clicked")
             send_keys_by_xpath(driver=browser,
                                xpath=FILTER_APPL_NUMBER_INPUT_XPATH,
-                               text=LOGIN,
+                               text=number,
                                pause_secs=2.1,
                                timeout=15,
                                need_press_enter=False,
