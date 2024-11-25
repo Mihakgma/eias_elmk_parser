@@ -262,7 +262,7 @@ class Navigator:
             # if answer == "x" or answer == "х":
             number_found = find_element_xpath(driver=browser,
                                               xpath=f"//*[contains(text(), '{number}')]")
-            print(f"Number <{number_found}> has been found on the page")
+            print(f"Number <{number}> has been found on the page: <{number_found}>")
             if not number_found:
                 self.__appl_numbers = appl_numbers[ind + 1:]
                 continue
