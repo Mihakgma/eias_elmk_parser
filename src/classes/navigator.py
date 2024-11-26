@@ -126,7 +126,7 @@ class Navigator:
         except AttributeError as e:
             print(e)
 
-    @handle_exceptions_quit_driver
+    # @handle_exceptions_quit_driver
     def navigate(self, page_path):
         try:
             driver = self.__driver_obj.get_driver()
@@ -146,7 +146,7 @@ class Navigator:
             print(f"navigate method failed with <{e}>")
             return
 
-    @handle_exceptions_quit_driver
+    # @handle_exceptions_quit_driver
     def login(self):
         driver = self.__driver_obj.get_driver()
         send_keys_by_xpath(driver=driver,
@@ -200,7 +200,7 @@ class Navigator:
     def get_appl_numbers(self):
         return self.__appl_numbers
 
-    @handle_exceptions_quit_driver
+    # @handle_exceptions_quit_driver
     def parse_personal_data_by_filter(self,
                                       sleep_secs_up_to=1.1,
                                       sleep_secs_up_to_pesr_data=0.5):
@@ -295,7 +295,7 @@ class Navigator:
         print(f'\nКоличество спарсенных строк таблицы заявлений составило: <{len(appl_dict)}>')
         self.__right_df = DataManager.preprocess_personal_df(appl_dict)
 
-    @handle_exceptions_quit_driver
+    # @handle_exceptions_quit_driver
     def parse_personal_data(self,
                             sleep_secs_up_to=1.1,
                             sleep_secs_up_to_pesr_data=0.5):
