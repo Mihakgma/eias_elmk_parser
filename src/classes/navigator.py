@@ -135,7 +135,7 @@ class Navigator:
             if page_path == HOME_URL:
                 submit_certificate(cert_screen_files_path=CERT_SCREEN_FILES,
                                    ok_screen_file_path=OK_CERT_SCREEN_FILE,
-                                   counter=5)
+                                   counter=3)
             driver.get(page_path)
             self.set_current_url(driver.current_url)
             warnings = self.WARNINGS

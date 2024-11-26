@@ -29,7 +29,7 @@ def submit_certificate(cert_screen_files_path: list = "",
         screen_sum = 0
         pyt_hotkey('alt', 'tab')
         print(f"Iteration number = <{i}>")
-        random_sleep(10, 3)
+        random_sleep(3, 1)
         for j in range(len(cert_screen_files_path)):
             cert_screen = cert_screen_files_path[j]
             try:
@@ -48,6 +48,7 @@ def submit_certificate(cert_screen_files_path: list = "",
             need_submit = False
         else:
             print("Certificate has not been successfully submitted!")
+        input("certificate submitting is over...")
 
 
 def get_page_text(driver):
