@@ -523,6 +523,7 @@ def get_personal_data(driver,
         random_sleep(upper_bound=sleep_up_to)
     if in_new_window:
         if len(list(driver.window_handles)) > 1:
+            driver.switch_to.window(driver.window_handles[-1])
             driver.close()
             # switch to previous browser window
             driver.switch_to.window(driver.window_handles[0])
