@@ -439,11 +439,11 @@ class Navigator:
 
     def __call__(self, *args, **kwargs):
         with self.__driver_obj.get_driver():
-            threads_monitoring = ThreadsMonitor()
-            threads_monitoring.start()
+            threads_monitoring = ThreadsMonitor(daemon=True)
             self.navigate(HOME_URL)
-            threads_monitoring.stop()
+            threads_monitoring.start()
             self.login()
+            threads_monitoring.stop()
             print("DF with general data has been parsed. Press Enter to continue...")
             if self.get_personal_data_by_filter():
                 # self.parse_personal_data_by_filter(**kwargs)
