@@ -270,9 +270,7 @@ class Navigator:
                 except IndexError:
                     stop_parsing = True
                     print("list __appl_numbers out of range")
-                finally:
-                    continue
-            if not stop_parsing:
+            if not stop_parsing and number_found:
                 click_element_by_xpath(driver=browser,
                                        xpath=appl_xpath,
                                        timeout=15,
