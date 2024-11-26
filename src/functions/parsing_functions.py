@@ -84,7 +84,15 @@ def click_element_by_css(driver,
 
 def clear_notification(driver,
                        css_selectors: list,
+                       header: str,
                        timeout: int = 3):
+    found_header = find_element_xpath(driver=driver,
+                                      xpath=f"//*[contains(text(), '{header}')]",
+                                      timeout=timeout)
+    if not found_header:
+        print(f"notification header <{found_header}> has not been found...")
+        return
+    input("I'll try to click on the notification button")
     found = False
     i = -1
     while not found:
@@ -474,13 +482,15 @@ def get_personal_data(driver,
                       PERS_DATA_XPATH,
                       sleep_up_to: float,
                       notification_css: list,
+                      notification_header: str,
                       in_new_window: bool = False):
 
     # COLNAMES_DICT, PERS_DATA_XPATH = get_constants()
     # in new window and close it after parsing is ended
     if in_new_window:
         clear_notification(driver=driver,
-                           css_selectors=notification_css)
+                           css_selectors=notification_css,
+                           header=notification_header)
         if len(list(driver.window_handles)) > 1:
             # switch to new (just opened) web page
             driver.switch_to.window(driver.window_handles[1])

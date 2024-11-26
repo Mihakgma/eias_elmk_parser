@@ -19,7 +19,7 @@ from data import (HOME_URL, LOGIN_XPATH, LOGIN, PASSWORD_XPATH, PASSWORD, ELMK_U
                   APPLN_NUMBER_COLNAME, NUM_ROWS_MARK, NO_or_YES, NAVIGATOR_STATUS, START_KEY_WORD, OK_CERT_SCREEN_FILE,
                   CERT_SCREEN_FILES, LOGS_DIR, NAVIGATOR_SERIALIZE_FILE, COLNAMES_DICT, PERS_DATA_XPATH,
                   FILTER_BUTTON_XPATH, FILTER_APPL_NUMBER_INPUT_XPATH, FILTER_APPL_SUBMIT_BUTTON_XPATH,
-                  NOTIFICATION_CSSs)
+                  NOTIFICATION_CSSs, NOTIFICATION_HEADER)
 from patterns.browser_error_wrapper import handle_exceptions_quit_driver
 from patterns.setter_logger import setter_log
 
@@ -222,7 +222,8 @@ class Navigator:
         for number in tqdm.tqdm(appl_numbers):
             ind += 1
             clear_notification(driver=browser,
-                               css_selectors=NOTIFICATION_CSSs)
+                               css_selectors=NOTIFICATION_CSSs,
+                               header=NOTIFICATION_HEADER)
             random_sleep(int(sleep_secs_up_to))
             if number in appl_dict:
                 self.set_status(15)
@@ -283,6 +284,7 @@ class Navigator:
                                                       PERS_DATA_XPATH=self.__PERS_DATA_XPATH,
                                                       sleep_up_to=sleep_secs_up_to_pesr_data,
                                                       notification_css=NOTIFICATION_CSSs,
+                                                      notification_header=NOTIFICATION_HEADER,
                                                       in_new_window=True)
                 self.__right_df_dict = appl_dict
                 try:
@@ -368,6 +370,7 @@ class Navigator:
                                                       PERS_DATA_XPATH=self.__PERS_DATA_XPATH,
                                                       sleep_up_to=sleep_secs_up_to_pesr_data,
                                                       notification_css=NOTIFICATION_CSSs,
+                                                      notification_header=NOTIFICATION_HEADER,
                                                       in_new_window=True)
             self.__right_df_dict = appl_dict
             try:

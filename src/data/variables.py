@@ -118,6 +118,7 @@ NOTIFICATION_CSSs = [
     ".button aria-label='Close'",
     "button aria-label='Close'"
 ]
+NOTIFICATION_HEADER = "Внимание!"
 
 # ---!!! personal data !!! ---# ends
 DF_ROW_NUMS_XPATH = "//*[contains(text(), 'Количество записей: ')]"
