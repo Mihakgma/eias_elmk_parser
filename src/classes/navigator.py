@@ -14,11 +14,12 @@ from functions.df_functions import excel_to_data_frame_parser, printDimensionsOf
 from classes.driver import Driver
 from functions.parsing_functions import (send_keys_by_xpath, parse_total_df, random_sleep,
                                          find_element_xpath, parse_part_df, move_2web_element, get_personal_data,
-                                         click_element_by_xpath, get_page_text, submit_certificate)
+                                         click_element_by_xpath, get_page_text, submit_certificate, clear_notification)
 from data import (HOME_URL, LOGIN_XPATH, LOGIN, PASSWORD_XPATH, PASSWORD, ELMK_URL, TEMP_XLSX_FILENAME,
                   APPLN_NUMBER_COLNAME, NUM_ROWS_MARK, NO_or_YES, NAVIGATOR_STATUS, START_KEY_WORD, OK_CERT_SCREEN_FILE,
                   CERT_SCREEN_FILES, LOGS_DIR, NAVIGATOR_SERIALIZE_FILE, COLNAMES_DICT, PERS_DATA_XPATH,
-                  FILTER_BUTTON_XPATH, FILTER_APPL_NUMBER_INPUT_XPATH, FILTER_APPL_SUBMIT_BUTTON_XPATH)
+                  FILTER_BUTTON_XPATH, FILTER_APPL_NUMBER_INPUT_XPATH, FILTER_APPL_SUBMIT_BUTTON_XPATH,
+                  NOTIFICATION_CSSs)
 from patterns.browser_error_wrapper import handle_exceptions_quit_driver
 from patterns.setter_logger import setter_log
 
@@ -220,6 +221,8 @@ class Navigator:
         ind = -1
         for number in tqdm.tqdm(appl_numbers):
             ind += 1
+            clear_notification(driver=browser,
+                               css_selectors=NOTIFICATION_CSSs)
             random_sleep(int(sleep_secs_up_to))
             if number in appl_dict:
                 self.set_status(15)

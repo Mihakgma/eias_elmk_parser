@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from pandas import DataFrame, read_html
 from selenium.common.exceptions import ElementNotInteractableException, TimeoutException, \
-    StaleElementReferenceException, ElementClickInterceptedException, WebDriverException
+    StaleElementReferenceException, ElementClickInterceptedException, WebDriverException, NoSuchElementException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -15,6 +15,7 @@ from pyautogui import hotkey as pyt_hotkey
 from pyautogui import click as pyt_click
 from pyautogui import locateOnScreen as pyt_locateOnScreen
 
+from data import NOTIFICATION_CSSs
 from patterns.thread_func import thread
 
 
@@ -66,6 +67,33 @@ def has_text_found(text: str, page_text: str, url: str) -> bool:
         print(f"\n---///---\nText: {text}\nfound on <{url}>---///---")
         return True
     return False
+
+
+def click_element_by_css(driver,
+                         css_selector: str,
+                         timeout: int = 3):
+    try:
+        element_present = EC.presence_of_element_located((By.CSS_SELECTOR, css_selector))
+        WebDriverWait(driver, timeout).until(element_present)
+    except TimeoutException or NoSuchElementException:
+        print("Timed out waiting for page to load")
+        return False
+    found_element = driver.find_element(By.CSS_SELECTOR, css_selector)
+    found_element.click()
+    return True
+
+
+def clear_notification(driver,
+                       css_selectors: list,
+                       timeout: int = 3):
+    found = False
+    i = -1
+    while not found:
+        i += 1
+        css_selector = css_selectors[i]
+        found = click_element_by_css(driver, css_selector, timeout)
+        if found:
+            print(f"WebElement with CSS selector = <{css_selector}> has been found & clicked.")
 
 
 def is_text_on_page(driver,
@@ -451,6 +479,8 @@ def get_personal_data(driver,
     # COLNAMES_DICT, PERS_DATA_XPATH = get_constants()
     # in new window and close it after parsing is ended
     if in_new_window:
+        clear_notification(driver=driver,
+                           css_selectors=NOTIFICATION_CSSs)
         if len(list(driver.window_handles)) > 1:
             # switch to new (just opened) web page
             driver.switch_to.window(driver.window_handles[1])

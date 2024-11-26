@@ -7,6 +7,7 @@ DRIVER_ARGUMENTS = [
     "--disable-notifications"
 ]
 
+
 BROWSER_FILE_PATH = "C:\\Program Files\\Yandex\\YandexBrowser\\Application\\browser.exe"
 WEBDRIVER_PATH = "C:\\yandexdriver\\yandexdriver.exe"
 HOME_URL = "https://eias.rospotrebnadzor.ru/"
@@ -109,6 +110,14 @@ FILTER_APPL_SUBMIT_BUTTON_XPATH = "/html/body/div/div/div/div/div/form/div/div/b
 # or
 # FILTER_APPL_SUBMIT_BUTTON_XPATH ="/html/body/div/div/div/div/div/form/div/div/button[1]/span"
 
+NOTIFICATION_CSSs = [
+    ".class='ant-modal-close-x'",
+    "class='ant-modal-close-x'",
+    ".span[class='ant-modal-close-x']",
+    "span[class='ant-modal-close-x']",
+    ".button aria-label='Close'",
+    "button aria-label='Close'"
+]
 
 # ---!!! personal data !!! ---# ends
 DF_ROW_NUMS_XPATH = "//*[contains(text(), 'Количество записей: ')]"
