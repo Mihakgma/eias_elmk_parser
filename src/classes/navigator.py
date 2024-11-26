@@ -282,6 +282,7 @@ class Navigator:
                                                       COLNAMES_DICT=self.__COLNAMES_DICT,
                                                       PERS_DATA_XPATH=self.__PERS_DATA_XPATH,
                                                       sleep_up_to=sleep_secs_up_to_pesr_data,
+                                                      notification_css=NOTIFICATION_CSSs,
                                                       in_new_window=True)
                 self.__right_df_dict = appl_dict
                 try:
@@ -366,6 +367,7 @@ class Navigator:
                                                       COLNAMES_DICT=self.__COLNAMES_DICT,
                                                       PERS_DATA_XPATH=self.__PERS_DATA_XPATH,
                                                       sleep_up_to=sleep_secs_up_to_pesr_data,
+                                                      notification_css=NOTIFICATION_CSSs,
                                                       in_new_window=True)
             self.__right_df_dict = appl_dict
             try:

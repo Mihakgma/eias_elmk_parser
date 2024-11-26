@@ -15,7 +15,6 @@ from pyautogui import hotkey as pyt_hotkey
 from pyautogui import click as pyt_click
 from pyautogui import locateOnScreen as pyt_locateOnScreen
 
-from data import NOTIFICATION_CSSs
 from patterns.thread_func import thread
 
 
@@ -474,13 +473,14 @@ def get_personal_data(driver,
                       COLNAMES_DICT,
                       PERS_DATA_XPATH,
                       sleep_up_to: float,
+                      notification_css: list,
                       in_new_window: bool = False):
 
     # COLNAMES_DICT, PERS_DATA_XPATH = get_constants()
     # in new window and close it after parsing is ended
     if in_new_window:
         clear_notification(driver=driver,
-                           css_selectors=NOTIFICATION_CSSs)
+                           css_selectors=notification_css)
         if len(list(driver.window_handles)) > 1:
             # switch to new (just opened) web page
             driver.switch_to.window(driver.window_handles[1])
