@@ -260,24 +260,34 @@ class Navigator:
                                    in_new_window=False)
             # answer = input(f"Enter x to stop parsing <{number}>").lower().strip()
             # if answer == "x" or answer == "х":
+            appl_xpath = f"//*[contains(text(), '{number}')]"
             number_found = find_element_xpath(driver=browser,
-                                              xpath=f"//*[contains(text(), '{number}')]")
+                                              xpath=appl_xpath)
             print(f"Number <{number}> has been found on the page: <{number_found}>")
             if not number_found:
-                self.__appl_numbers = appl_numbers[ind + 1:]
-                continue
+                try:
+                    self.__appl_numbers = appl_numbers[ind + 1:]
+                except IndexError:
+                    stop_parsing = True
+                    print("list __appl_numbers out of range")
+                finally:
+                    continue
             if not stop_parsing:
+                click_element_by_xpath(driver=browser,
+                                       xpath=appl_xpath,
+                                       timeout=15,
+                                       in_new_window=True)
                 appl_dict[number] = get_personal_data(driver=browser,
                                                       COLNAMES_DICT=self.__COLNAMES_DICT,
                                                       PERS_DATA_XPATH=self.__PERS_DATA_XPATH,
                                                       sleep_up_to=sleep_secs_up_to_pesr_data,
                                                       in_new_window=True)
-            self.__right_df_dict = appl_dict
-            try:
-                self.__appl_numbers = appl_numbers[ind + 1:]
-            except IndexError:
-                stop_parsing = True
-                print("list __appl_numbers out of range")
+                self.__right_df_dict = appl_dict
+                try:
+                    self.__appl_numbers = appl_numbers[ind + 1:]
+                except IndexError:
+                    stop_parsing = True
+                    print("list __appl_numbers out of range")
         print(f'\nКоличество спарсенных строк таблицы заявлений составило: <{len(appl_dict)}>')
         self.__right_df = DataManager.preprocess_personal_df(appl_dict)
 
