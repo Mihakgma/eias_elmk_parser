@@ -1,11 +1,9 @@
-from patterns.browser_error_wrapper import handle_exceptions_quit_driver
 from classes.session_manager import SessionManager
 
 
 class ELMKParser:
 
     @staticmethod
-    # @handle_exceptions_quit_driver
     def start(test_regime: bool = False,
               ask_for_cancel_interval_navigator=5000,
               sleep_secs_up_to_navigator=1.1,
@@ -23,12 +21,6 @@ class ELMKParser:
         print("session manager started")
         if test_regime:
             return
-        # else:
-        #     navigator.set_need_parse_left_df(need_parse_left_df=need_parse_left_df)
-        #     navigator(ask_for_cancel_interval=ask_for_cancel_interval_navigator,
-        #               sleep_secs_up_to=sleep_secs_up_to_navigator,
-        #               sleep_secs_up_to_pesr_data=sleep_secs_up_to_pesr_data_navigator,
-        #               personal_data_by_filter=True)
 
 
 if __name__ == '__main__':
