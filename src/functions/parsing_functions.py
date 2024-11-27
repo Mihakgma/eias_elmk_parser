@@ -23,8 +23,7 @@ def submit_certificate(cert_screen_files_path: list = "",
                        ok_screen_file_path: str = "",
                        counter: int = 10):
     i = 0
-    need_submit = True
-    while i < counter and need_submit:
+    while i < counter:
         i += 1
         screen_sum = 0
         pyt_hotkey('alt', 'tab')
@@ -45,10 +44,10 @@ def submit_certificate(cert_screen_files_path: list = "",
             print(ok_button_detected)
             pyt_click(ok_button_detected)
             print("Certificate has been successfully submitted!")
-            need_submit = False
+            break
         else:
             print("Certificate has not been successfully submitted!")
-        input("certificate submitting is over...")
+        # input("certificate submitting is over...")
 
 
 def get_page_text(driver):
