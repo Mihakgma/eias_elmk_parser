@@ -118,10 +118,10 @@ def observe_session(session_manager: SessionManager,
         while driver.is_charged():
             time_sleep(check_time_seconds)
             application_number = navigator.get_current_application_number()
-            navigator.serialize()
             if application_number == -1:
                 pass
             elif application_number in checks_per_application:
+                navigator.serialize()
                 checks_per_application[application_number] += 1
                 print(f"for application number <{application_number}>")
                 print(f"has been done <{checks_per_application[application_number]}> tries"
@@ -133,6 +133,7 @@ def observe_session(session_manager: SessionManager,
                                                          clear_previous_navigators=clear_previous_navigators,
                                                          test_regime=test_regime)
             else:
+                navigator.serialize()
                 checks_per_application[application_number] = 1
         else:
             last_driver = Driver.CURRENT_INSTANCE
