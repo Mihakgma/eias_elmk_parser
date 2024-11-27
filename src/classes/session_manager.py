@@ -118,6 +118,7 @@ def observe_session(session_manager: SessionManager,
         while driver.is_charged():
             time_sleep(check_time_seconds)
             application_number = navigator.get_current_application_number()
+            navigator.serialize()
             if application_number == -1:
                 pass
             elif application_number in checks_per_application:
