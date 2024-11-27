@@ -393,7 +393,7 @@ class Navigator:
             "__appl_numbers": self.__appl_numbers,
             "__right_df_dict": self.__right_df_dict,
         }
-        try:  # Handle potential errors during serialization
+        try:
             fullpath_json = os_path.join(LOGS_DIR, NAVIGATOR_SERIALIZE_FILE)
             os_makedirs(LOGS_DIR, exist_ok=True)
             with open(fullpath_json, "w", encoding='utf-8') as f:

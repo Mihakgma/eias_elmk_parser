@@ -1,3 +1,5 @@
+from selenium.common.exceptions import NoSuchWindowException, WebDriverException
+
 from classes.driver import Driver
 from classes.inject_manager import InjectManager
 from classes.navigator import Navigator
@@ -145,8 +147,8 @@ def observe_session(session_manager: SessionManager,
             except Exception as e:
                 print(f"Error during saving application numbers of tries: {e}")
 
-    except Exception as e:
-        try:  # Handle potential errors during serialization
+    except (NoSuchWindowException, WebDriverException) as e:
+        try:
             fullpath_json = os_path.join(LOGS_DIR, APPLICATIONS_NUMBERS_COUNTER_FILE)
             os_makedirs(LOGS_DIR, exist_ok=True)
             with open(fullpath_json, "w", encoding='utf-8') as f:  # Добавлено encoding='utf-8'
