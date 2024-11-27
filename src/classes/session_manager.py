@@ -62,7 +62,7 @@ class SessionManager(Singleton):
                                 auto_charge=True)
         SessionManager.__SESSIONS_CREATED.append(my_navigator)
         if not test_regime:
-            observe_session(session_manager=self, navigator=my_navigator, driver=my_driver)
+            # observe_session(session_manager=self, navigator=my_navigator, driver=my_driver)
             my_navigator.deserialize()
             my_navigator()
 
