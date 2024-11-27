@@ -20,7 +20,6 @@ from data import (HOME_URL, LOGIN_XPATH, LOGIN, PASSWORD_XPATH, PASSWORD, ELMK_U
                   CERT_SCREEN_FILES, LOGS_DIR, NAVIGATOR_SERIALIZE_FILE, COLNAMES_DICT, PERS_DATA_XPATH,
                   FILTER_BUTTON_XPATH, FILTER_APPL_NUMBER_INPUT_XPATH, FILTER_APPL_SUBMIT_BUTTON_XPATH,
                   NOTIFICATION_CSSs, NOTIFICATION_HEADER)
-from patterns.browser_error_wrapper import handle_exceptions_quit_driver
 from patterns.setter_logger import setter_log
 
 
@@ -126,7 +125,6 @@ class Navigator:
         except AttributeError as e:
             print(e)
 
-    # @handle_exceptions_quit_driver
     def navigate(self, page_path):
         try:
             driver = self.__driver_obj.get_driver()
