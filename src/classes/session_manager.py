@@ -62,7 +62,7 @@ class SessionManager(Singleton):
                                 auto_charge=True)
         SessionManager.__SESSIONS_CREATED.append(my_navigator)
         if not test_regime:
-            # observe_session(session_manager=self, navigator=my_navigator, driver=my_driver)
+            observe_session(session_manager=self, navigator=my_navigator, driver=my_driver)
             my_navigator.deserialize()
             my_navigator()
 
@@ -132,6 +132,9 @@ def observe_session(session_manager: SessionManager,
                       f"of possible <{max_iter_per_application}> iterations...")
                 checks_per_application[application_number] = 1
         else:
+            last_driver = Driver.CURRENT_INSTANCE
+            last_navigator = last_driver.get_linked_navigator()
+            last_navigator.serialize()
             print("trying to save application numbers tries")
             try:  # Handle potential errors during serialization
                 fullpath_json = os_path.join(LOGS_DIR, APPLICATIONS_NUMBERS_COUNTER_FILE)
