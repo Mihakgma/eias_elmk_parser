@@ -120,6 +120,9 @@ def observe_session(session_manager: SessionManager,
                 pass
             elif application_number in checks_per_application:
                 checks_per_application[application_number] += 1
+                print(f"for application number <{application_number}>")
+                print(f"has been done <{checks_per_application[application_number]}> tries"
+                      f"of possible <{max_iter_per_application}> iterations...")
                 if checks_per_application[application_number] > max_iter_per_application:
                     navigator.set_appl_numbers(navigator.get_appl_numbers()[1:])
                     application_skipped = True
@@ -127,9 +130,6 @@ def observe_session(session_manager: SessionManager,
                                                          clear_previous_navigators=clear_previous_navigators,
                                                          test_regime=test_regime)
             else:
-                print(f"for application number <{application_number}>")
-                print(f"has been done <{checks_per_application[application_number]}> tries"
-                      f"of possible <{max_iter_per_application}> iterations...")
                 checks_per_application[application_number] = 1
         else:
             last_driver = Driver.CURRENT_INSTANCE
