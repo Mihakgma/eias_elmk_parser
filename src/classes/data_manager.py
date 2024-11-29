@@ -1,6 +1,13 @@
 from pandas import DataFrame, merge
+from os import path as os_path
+from os import makedirs as os_makedirs
+from os import listdir as os_listdir
+from os import chdir as os_chdir
+from json import load as json_load
+from json import dump as json_dump
 
-from data.variables import APPLN_NUMBER_COLNAME, JOIN_WARNING
+from data.variables import APPLN_NUMBER_COLNAME, JOIN_WARNING, TEMP_XLSX_FILENAME, LOGS_DIR, NAVIGATOR_SERIALIZE_FILE
+from functions import excel_to_data_frame_parser, printDimensionsOfDF
 
 
 class DataManager:
@@ -16,6 +23,24 @@ class DataManager:
         df_pers_data = DataFrame.from_dict(personal_df).T.reset_index()
         df_pers_data.rename({'index': APPLN_NUMBER_COLNAME}, axis='columns', inplace=True)
         return df_pers_data.copy()
+
+    @staticmethod
+    def merge_dfs_automatically(right_df_key_name: str = "__right_df_dict") -> DataFrame:
+        left_df = excel_to_data_frame_parser(file=TEMP_XLSX_FILENAME,
+                                             sheet_name="Sheet1",
+                                             rows_to_skip=0,
+                                             blank_values_drop=0,
+                                             first_row_header=0)
+        printDimensionsOfDF(dfInput=left_df,
+                            warnStr="downloading left DF from excel", )
+        navigators_fields_values = DataManager.get_json_values()
+        if right_df_key_name not in navigators_fields_values:
+            raise KeyError(f"Key {right_df_key_name} not found in navigators fields")
+        right_df = navigators_fields_values[right_df_key_name]
+        df = DataManager.merge_dfs(general_df=left_df,
+                                   personal_df=right_df,
+                                   need_preprocess_pers_data=True)
+        return df
 
     @staticmethod
     def merge_dfs(general_df, personal_df, need_preprocess_pers_data=False) -> DataFrame:
@@ -48,6 +73,35 @@ class DataManager:
         df_merged.fillna('', inplace=True)
         return df_merged
 
+    @staticmethod
+    def get_json_values():
+        fullpath_json = DataManager.get_navigator_json_file_path()
+        with open(fullpath_json, "r", encoding='utf-8') as f:
+            json_values = json_load(f)
+        return json_values
+
+    @staticmethod
+    def get_navigator_json_file_path():
+        return os_path.join(LOGS_DIR, NAVIGATOR_SERIALIZE_FILE)
+
+    @staticmethod
+    def serialize_navigator_instance(data_to_serialize: dict):
+        try:
+            fullpath_json = DataManager.get_navigator_json_file_path()
+            os_makedirs(LOGS_DIR, exist_ok=True)
+            with open(fullpath_json, "w", encoding='utf-8') as f:
+                json_dump(data_to_serialize, f, indent=4)
+            print(f"Navigator data SERIALIZED successfully to <{NAVIGATOR_SERIALIZE_FILE}>")
+        except Exception as e:
+            print(f"Error during serialization: {e}")
+
 
 if __name__ == '__main__':
-    data_manager = DataManager()
+    cwd = "../LOGS"
+    try:
+        os_chdir(cwd)
+        print(os_listdir())
+        DataManager.merge_dfs_automatically()
+    except FileNotFoundError as e:
+        print(e)
+        print("probably need to change cwd to right dir...")

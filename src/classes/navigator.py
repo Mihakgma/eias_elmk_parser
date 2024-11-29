@@ -1,11 +1,6 @@
-import json
-
 import tqdm
 from pandas import DataFrame
 from selenium.common.exceptions import StaleElementReferenceException
-
-from os import path as os_path
-from os import makedirs as os_makedirs
 
 from classes.check_dates import DateChecker
 from classes.data_manager import DataManager
@@ -115,6 +110,9 @@ class Navigator:
             raise ValueError(message)
 
     status = property(get_status, set_status)
+
+    def get_right_df_dict(self):
+        return self.__right_df_dict
 
     def print_page(self):
         driver = self.__driver_obj.get_driver()
@@ -393,22 +391,11 @@ class Navigator:
             "__appl_numbers": self.__appl_numbers,
             "__right_df_dict": self.__right_df_dict,
         }
-        try:
-            fullpath_json = os_path.join(LOGS_DIR, NAVIGATOR_SERIALIZE_FILE)
-            os_makedirs(LOGS_DIR, exist_ok=True)
-            with open(fullpath_json, "w", encoding='utf-8') as f:
-                json.dump(data_to_serialize, f, indent=4)
-            print(f"Navigator data SERIALIZED successfully to <{NAVIGATOR_SERIALIZE_FILE}>")
-        except Exception as e:
-            print(f"Error during serialization: {e}")
+        DataManager.serialize_navigator_instance(data_to_serialize)
 
     def deserialize(self):
         try:
-            fullpath_json = os_path.join(LOGS_DIR, NAVIGATOR_SERIALIZE_FILE)
-            with open(fullpath_json, "r", encoding='utf-8') as f:
-                j = json.load(f)
-            print("\nRead json-file:")
-            # [print(key, val) for key, val in j.items()]
+            j = DataManager.get_json_values()
             [setattr(self, key, val) for key, val in j.items()
              if hasattr(self, key)]
             cls_name = "_" + self.__class__.__name__
