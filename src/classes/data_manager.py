@@ -1,4 +1,4 @@
-from pandas import DataFrame, merge
+from pandas import DataFrame, merge, concat
 from os import path as os_path
 from os import makedirs as os_makedirs
 from os import listdir as os_listdir
@@ -49,10 +49,17 @@ class DataManager:
         else:
             df_pers_data = personal_df
         appl_df = general_df.copy()
-        df_merged = merge(appl_df,
-                          df_pers_data,
-                          on=APPLN_NUMBER_COLNAME,
-                          how='left')
+        try:
+            df_merged = merge(appl_df,
+                              df_pers_data,
+                              on=APPLN_NUMBER_COLNAME,
+                              how='left')
+        except ValueError as e:
+            print(e)
+            df_merged = concat([appl_df, personal_df],
+                               axis=1,
+                               ignore_index=True,
+                               keys=[APPLN_NUMBER_COLNAME])
         rows_equal = appl_df.shape[0] == df_pers_data.shape[0]
         join_warn = JOIN_WARNING[rows_equal]
         print(join_warn)
