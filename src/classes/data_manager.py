@@ -22,6 +22,8 @@ class DataManager:
     def preprocess_personal_df(personal_df) -> DataFrame:
         df_pers_data = DataFrame.from_dict(personal_df).T.reset_index()
         df_pers_data.rename({'index': APPLN_NUMBER_COLNAME}, axis='columns', inplace=True)
+        df_pers_data[APPLN_NUMBER_COLNAME] = df_pers_data[APPLN_NUMBER_COLNAME]\
+                                                         .apply(lambda x: int(x))
         return df_pers_data.copy()
 
     @staticmethod
