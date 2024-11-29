@@ -6,8 +6,9 @@ from os import chdir as os_chdir
 from json import load as json_load
 from json import dump as json_dump
 
-from data.variables import APPLN_NUMBER_COLNAME, JOIN_WARNING, TEMP_XLSX_FILENAME, LOGS_DIR, NAVIGATOR_SERIALIZE_FILE
-from functions import excel_to_data_frame_parser, printDimensionsOfDF
+from data.variables import APPLN_NUMBER_COLNAME, JOIN_WARNING, TEMP_XLSX_FILENAME, LOGS_DIR, NAVIGATOR_SERIALIZE_FILE, \
+    FILIAL_COLNAME, REGISTR_ADRESS_DICT, FACT_ADRESS_DICT
+from functions import excel_to_data_frame_parser, printDimensionsOfDF, get_filial_name
 
 
 class DataManager:
@@ -79,6 +80,8 @@ class DataManager:
                   ][appl_df.shape[0] > df_pers_data.shape[0]])
             print()
         print(df_merged.shape)
+        df_merged[FILIAL_COLNAME] = get_filial_name(first_lst_in=df_merged[REGISTR_ADRESS_DICT].to_list(),
+                                                    second_lst_in=df_merged[FACT_ADRESS_DICT].to_list())
         # заменить пропущенные значения на пустые строки
         df_merged.fillna('', inplace=True)
         return df_merged
