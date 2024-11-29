@@ -25,7 +25,7 @@ class DataManager:
         return df_pers_data.copy()
 
     @staticmethod
-    def merge_dfs_automatically(right_df_key_name: str = "__right_df_dict") -> DataFrame:
+    def merge_dfs_automatically(right_df_key_name: str = "__right_df_dict") -> tuple:
         left_df = excel_to_data_frame_parser(file=TEMP_XLSX_FILENAME,
                                              sheet_name="Sheet1",
                                              rows_to_skip=0,
@@ -37,10 +37,11 @@ class DataManager:
         if right_df_key_name not in navigators_fields_values:
             raise KeyError(f"Key {right_df_key_name} not found in navigators fields")
         right_df = navigators_fields_values[right_df_key_name]
+        right_df = DataManager.preprocess_personal_df(right_df)
         df = DataManager.merge_dfs(general_df=left_df,
                                    personal_df=right_df,
-                                   need_preprocess_pers_data=True)
-        return df
+                                   need_preprocess_pers_data=False)
+        return df, left_df, right_df
 
     @staticmethod
     def merge_dfs(general_df, personal_df, need_preprocess_pers_data=False) -> DataFrame:
@@ -54,8 +55,8 @@ class DataManager:
                               df_pers_data,
                               on=APPLN_NUMBER_COLNAME,
                               how='left')
-        except ValueError as e:
-            print(e)
+        except ValueError as ve:
+            print(ve)
             df_merged = concat([appl_df, personal_df],
                                axis=1,
                                ignore_index=True,
@@ -99,8 +100,8 @@ class DataManager:
             with open(fullpath_json, "w", encoding='utf-8') as f:
                 json_dump(data_to_serialize, f, indent=4)
             print(f"Navigator data SERIALIZED successfully to <{NAVIGATOR_SERIALIZE_FILE}>")
-        except Exception as e:
-            print(f"Error during serialization: {e}")
+        except Exception as exception:
+            print(f"Error during serialization: {exception}")
 
 
 if __name__ == '__main__':
